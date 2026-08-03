@@ -10,10 +10,10 @@ Scaffold a C# project that serves as the "buggy" test subject for AI model evalu
 - Test project verifies correct behavior — if all pass, the bug is fixed
 
 ### Steps
-- [ ] Create solution structure (`ai.models-evaluator.sln`)
-- [ ] Add `Directory.Build.props` and `Directory.Packages.props` at repo root
-- [ ] Scaffold `src/AI.Evaluator.Console` project (C#, net8.0)
-- [ ] Scaffold `tests/AI.Evaluator.Tests` project (NUnit, dotnet test compatible)
+- [x] Create solution structure (`AI.Evaluator.slnx`)
+- [x] Add `Directory.Build.props` and `Directory.Packages.props` at repo root
+- [x] Scaffold `src/AI.Evaluator.Console` project (C#, net10.0)
+- [x] Scaffold `tests/AI.Evaluator.Tests` project (NUnit, dotnet test compatible)
 - [ ] Implement Bug #1 (Easy): e.g., off-by-one error in a list/array operation
 - [ ] Implement Bug #2 (Medium): e.g., incorrect string parsing/formatting logic
 - [ ] Implement Bug #3 (Hard): e.g., subtle concurrency/state issue or algorithmic flaw
