@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.x"
+
+      - name: Restore dependencies
+        run: dotnet restore AI.Evaluator.slnx
+
+      - name: Build solution
+        run: dotnet build AI.Evaluator.slnx --no-restore
+
+      - name: Run tests
+        run: dotnet test AI.Evaluator.slnx --no-build --verbosity normal
