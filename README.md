@@ -1,9 +1,11 @@
 # ai.models-evaluator
-A project that has the tools to test AI models and collect results.
+[![Build](https://github.com/AI-Team-26/ai.models-evaluator/actions/workflows/build.yml/badge.svg)](https://github.com/AI-Team-26/ai.models-evaluator/actions/workflows/build.yml)
+
+A project that permits to test AI models and collect results to evaluate them for coding.
 
 ## Strategy
 The goal is to evaluate AI models by tasking them with fixing known bugs in source code. We aim to measure three key dimensions:
-1. **Success Rate**: Did the model successfully resolve the bug?
+1. **Success Rate**: Did the model successfully resolve the bugs?
 2. **Code Quality**: How clean/efficient is the provided solution?
 3. **Time Required**: The latency/time taken for the model to generate the fix.
 
