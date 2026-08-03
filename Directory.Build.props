@@ -1,5 +1,6 @@
 <Project>
   <PropertyGroup>
+    <!-- Central package management must be top-level -->
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <TargetFramework>net10.0</TargetFramework>
     <LangVersion>latest</LangVersion>

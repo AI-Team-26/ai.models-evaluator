@@ -12,4 +12,8 @@
     <PackageReference Include="Unquote" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="../../src/AI.Evaluator.Console/AI.Evaluator.Console.csproj" />
+  </ItemGroup>
+
 </Project>
