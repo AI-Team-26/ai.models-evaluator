@@ -20,7 +20,7 @@ Scaffold a C# project that serves as the "buggy" test subject for AI model evalu
 - [ ] Implement Bug #3 (Hard): e.g., subtle concurrency/state issue or algorithmic flaw
 - [ ] Write NUnit tests that fail against current buggy code but define expected behavior
 - [ ] Ensure tests fail initially when implemented
-- [x] Add CI workflow `.github/workflows/ci.yml` ([PR #3](https://github.com/AI-Team-26/ai.models-evaluator/pull/3))
+- [x] Split workflows: `build.yml` + `test.yml` replacing single `ci.yml` ([PR #5](https://github.com/AI-Team-26/ai.models-evaluator/pull/5))
 - [x] Cleanup: remove redundant TargetFramework references from individual projects; remove Unquote package ([PR #4](https://github.com/AI-Team-26/ai.models-evaluator/pull/4))
 
 ### Notes
