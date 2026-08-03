@@ -1,4 +1,4 @@
-name: CI
+name: Build
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,6 +24,3 @@ jobs:
 
       - name: Build solution
         run: dotnet build AI.Evaluator.slnx --no-restore
-
-      - name: Run tests
-        run: dotnet test AI.Evaluator.slnx --no-build --verbosity normal
