@@ -4,6 +4,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- Packages will be added as projects are scaffolded -->
+    <PackageVersion Include="NUnit" Version="4.2.2" />
+    <PackageVersion Include="NUnit3TestAdapter" Version="4.5.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageVersion Include="Unquote" Version="6.1.0" />
   </ItemGroup>
 </Project>

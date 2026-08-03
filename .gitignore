@@ -1,0 +1,45 @@
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Md]64/
+build/
+out/
+o/
+
+# Visual Studio cache/options
+.vs/
+*.suo
+*.user
+*.userosscache
+*sln.docstates
+
+# MSTest test results
+TestResults/
+[TT]estResults/
+*.trx
+
+# NuGet packages
+packages/
+*.nupkg
+**/packages/*
+
+# Compile results
+bin/
+obj/
+*.dll
+*.pdb
+*.exe
+
+# IDE
+.idea/
+*.csproj.user
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
