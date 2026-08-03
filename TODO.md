@@ -16,10 +16,10 @@ Scaffold a C# project that serves as the "buggy" test subject for AI model evalu
 - [x] Scaffold `tests/AI.Evaluator.Tests` project (NUnit, dotnet test compatible)
 - [x] Verify: `dotnet build && dotnet test` compile and run (pipeline green, 0 tests until bugs+cases added)
 - [x] Implement Bug #1 (Easy): off-by-one in SumRange (`i < end` vs `i <= end`) ✓
-- [ ] Implement Bug #2 (Medium): e.g., incorrect string parsing/formatting logic
-- [ ] Implement Bug #3 (Hard): e.g., subtle concurrency/state issue or algorithmic flaw
-- [ ] Write NUnit tests that fail against current buggy code but define expected behavior
-- [ ] Ensure tests fail initially when implemented
+- [x] Implement Bug #2 (Medium): missing last field in `SplitCsv()` quote-aware parser ([PR #6](https://github.com/AI-Team-26/ai.models-evaluator/pull/6))
+- [x] Implement Bug #3 (Hard): int overflow in `SafeProduct()` accumulator ([PR #6](https://github.com/AI-Team-26/ai.models-evaluator/pull/6))
+- [x] Write NUnit tests that fail against current buggy code but define expected behavior
+- [x] Ensure tests fail initially when implemented
 - [x] Split workflows: `build.yml` + `test.yml` replacing single `ci.yml` ([PR #5](https://github.com/AI-Team-26/ai.models-evaluator/pull/5))
 - [x] Cleanup: remove redundant TargetFramework references from individual projects; remove Unquote package ([PR #4](https://github.com/AI-Team-26/ai.models-evaluator/pull/4))
 
