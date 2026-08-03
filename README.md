@@ -8,3 +8,9 @@ The goal is to evaluate AI models by tasking them with fixing known bugs in sour
 3. **Time Required**: The latency/time taken for the model to generate the fix.
 
 All evaluation runs will be documented in a `Test.md` file, tracking the Model name, Branch used, and the resulting Evaluation metrics (Success, Time, Quality).
+
+## Project Structure
+- **C# solution** with central package management (`Directory.Build.props`, `Directory.Packages.props`)
+- **Console app** — contains intentional bugs (seed for AI evaluation)
+- **Unit test project** (NUnit) — verifies correct behavior; acts as the oracle
+- Bugs are of increasing difficulty to measure model capability tiers
