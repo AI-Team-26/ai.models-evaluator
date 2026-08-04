@@ -1,29 +1,8 @@
-## In Progress: Create C# solution with buggy console app and NUnit tests
+# Backlog
 
-### Goal
-Scaffold a C# project that serves as the "buggy" test subject for AI model evaluation, with 3 bugs of increasing difficulty and NUnit unit tests acting as oracles.
-
-### Context / Mental Picture
-- Central package management via `Directory.Build.props` + `Directory.Packages.props`
-- Source projects under `src/`, tests under `tests/`
-- Console app contains a class/library with intentional bugs; the Program.cs calls them
-- Test project verifies correct behavior — if all pass, the bug is fixed
-
-### Steps
-- [x] Create solution structure (`AI.Evaluator.slnx`)
-- [x] Add `Directory.Build.props` and `Directory.Packages.props` at repo root
-- [x] Scaffold `src/AI.Evaluator.Console` project (C#, net10.0)
-- [x] Scaffold `tests/AI.Evaluator.Tests` project (NUnit, dotnet test compatible)
-- [x] Verify: `dotnet build && dotnet test` compile and run (pipeline green, 0 tests until bugs+cases added)
-- [x] Implement Bug #1 (Easy): off-by-one in SumRange (`i < end` vs `i <= end`) ✓
-- [x] Implement Bug #2 (Medium): missing last field in `SplitCsv()` quote-aware parser ([PR #6](https://github.com/AI-Team-26/ai.models-evaluator/pull/6))
-- [x] Implement Bug #3 (Hard): int overflow in `SafeProduct()` accumulator ([PR #6](https://github.com/AI-Team-26/ai.models-evaluator/pull/6))
-- [x] Write NUnit tests that fail against current buggy code but define expected behavior
-- [x] Ensure tests fail initially when implemented
-- [x] Split workflows: `build.yml` + `test.yml` replacing single `ci.yml` ([PR #5](https://github.com/AI-Team-26/ai.models-evaluator/pull/5))
-- [x] Cleanup: remove redundant TargetFramework references from individual projects; remove Unquote package ([PR #4](https://github.com/AI-Team-26/ai.models-evaluator/pull/4))
-
-### Notes
-- Bugs should be self-contained methods so AI models can isolate and fix them cleanly.
-- Each bug gets its own test class or at least clearly named test cases.
-- Keep the project minimal; the focus is on reproducible bugs + clear expected output.
+## Future Tasks
+- [ ] Add more complex bugs (concurrency issues, memory leaks, algorithmic errors)
+- [ ] Expand test coverage with edge case scenarios
+- [ ] Integrate actual AI model testing pipeline
+- [ ] Consider adding security vulnerability examples
+- [ ] Scale difficulty levels (add Expert tier)
