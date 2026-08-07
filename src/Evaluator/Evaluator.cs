@@ -1,12 +1,10 @@
-using Evaluator.Domain;
-
-namespace Evaluator.Core;
+namespace Evaluator;
 
 internal sealed class Evaluator
 {
-    private readonly FakeLlamaServerManager _serverManager;
+    private readonly LlamaServerManager _serverManager;
     
-    public Evaluator(FakeLlamaServerManager serverManager)
+    public Evaluator(LlamaServerManager serverManager)
     {
         _serverManager = serverManager;
     }
@@ -15,9 +13,6 @@ internal sealed class Evaluator
     {
         await _serverManager.StartAsync(modelId, ct);
         
-        using var httpClient = new HttpClient();
-        var baseUrl = $"http://localhost:{_serverManager.Port}/v1";
-        
         var testCases = GetTestCases();
         var results = new Dictionary<string, bool>();
         var positiveNotes = new List<string>();
@@ -25,7 +20,7 @@ internal sealed class Evaluator
         
         foreach (var testCaseName in testCases)
         {
-            var success = await RunSingleTest(testCaseName, baseUrl, ct);
+            var success = await RunSingleTest(testCaseName, ct);
             results[testCaseName] = success;
             
             if (success)
@@ -40,7 +35,7 @@ internal sealed class Evaluator
         return new ModelEvaluation
         {
             ModelId = modelId,
-            LlamaCppVersion = "v0.4.5",
+            LlamaCppVersion = GetLlamaCppVersion(),
             TestCaseVersion = GitCommitHash(),
             Timestamp = DateTime.UtcNow,
             
@@ -55,7 +50,7 @@ internal sealed class Evaluator
         };
     }
     
-    private async Task<bool> RunSingleTest(string testName, string baseUrl, CancellationToken ct)
+    private async Task<bool> RunSingleTest(string testName, CancellationToken ct)
     {
         await Task.Delay(100, ct);
         return Random.Shared.NextDouble() > 0.3f;
@@ -74,5 +69,6 @@ internal sealed class Evaluator
     private static int CalculatePercentage(int passed, int total) => total == 0 ? 0 : (passed * 100) / total;
     private static int CalculateQuality(Dictionary<string, bool> results) => CalculatePercentage(results.Count(r => r.Value), results.Count);
     private static int CalculateIntelligence(int failedCount) => Math.Max(0, 100 - (failedCount * 10));
+    private static string GetLlamaCppVersion() => "v0.4.5";
     private static string GitCommitHash() => "unknown";
 }

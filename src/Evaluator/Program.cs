@@ -1,5 +1,3 @@
-using Spectre.Console;
-
 namespace Evaluator;
 
 public static class Program
@@ -30,8 +28,8 @@ public static class Program
     
     private static async Task RunEvaluation(string modelId)
     {
-        var serverManager = new Core.FakeLlamaServerManager();
-        var evaluator = new Core.Evaluator(serverManager);
+        var serverManager = new LlamaServerManager();
+        var evaluator = new Evaluator(serverManager);
         
         Console.Write($"Evaluating '{modelId}'... ");
         Console.CursorVisible = false;
@@ -44,7 +42,7 @@ public static class Program
         DisplayResult(result);
     }
     
-    private static void DisplayResult(Domain.ModelEvaluation eval)
+    private static void DisplayResult(ModelEvaluation eval)
     {
         Console.WriteLine();
         

@@ -1,4 +1,4 @@
-namespace Evaluator.Domain;
+namespace Evaluator;
 
 public record ModelEvaluation
 {

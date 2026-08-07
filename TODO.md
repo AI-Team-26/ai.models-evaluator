@@ -2,7 +2,7 @@
 
 <!-- Add tasks here when starting work on them -->
 
-- [ ] **[feat/02_evaluator_scaffolding]** Create C# Console App foundation
+- [x] **[feat/02_evaluator_scaffolding]** Create C# Console App foundation
   - [x] Update TODO.md: Move task from Backlog to In Progress
   - [x] Create src/Evaluator/Evaluator.csproj (.NET 10 console app)
   - [x] Implement basic Program.cs with entry point skeleton
