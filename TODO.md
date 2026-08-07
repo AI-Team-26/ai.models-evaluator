@@ -2,19 +2,20 @@
 
 <!-- Add tasks here when starting work on them -->
 
+- [ ] **[feat/02_evaluator_scaffolding]** Create C# Console App foundation
+  - [ ] Update TODO.md: Move task from Backlog to In Progress
+  - [ ] Create src/Evaluator/Evaluator.csproj (.NET 10 console app)
+  - [ ] Implement basic Program.cs with entry point skeleton
+  - [ ] Set up dependency injection/service layer architecture
+  - [ ] Add project reference to TargetCode (for bug examples)
+  - [ ] Verify end-to-end build works after scaffolding
+  - [ ] Commit changes and open PR
+
 ---
 
 # Backlog
 
 ## Phase 2: Build Evaluator Orchestration Tool
-
-### Step A: Project Scaffolding (`feat/02_evaluator_scaffolding`)
-Create the foundation C# Console App structure.
-- [ ] Create `src/Evaluator/Evaluator.csproj` (.NET 10 console app)
-- [ ] Implement basic `Program.cs` with entry point skeleton
-- [ ] Set up dependency injection / service layer architecture
-- [ ] Add project reference to `TargetCode` (for bug examples)
-- [ ] Verify end-to-end build works after scaffolding
 
 ### Step B: Server Process Management (`feat/03_server_management`)
 Build llama.cpp process control logic before defining config schema.
