@@ -4,56 +4,61 @@
 
 ---
 
+# Backlog
+
+## Core Infrastructure (Evaluator Tool)
+
+### 2. Configuration & Metadata
+- [ ] Create `config/models.json` schema:
+  - [ ] Path to `llama-server` executable
+  - [ ] Common parameters (port, context window, GPU layers)
+  - [ ] Model-specific parameters (model path, prompt template, temperature)
+  - [ ] Model **Short-Name** (e.g., `Qwen3_5-27B_UD_Q4-K-M_Unsloth`) - used for branch naming and logs
+  - [ ] Evaluator Test Version (e.g., `v1`, `v2`)
+  - [ ] `llama.cpp` release tag (e.g., `b1234`)
+- [ ] Define branch naming convention: `eval/<short-name>-test<test_version>-<YYYYMMDD-hhmm>`
+  - Example: `eval/Qwen3_5-27B_UD_Q4-K-M_Unsloth-testv1-20240514-1530`
+- [ ] Define results log schema (`results/evaluation_log.json`):
+  - [ ] Branch name (following convention)
+  - [ ] Model Short-Name
+  - [ ] Evaluator Test Version
+  - [ ] Evaluator Git Commit Hash
+  - [ ] `llama.cpp` release tag
+  - [ ] Parameters used
+  - [ ] Pass/Fail status, duration, timestamp
+
+### 3. Evaluator Core Implementation
+- [ ] CLI argument parsing (e.g., `--model`, `--bug-id`)
+- [ ] Process management: Start/Stop `llama.server` using configured executable path
+- [ ] OpenAI-compatible API client (supports tool calling with GGUF models)
+- [ ] Git automation: Create branch using naming convention `eval/<short-name>-test<test_version>-<YYYYMMDD-hhmm>`
+- [ ] API interaction loop: Send code -> Receive fix -> Apply to file
+- [ ] Test runner: Execute `dotnet test` and capture exit code/output
+- [ ] Logging: Write structured evaluation results to JSON
+
+## Target Content
+- [ ] Add more complex bugs (concurrency issues, memory leaks, algorithmic errors)
+- [ ] Expand test coverage with edge case scenarios
+- [ ] Consider adding security vulnerability examples
+- [ ] Scale difficulty levels (add Expert tier)
+
+---
+
 # Completed
 
 ## feat/01_project_reorganization — Repository Restructuring
 
 **Goal:** Move existing code to proper locations and set up infrastructure folders.
 
-**Completed Steps:**
+**Steps Completed:**
 - [x] Created feature branch `feat/01_project_reorganization`
 - [x] Renamed `src/AI.Evaluator.Console` → `src/TargetCode`
 - [x] Renamed `tests/AI.Evaluator.Tests` → `tests/TargetCodeTests`
 - [x] Updated namespaces throughout (from `AI.Evaluator.Console` to `TargetCode`)
-- [x] Created placeholder directories: `src/Evaluator/`, `config/`, `results/`
+- [x] Created placeholder directories: `config/`, `results/`
+- [x] Created empty `src/Evaluator/` folder (actual C# Console App scaffolding deferred to next phase)
 - [x] Updated solution file paths (`AI.Evaluator.slnx`)
 - [x] Updated `.gitignore` to exclude `results/*.json`
-- [x] Verified build succeeds; test suite runs correctly (9 failing = intentional bugs)
+- [x] Verified build succeeds; test suite runs correctly (9 failing = intentional bugs in target code)
 
 **PR:** #7 merged into main
-
----
-
-# Backlog
-
-## Phase 2: Configuration System
-
-- [ ] **[feat/02_configuration_schema]** Design models.json configuration format
-  - [ ] Define common parameters section (port, context window, GPU layers)
-  - [ ] Define model-specific parameters (path, prompt template, temperature)
-  - [ ] Include metadata fields (Model Short-Name, Test Version, llama.cpp tag)
-  
-- [ ] **[feat/03_branch_naming_convention]** Implement evaluation branch creation logic
-  - [ ] Format: `eval/<short-name>-test<version>-<YYYYMMDD-hhmm>`
-  - [ ] Auto-generate branches per evaluation run
-  
-- [ ] **[feat/04_results_logging]** Design evaluation result logging schema
-  - [ ] Define JSON structure for `results/evaluation_log.json`
-  - [ ] Track: branch, commit hash, parameters, pass/fail, duration, timestamp
-
-## Phase 3: Evaluator Core Implementation
-
-- [ ] CLI argument parsing (`--model`, `--bug-id`)
-- [ ] Process management: Start/Stop `llama.server` programmatically
-- [ ] OpenAI-compatible API client supporting tool calling
-- [ ] Git automation: Create evaluation branches automatically
-- [ ] Fix application loop: Send buggy code → receive fix → apply to files
-- [ ] Test runner integration: Execute `dotnet test` and capture results
-- [ ] Structured logging: Write evaluation outcomes to JSON
-
-## Target Content Enhancement
-
-- [ ] Add more complex bug scenarios (concurrency issues, memory leaks, algorithmic errors)
-- [ ] Expand test coverage with edge case scenarios
-- [ ] Consider adding security vulnerability examples
-- [ ] Scale difficulty levels (add Expert tier beyond current Beginner/Intermediate)
