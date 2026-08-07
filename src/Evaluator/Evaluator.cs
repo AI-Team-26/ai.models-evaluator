@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text.Json;
 
 namespace Evaluator;
@@ -6,7 +7,7 @@ internal sealed class Evaluator
 {
     private readonly LlamaServerManager _serverManager;
     private readonly string _configurationPath;
-    
+
     public Evaluator(LlamaServerManager serverManager)
     {
         _serverManager = serverManager;
@@ -15,25 +16,51 @@ internal sealed class Evaluator
             "LlmEvaluator",
             "Configuration.json");
     }
-    
+
     public async Task EvaluateAsync(string modelId, CancellationToken ct = default)
     {
         var configuration = LoadOrCreateConfiguration();
-        
-        Console.WriteLine($"Model: {modelId}");
-        Console.WriteLine($"Configuration: {_configurationPath}");
-        Console.WriteLine($"llama.cpp path: {configuration.LlamaCppPath}");
-        Console.WriteLine();
-        
-        // TODO: Implement evaluation process
-        // 1. Create git branch with naming convention
-        // 2. Start llama-server with model configuration
-        // 3. Send buggy code to model via OpenAI-compatible endpoint
-        // 4. Apply model's suggested fix
-        // 5. Run test suite
-        // 6. Log results
+        var modelConfig = configuration.Models.FirstOrDefault(m => m.Id == modelId);
+
+        if (modelConfig is null)
+        {
+            Console.WriteLine($"Model '{modelId}' not found in configuration.");
+            return;
+        }
+
+        var stopwatch = Stopwatch.StartNew();
+        long totalTokens = 0;
+
+        try
+        {
+            // TODO: 1. Create git branch with naming convention
+            // TODO: 2. Start llama-server with model configuration
+            // TODO: 3. Send buggy code to model via OpenAI-compatible endpoint
+            // TODO: 4. Apply model's suggested fix
+            // TODO: 5. Run test suite (dotnet test)
+            // TODO: 6. Log results
+
+            Console.WriteLine($"Model: {modelId}");
+            Console.WriteLine($"Configuration: {_configurationPath}");
+            Console.WriteLine($"llama.cpp path: {configuration.LlamaCppPath}");
+            Console.WriteLine($"Port: {configuration.DefaultPort}");
+        }
+        finally
+        {
+            stopwatch.Stop();
+            var result = new ModelEvaluation
+            {
+                ModelId = modelId,
+                Timestamp = DateTime.UtcNow,
+                TotalDurationMs = stopwatch.ElapsedMilliseconds,
+                TotalTokensUsed = totalTokens
+            };
+
+            Console.WriteLine($"Duration: {result.TotalDurationMs}ms");
+            Console.WriteLine($"Tokens used: {result.TotalTokensUsed}");
+        }
     }
-    
+
     private Configuration LoadOrCreateConfiguration()
     {
         if (File.Exists(_configurationPath))
@@ -41,19 +68,19 @@ internal sealed class Evaluator
             var json = File.ReadAllText(_configurationPath);
             return JsonSerializer.Deserialize<Configuration>(json) ?? CreateDefaultConfiguration();
         }
-        
+
         var defaultConfig = CreateDefaultConfiguration();
         var directory = Path.GetDirectoryName(_configurationPath);
         if (!string.IsNullOrEmpty(directory))
             Directory.CreateDirectory(directory);
-        
+
         var options = new JsonSerializerOptions { WriteIndented = true };
         File.WriteAllText(_configurationPath, JsonSerializer.Serialize(defaultConfig, options));
-        
+
         Console.WriteLine($"Created default configuration at {_configurationPath}");
         return defaultConfig;
     }
-    
+
     private static Configuration CreateDefaultConfiguration() => new()
     {
         LlamaCppPath = "llama-server",
