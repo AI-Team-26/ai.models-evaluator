@@ -6,11 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- Reference to target code containing bug examples -->
     <ProjectReference Include="../TargetCode/TargetCode.csproj" />
-
-    <!-- Dependencies -->
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Spectre.Console" />
   </ItemGroup>
 
 </Project>
