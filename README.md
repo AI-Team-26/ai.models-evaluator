@@ -1,7 +1,23 @@
 # ai.models-evaluator
 [![Build](https://github.com/AI-Team-26/ai.models-evaluator/actions/workflows/build.yml/badge.svg)](https://github.com/AI-Team-26/ai.models-evaluator/actions/workflows/build.yml)
 
-A project that permits to test AI models and collect results to evaluate them for coding.
+An automated system to benchmark AI language models on their ability to identify and fix bugs in source code.
+
+## 🏗️ High-Level Architecture
+
+| Component | Purpose |
+|-----------|----------|
+| **📁 `src/TargetCode/`** | Contains **intentional bug samples** (the "exam questions" given to AI models). These are buggy functions with failing tests. |
+| **🔧 `src/Evaluator/`** | The **orchestration tool** being built. Starts llama-server, sends bugs to LLM via API, applies fixes, runs tests, logs results. |
+| **✅ `tests/TargetCodeTests/`** | NUnit test suite acting as the **oracle** – verifies if proposed fixes actually resolve the bugs. |
+
+```
+┌─────────────┐     ┌──────────────┐     ┌─────────────┐
+│ Evaluator   │────▶│ Llama Server │◀────│ TargetCode  │
+│ (our tool)  │     │ + AI Model   │     │ (bugs to    │
+│             │◀────│              │     │  fix)       │
+└─────────────┘     └──────────────┘     └─────────────┘
+```
 
 ## Strategy
 The goal is to evaluate AI models by tasking them with fixing known bugs in source code. We aim to measure three key dimensions:
@@ -17,10 +33,17 @@ The system uses a dedicated **Evaluator Tool** to automate the benchmarking proc
 4. **Verification**: Runs the test suite (`dotnet test`) to verify the fix.
 5. **Analysis**: Logs the model, parameters, branch, and result (Pass/Fail) for later analysis.
 
-## Proposed Project Structure
-- `src/TargetCode/` — The software containing intentional bugs (the "test material").
-- `src/Evaluator/` — The C# tool that orchestrates the server, git branches, and testing.
-- `tests/TargetCodeTests/` — The NUnit test suite that acts as the oracle for correctness.
+## Current Status
+
+### ✅ Phase 1 Complete: Repository Reorganization
+The repository has been reorganized according to the planned structure:
+- [`src/TargetCode/`](./src/TargetCode/) contains sample buggy implementations (`MathUtils.cs`) with known defects.
+- [`tests/TargetCodeTests/`](./tests/TargetCodeTests/) validates those bugs exist (currently 9 failing tests).
+- Infrastructure folders created: [`config/`](./config/), [`results/`](./results/).
+- [`src/Evaluator/`](./src/Evaluator/) placeholder ready for implementation.
+
+### 🔜 Next Steps
+Phase 2 will implement configuration management and model metadata tracking.
 - `config/` — JSON configurations for model parameters (common vs. specific) and paths.
 - `results/` — Logs of all evaluation runs.
 
