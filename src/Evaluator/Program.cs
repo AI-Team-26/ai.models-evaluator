@@ -1,3 +1,5 @@
+using Spectre.Console;
+
 namespace Evaluator;
 
 public static class Program
@@ -9,32 +11,24 @@ public static class Program
 
         while (true)
         {
-            Console.WriteLine();
-            Console.WriteLine("=== AI Model Evaluator ===");
-            Console.WriteLine("1. See Results");
-            Console.WriteLine("2. Run Evaluation");
-            Console.WriteLine("3. Change Settings");
-            Console.WriteLine("0. Exit");
-            Console.Write("Select option: ");
-
-            var choice = Console.ReadLine()?.Trim();
+            var choice = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title("[bold]AI Model Evaluator[/]")
+                    .AddChoices("See Results", "Run Evaluation", "Change Settings", "Exit"));
 
             switch (choice)
             {
-                case "1":
+                case "See Results":
                     await ShowResultsAsync();
                     break;
-                case "2":
+                case "Run Evaluation":
                     await RunEvaluationAsync(evaluator);
                     break;
-                case "3":
+                case "Change Settings":
                     ChangeSettings();
                     break;
-                case "0":
+                case "Exit":
                     return 0;
-                default:
-                    Console.WriteLine("Invalid option.");
-                    break;
             }
         }
     }
@@ -44,31 +38,30 @@ public static class Program
         var resultsDir = Path.Combine(AppContext.BaseDirectory, "..", "..", "results");
         if (!Directory.Exists(resultsDir))
         {
-            Console.WriteLine("No results directory found.");
+            AnsiConsole.WriteLine("No results directory found.");
             return;
         }
 
         var files = Directory.GetFiles(resultsDir, "evaluation_*.json");
         if (files.Length == 0)
         {
-            Console.WriteLine("No results found.");
+            AnsiConsole.WriteLine("No results found.");
             return;
         }
 
         foreach (var file in files.OrderByDescending(f => f))
         {
-            Console.WriteLine(Path.GetFileName(file));
+            AnsiConsole.WriteLine(Path.GetFileName(file));
         }
     }
 
     private static async Task RunEvaluationAsync(Evaluator evaluator)
     {
-        Console.Write("Enter model ID: ");
-        var modelId = Console.ReadLine()?.Trim();
+        var modelId = AnsiConsole.Ask<string>("Enter model ID:");
 
         if (string.IsNullOrEmpty(modelId))
         {
-            Console.WriteLine("Model ID cannot be empty.");
+            AnsiConsole.WriteLine("Model ID cannot be empty.");
             return;
         }
 
@@ -78,15 +71,13 @@ public static class Program
         }
         catch (Exception ex)
         {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"Error: {ex.Message}");
-            Console.ResetColor();
+            AnsiConsole.MarkupLine("[red]Error:[/] {0}", ex.Message);
         }
     }
 
     private static void ChangeSettings()
     {
         // TODO: Implement settings changes (configuration path, etc.)
-        Console.WriteLine("Settings editor not yet implemented.");
+        AnsiConsole.WriteLine("Settings editor not yet implemented.");
     }
 }

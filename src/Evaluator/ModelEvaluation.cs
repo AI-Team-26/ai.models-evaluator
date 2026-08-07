@@ -4,7 +4,6 @@ public record ModelEvaluation
 {
     public string ModelId { get; init; } = "";
     public string LlamaCppVersion { get; init; } = "";
-    public string TestCaseVersion { get; init; } = "";
     public DateTime Timestamp { get; init; }
 
     public int GeneralScore { get; set; }
@@ -12,7 +11,7 @@ public record ModelEvaluation
     public int SpeedScore { get; set; }
     public int IntelligenceScore { get; set; }
 
-    public long TotalDurationMs { get; set; }
+    public int TotalDurationSeconds { get; set; }
     public long TotalTokensUsed { get; set; }
 
     public List<string> PositiveNotes { get; set; } = [];
