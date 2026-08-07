@@ -88,5 +88,10 @@ Design outcome recording format once evaluator has execution data.
   - [x] Build verified, pushed to branch
   - [x] Replied to all 27 review comments
   - [x] Requested re-review from alex-piccione
+  - [x] Remove TestCaseVersion from ModelEvaluation
+  - [x] Change duration from ms to seconds
+  - [x] Add Spectre.Console for menu UI
+  - [x] Implement API call flow with buggy code retrieval
+  - [x] Build verified, pushed to branch
 
 **PR:** #8 open (awaiting re-review)
