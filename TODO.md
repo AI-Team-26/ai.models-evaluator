@@ -2,25 +2,6 @@
 
 <!-- Add tasks here when starting work on them -->
 
-- [x] **[feat/02_evaluator_scaffolding]** Scaffold Evaluator project
-  - [x] Update TODO.md: Move task from Backlog to In Progress
-  - [x] Create src/Evaluator/Evaluator.csproj (.NET 10 console app)
-  - [x] Implement ModelEvaluation domain record
-  - [x] Implement LlamaServerManager stub with 4 methods (StartServer, StopServer, ServerInfo, CallApi)
-  - [x] Implement Evaluator skeleton with TODO markers
-  - [x] Add configuration loading: read ~/LlmEvaluator/Configuration.json, create if missing
-  - [x] Define Evaluation Process in README
-  - [x] Verify build succeeds
-  - [x] Commit changes and open PR
-  - [x] Address review feedback (PR #8)
-    - [x] Menu-driven UI (See Results / Run Evaluation / Change Settings)
-    - [x] Track total execution time and total tokens used in ModelEvaluation
-    - [x] Implement evaluation flow with TODO markers for each step
-    - [x] Add ServerUrl to LlamaServerManager
-    - [x] Clean up comments, keep only TODO markers
-    - [x] Config-driven: model lookup from configuration
-    - [x] Build verified, pushed to branch
-
 ---
 
 # Backlog
@@ -83,3 +64,27 @@ Design outcome recording format once evaluator has execution data.
 - [x] Verified build succeeds; test suite runs correctly (9 failing = intentional bugs in target code)
 
 **PR:** #7 merged into main
+
+## feat/02_evaluator_scaffolding — Evaluator Console App Foundation
+
+**Goal:** Scaffold the Evaluator C# console app with domain model, server manager stub, configuration loading, and menu-driven UI.
+
+**Steps Completed:**
+- [x] Create src/Evaluator/Evaluator.csproj (.NET 10 console app)
+- [x] Implement ModelEvaluation domain record
+- [x] Implement LlamaServerManager stub with 4 methods (StartServer, StopServer, ServerInfo, CallApi)
+- [x] Implement Evaluator skeleton with TODO markers
+- [x] Add configuration loading: read ~/LlmEvaluator/Configuration.json, create if missing
+- [x] Define Evaluation Process in README
+- [x] Verify build succeeds
+- [x] Commit changes and open PR
+- [x] Address review feedback (PR #8)
+  - [x] Menu-driven UI (See Results / Run Evaluation / Change Settings)
+  - [x] Track total execution time and total tokens used in ModelEvaluation
+  - [x] Implement evaluation flow with TODO markers for each step
+  - [x] Add ServerUrl to LlamaServerManager
+  - [x] Clean up comments, keep only TODO markers
+  - [x] Config-driven: model lookup from configuration
+  - [x] Build verified, pushed to branch
+
+**PR:** #8 open (CHANGES_REQUESTED by alex-piccione)
