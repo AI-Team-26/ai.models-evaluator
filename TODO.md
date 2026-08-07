@@ -1,3 +1,32 @@
+# In Progress
+
+## feat/01_project_reorganization — Reorganize repository structure and setup folder hierarchy
+
+**Goal:** Move existing code to proper locations (`src/TargetCode`, `tests/TargetCodeTests`) and create infrastructure folders.
+
+**Context / Mental Picture:**
+- Current `AI.Evaluator.Console` contains intentional bug examples → becomes `TargetCode`
+- Current tests validate those bugs → become `TargetCodeTests`
+- New `Evaluator` console app will be created separately later
+- Need `config/` for model configs, `results/` for evaluation logs
+
+**Steps:**
+- [x] Create feature branch `feat/01_project_reorganization`
+- [x] Rename `src/AI.Evaluator.Console` → `src/TargetCode`
+- [x] Rename `tests/AI.Evaluator.Tests` → `tests/TargetCodeTests`
+- [x] Update namespace references in moved C# files
+- [x] Create empty `src/Evaluator/` directory structure (placeholder for future implementation)
+- [x] Create `config/` and `results/` directories
+- [x] Update solution file paths (`AI.Evaluator.slnx`)
+- [x] Update `.gitignore` to exclude `results/*.json`, keep existing exclusions
+- [x] Verify build works after reorganization ✓ (build succeeds, tests run with expected failures due to intentional bugs)
+
+---
+
+## Completed
+
+---
+
 # Backlog
 
 ## Core Infrastructure (Evaluator Tool)

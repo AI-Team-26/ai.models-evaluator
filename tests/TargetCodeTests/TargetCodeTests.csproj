@@ -3,6 +3,7 @@
   <PropertyGroup>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+    <RootNamespace>TargetCodeTests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../src/AI.Evaluator.Console/AI.Evaluator.Console.csproj" />
+    <ProjectReference Include="../../src/TargetCode/TargetCode.csproj" />
   </ItemGroup>
 
 </Project>

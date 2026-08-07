@@ -43,3 +43,6 @@ obj/
 # OS
 .DS_Store
 Thumbs.db
+
+# Evaluator Results
+results/*.json
