@@ -2,13 +2,15 @@
 
 <!-- Add tasks here when starting work on them -->
 
-- [x] **[feat/02_evaluator_scaffolding]** Create C# Console App foundation
+- [x] **[feat/02_evaluator_scaffolding]** Scaffold Evaluator project
   - [x] Update TODO.md: Move task from Backlog to In Progress
   - [x] Create src/Evaluator/Evaluator.csproj (.NET 10 console app)
-  - [x] Implement basic Program.cs with entry point skeleton
-  - [x] Set up dependency injection/service layer architecture
-  - [x] Add project reference to TargetCode (for bug examples)
-  - [x] Verify end-to-end build works after scaffolding
+  - [x] Implement ModelEvaluation domain record
+  - [x] Implement LlamaServerManager stub with 4 methods (StartServer, StopServer, ServerInfo, CallApi)
+  - [x] Implement Evaluator skeleton with TODO markers
+  - [x] Add configuration loading: read ~/LlmEvaluator/Configuration.json, create if missing
+  - [x] Define Evaluation Process in README
+  - [x] Verify build succeeds
   - [ ] Commit changes and open PR
 
 ---

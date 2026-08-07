@@ -14,7 +14,10 @@ public static class Program
         
         try
         {
-            await RunEvaluation(args[0]);
+            var serverManager = new LlamaServerManager();
+            var evaluator = new Evaluator(serverManager);
+            
+            await evaluator.EvaluateAsync(args[0]);
             return 0;
         }
         catch (Exception ex)
@@ -24,18 +27,5 @@ public static class Program
             Console.ResetColor();
             return 1;
         }
-    }
-    
-    private static async Task RunEvaluation(string modelId)
-    {
-        var serverManager = new LlamaServerManager();
-        var evaluator = new Evaluator(serverManager);
-        
-        Console.WriteLine($"Evaluating '{modelId}'...");
-        
-        // TODO: Implement evaluation logic using evaluator.Evaluate()
-        await Task.Delay(100);
-        
-        Console.WriteLine("Evaluation complete (placeholder).");
     }
 }
