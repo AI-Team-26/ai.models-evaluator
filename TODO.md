@@ -92,7 +92,11 @@ Design outcome recording format once evaluator has execution data.
   - [x] Change duration from ms to seconds
   - [x] Add Spectre.Console for menu UI
   - [x] Implement API call flow with buggy code retrieval
-  - [x] Reply to remaining 9 unresolved threads
+  - [x] Reply to remaining 10 unresolved threads
+  - [x] Remove CallLlamaApiAsync, GetBuggyCode, HttpClient, LlamaApiResponse, UsageInfo
+  - [x] Remove all non-TODO comments
+  - [x] Make Configuration and ModelSettings record types
+  - [x] Remove TODO comment for step 3 (OpenAI endpoint)
   - [x] Build verified, pushed to branch
 
 **PR:** #8 open (awaiting re-review from alex-piccione)
