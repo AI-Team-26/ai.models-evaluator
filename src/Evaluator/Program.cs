@@ -77,7 +77,6 @@ public static class Program
 
     private static void ChangeSettings()
     {
-        // TODO: Implement settings changes (configuration path, etc.)
         AnsiConsole.WriteLine("Settings editor not yet implemented.");
     }
 }
