@@ -1,4 +1,4 @@
-using AI.Evaluator.Console;
+using TargetCode;
 
 // Demo usage
 Console.WriteLine($"SumRange(1, 5) = {MathUtils.SumRange(1, 5)}");

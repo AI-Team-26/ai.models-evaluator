@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace AI.Evaluator.Console;
+namespace TargetCode;
 
 public static class MathUtils
 {

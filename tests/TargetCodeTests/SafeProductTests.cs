@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using AI.Evaluator.Console;
+using TargetCode;
 
 [TestFixture]
 public sealed class SafeProductTests

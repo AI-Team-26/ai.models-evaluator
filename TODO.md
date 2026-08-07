@@ -1,15 +1,12 @@
+# In Progress
+
+<!-- Add tasks here when starting work on them -->
+
+---
+
 # Backlog
 
 ## Core Infrastructure (Evaluator Tool)
-
-### 1. Project Structure & Setup
-- [ ] Reorganize repository structure:
-  - [ ] Move existing code to `src/TargetCode/`
-  - [ ] Move existing tests to `tests/TargetCodeTests/`
-  - [ ] Create `src/Evaluator/` (C# Console App)
-  - [ ] Create `config/` and `results/` folders
-- [ ] Update `.gitignore` (exclude `results/*.json`, `bin/`, `obj/`)
-- [ ] Update solution file (`AI.Evaluator.slnx`) to include new paths
 
 ### 2. Configuration & Metadata
 - [ ] Create `config/models.json` schema:
@@ -44,3 +41,24 @@
 - [ ] Expand test coverage with edge case scenarios
 - [ ] Consider adding security vulnerability examples
 - [ ] Scale difficulty levels (add Expert tier)
+
+---
+
+# Completed
+
+## feat/01_project_reorganization — Repository Restructuring
+
+**Goal:** Move existing code to proper locations and set up infrastructure folders.
+
+**Steps Completed:**
+- [x] Created feature branch `feat/01_project_reorganization`
+- [x] Renamed `src/AI.Evaluator.Console` → `src/TargetCode`
+- [x] Renamed `tests/AI.Evaluator.Tests` → `tests/TargetCodeTests`
+- [x] Updated namespaces throughout (from `AI.Evaluator.Console` to `TargetCode`)
+- [x] Created placeholder directories: `config/`, `results/`
+- [x] Created empty `src/Evaluator/` folder (actual C# Console App scaffolding deferred to next phase)
+- [x] Updated solution file paths (`AI.Evaluator.slnx`)
+- [x] Updated `.gitignore` to exclude `results/*.json`
+- [x] Verified build succeeds; test suite runs correctly (9 failing = intentional bugs in target code)
+
+**PR:** #7 merged into main
