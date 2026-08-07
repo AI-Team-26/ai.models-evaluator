@@ -86,5 +86,7 @@ Design outcome recording format once evaluator has execution data.
   - [x] Clean up comments, keep only TODO markers
   - [x] Config-driven: model lookup from configuration
   - [x] Build verified, pushed to branch
+  - [x] Replied to all 27 review comments
+  - [x] Requested re-review from alex-piccione
 
-**PR:** #8 open (CHANGES_REQUESTED by alex-piccione)
+**PR:** #8 open (awaiting re-review)
