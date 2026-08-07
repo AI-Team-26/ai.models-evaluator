@@ -11,7 +11,15 @@
   - [x] Add configuration loading: read ~/LlmEvaluator/Configuration.json, create if missing
   - [x] Define Evaluation Process in README
   - [x] Verify build succeeds
-  - [ ] Commit changes and open PR
+  - [x] Commit changes and open PR
+  - [x] Address review feedback (PR #8)
+    - [x] Menu-driven UI (See Results / Run Evaluation / Change Settings)
+    - [x] Track total execution time and total tokens used in ModelEvaluation
+    - [x] Implement evaluation flow with TODO markers for each step
+    - [x] Add ServerUrl to LlamaServerManager
+    - [x] Clean up comments, keep only TODO markers
+    - [x] Config-driven: model lookup from configuration
+    - [x] Build verified, pushed to branch
 
 ---
 
