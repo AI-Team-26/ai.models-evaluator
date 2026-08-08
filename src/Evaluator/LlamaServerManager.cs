@@ -5,11 +5,11 @@ namespace Evaluator;
 
 internal sealed class LlamaServerManager
 {
-    private readonly Configuration _config;
+    private readonly SettingsManager _settingsManager;
 
-    public LlamaServerManager(Configuration config)
+    public LlamaServerManager(SettingsManager settingsManager)
     {
-        _config = config ?? throw new ArgumentNullException(nameof(config));
+        _settingsManager = settingsManager ?? throw new ArgumentNullException(nameof(settingsManager));
     }
 
     public bool IsRunning { get; private set; }
@@ -18,11 +18,11 @@ internal sealed class LlamaServerManager
 
     public void StartServer(string modelId, int port)
     {
-        var modelConfig = _config.Models.FirstOrDefault(m => m.Id == modelId);
+        var modelConfig = _settingsManager.Configuration.Models.FirstOrDefault(m => m.Id == modelId);
         if (modelConfig == null)
             throw new ArgumentException($"Model '{modelId}' not found in configuration.");
 
-        string ggufPath = Path.Combine(_config.ModelsFilePath, modelConfig.GgufFileName);
+        string ggufPath = Path.Combine(_settingsManager.Configuration.ModelsFilePath, modelConfig.GgufFileName);
 
         // TODO: Use 'ggufPath' for llama-server process start
         // TODO: Implement real Process.Start for llama-server

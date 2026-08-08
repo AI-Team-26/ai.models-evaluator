@@ -6,17 +6,9 @@ public static class Program
 {
     public static async Task<int> Main(string[] args)
     {
-        var config = new Configuration
-        {
-            LlamaCppPath = "llama-server",
-            DefaultPort = 8001,
-            ModelsFilePath = "/models",
-            Models = []
-        };
-        var serverManager = new LlamaServerManager(config);
+        var serverManager = new LlamaServerManager(SettingsManager.Instance);
         var evaluator = new Evaluator(serverManager);
 
-        // TODO: Load real config from ~/LlmEvaluator/Configuration.json
         {
             var choice = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
