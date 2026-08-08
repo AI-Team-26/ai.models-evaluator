@@ -13,7 +13,7 @@ internal sealed class Evaluator
 
     public async Task EvaluateAsync(string modelId, CancellationToken ct = default)
     {
-        var settings = SettingsManager.Instance.Settings;
+        var settings = SettingsManager.Instance.GetSettings();
         var modelConfig = settings.Models.FirstOrDefault(m => m.Id == modelId);
 
         if (modelConfig is null)

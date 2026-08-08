@@ -4,7 +4,7 @@ namespace Evaluator;
 
 public sealed record Settings
 {
-    public string LlamaCppPath { get; set; } = "llama-server";
+    public string LlamaCppPath { get; set; } = "";
     public int DefaultPort { get; set; } = 8001;
     public string ModelsFilePath { get; set; } = "/models";
     public List<ModelSettings> Models { get; set; } = [];
@@ -28,18 +28,27 @@ public sealed class SettingsManager
     private readonly object _lock = new();
     private Settings? _settings;
 
-    public Settings Settings => LoadOrCreateAndValidate();
+    public static SettingsManager Instance { get; } = new();
 
     public string SettingsFilePath => Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
         ConfigDir,
         FileName);
 
-    public static SettingsManager Instance { get; } = new();
-
     private SettingsManager() {}
 
-    public void Save()
+    /// <summary>
+    /// Returns validated settings or throws InvalidOperationException if configuration is incomplete.
+    /// </summary>
+    public Settings GetSettings()
+    {
+        lock (_lock)
+        {
+            return LoadOrCreateAndValidate();
+        }
+    }
+
+    public void Save(Settings settings)
     {
         lock (_lock)
         {
@@ -53,7 +62,8 @@ public sealed class SettingsManager
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             };
 
-            File.WriteAllText(SettingsFilePath, JsonSerializer.Serialize(_settings!, options));
+            File.WriteAllText(SettingsFilePath, JsonSerializer.Serialize(settings, options));
+            _settings = settings;
         }
     }
 
@@ -62,32 +72,19 @@ public sealed class SettingsManager
         lock (_lock)
         {
             _settings = null;
-            _ = Settings;
         }
     }
 
     private Settings LoadOrCreateAndValidate()
     {
-        lock (_lock)
-        {
-            return _settings ??= InitializeOrReload();
-        }
-    }
-
-    private Settings InitializeOrReload()
-    {
         var filePath = SettingsFilePath;
 
         if (!File.Exists(filePath))
         {
-            Console.WriteLine("⚠️  No settings found. Creating default configuration...");
             CreateDefaultSettings(out var defaults);
-
-            Save();
-            Console.WriteLine($"✓ Created: {filePath}");
-            Console.WriteLine("  Please configure at least one model before running evaluations.");
-
-            return ValidateOrThrow(defaults);
+            Save(defaults);
+            
+            ValidateOrThrow(defaults);
         }
 
         try
@@ -111,16 +108,18 @@ public sealed class SettingsManager
     {
         if (string.IsNullOrWhiteSpace(settings.LlamaCppPath))
             throw new InvalidOperationException(
-                "llama.cpp server path must be specified in Settings.json");
+                "Configuration Error: llama.cpp server path must be specified in Settings.json\n" +
+                "Please edit the settings file and provide the full path to your llama-server executable.");
 
         foreach (var model in settings.Models)
         {
             if (string.IsNullOrWhiteSpace(model.Id))
-                throw new InvalidOperationException("Each model requires an ID field");
+                throw new InvalidOperationException(
+                    "Configuration Error: Each model requires an ID field");
 
             if (string.IsNullOrWhiteSpace(model.GgufFileName))
                 throw new InvalidOperationException(
-                    $"Model '{model.Id}' missing GGUF filename");
+                    $"'Model '{model.Id}' missing GGUF filename");
         }
 
         return settings;
@@ -133,7 +132,7 @@ public sealed class SettingsManager
 
         result = new Settings
         {
-            LlamaCppPath = "llama-server",
+            LlamaCppPath = "",
             DefaultPort = 8001,
             ModelsFilePath = "/models",
             Models = []
