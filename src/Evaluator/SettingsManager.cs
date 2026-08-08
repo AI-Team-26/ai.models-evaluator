@@ -75,6 +75,34 @@ public sealed class SettingsManager
         }
     }
 
+    /// <summary>
+    /// Loads current settings without validation (for interactive editing).
+    /// Returns null if file doesn’t exist yet.
+    /// </summary>
+    public Settings? LoadCurrent()
+    {
+        lock (_lock)
+        {
+            if (_settings != null) return _settings;
+
+            var filePath = SettingsFilePath;
+            if (!File.Exists(filePath))
+                return null;
+
+            try
+            {
+                var json = File.ReadAllText(filePath);
+                var loaded = JsonSerializer.Deserialize<Settings>(json);
+                _settings = loaded;
+                return loaded;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+    }
+
     private Settings LoadOrCreateAndValidate()
     {
         var filePath = SettingsFilePath;
