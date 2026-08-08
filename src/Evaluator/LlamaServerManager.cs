@@ -18,11 +18,11 @@ internal sealed class LlamaServerManager
 
     public void StartServer(string modelId, int port)
     {
-        var modelConfig = _settingsManager.Configuration.Models.FirstOrDefault(m => m.Id == modelId);
+        var modelConfig = _settingsManager.Settings.Models.FirstOrDefault(m => m.Id == modelId);
         if (modelConfig == null)
             throw new ArgumentException($"Model '{modelId}' not found in configuration.");
 
-        string ggufPath = Path.Combine(_settingsManager.Configuration.ModelsFilePath, modelConfig.GgufFileName);
+        string ggufPath = Path.Combine(_settingsManager.Settings.ModelsFilePath, modelConfig.GgufFileName);
 
         // TODO: Use 'ggufPath' for llama-server process start
         // TODO: Implement real Process.Start for llama-server

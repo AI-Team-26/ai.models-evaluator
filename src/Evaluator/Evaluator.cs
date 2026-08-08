@@ -13,8 +13,8 @@ internal sealed class Evaluator
 
     public async Task EvaluateAsync(string modelId, CancellationToken ct = default)
     {
-        var configuration = SettingsManager.Instance.Configuration;
-        var modelConfig = configuration.Models.FirstOrDefault(m => m.Id == modelId);
+        var settings = SettingsManager.Instance.Settings;
+        var modelConfig = settings.Models.FirstOrDefault(m => m.Id == modelId);
 
         if (modelConfig is null)
         {
@@ -26,12 +26,10 @@ internal sealed class Evaluator
 
         try
         {
-            // TODO: Call API with prompt to ask model for fixing the code
-
             Console.WriteLine($"Model: {modelId}");
-            Console.WriteLine($"Configuration: {SettingsManager.Instance.ConfigurationFilePath}");
-            Console.WriteLine($"llama.cpp path: {configuration.LlamaCppPath}");
-            Console.WriteLine($"Port: {configuration.DefaultPort}");
+            Console.WriteLine($"Settings file: {SettingsManager.Instance.SettingsFilePath}");
+            Console.WriteLine($"llama.cpp path: {settings.LlamaCppPath}");
+            Console.WriteLine($"Port: {settings.DefaultPort}");
         }
         finally
         {
