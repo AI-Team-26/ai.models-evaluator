@@ -6,6 +6,25 @@ public static class Program
 {
     public static async Task<int> Main(string[] args)
     {
+        var hasModels = IsConfigurationComplete();
+
+        if (!hasModels)
+        {
+            AnsiConsole.MarkupLine("\n[yellow]WARNING: No models configured![]");
+            AnsiConsole.MarkupLine("To use the AI Model Evaluator, you need to configure at least one model.");
+            Console.WriteLine("Edit the settings file manually:");
+            Console.WriteLine(SettingsManager.Instance.SettingsFilePath);
+            Console.WriteLine();
+            Console.WriteLine("Press Enter to view configuration instructions...");
+            Console.ReadLine();
+            
+            ChangeSettings();
+            Console.WriteLine();
+            Console.Write("Press any key to continue...");
+            Console.ReadKey(true);
+            return 0;
+        }
+
         var serverManager = new LlamaServerManager(SettingsManager.Instance);
         var evaluator = new Evaluator(serverManager);
 
@@ -75,8 +94,42 @@ public static class Program
         }
     }
 
+    private static bool IsConfigurationComplete()
+    {
+        try
+        {
+            var settings = SettingsManager.Instance.Settings;
+            return settings.Models.Count > 0;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
     private static void ChangeSettings()
     {
-        AnsiConsole.MarkupLine("[dim]Settings editor not yet implemented.[/] ");
+        var filePath = SettingsManager.Instance.SettingsFilePath;
+        
+        AnsiConsole.MarkupLine("\n[dim]=========================================[/");
+        AnsiConsole.MarkupLine("[dim]   Manual Configuration Required[/]");
+        AnsiConsole.MarkupLine("[dim]=========================================[/]");
+        AnsiConsole.MarkupLine("\nPlease edit the following file and add your model configurations:\n");
+        AnsiConsole.MarkupLine($"[cyan]{filePath}[/]");
+        AnsiConsole.MarkupLine("\nExample JSON structure:\n");
+        AnsiConsole.MarkupLine("[[yellow]]{");
+        AnsiConsole.MarkupLine("  \"llamaCppPath\": \"path/to/llama-server\",");
+        AnsiConsole.MarkupLine("  \"defaultPort\": 8001,");
+        AnsiConsole.MarkupLine("  \"modelsFilePath\": \"/models\",");
+        AnsiConsole.MarkupLine("  \"models\": [[");
+        AnsiConsole.MarkupLine("    {");
+        AnsiConsole.MarkupLine("      \"id\": \"model-name\",");
+        AnsiConsole.MarkupLine("      \"ggufFileName\": \"model.gguf\",");
+        AnsiConsole.MarkupLine("      \"contextSize\": 2048,");
+        AnsiConsole.MarkupLine("      \"gpuLayers\": 99");
+        AnsiConsole.MarkupLine("    }");
+        AnsiConsole.MarkupLine("  ]");
+        AnsiConsole.MarkupLine("}");
+        AnsiConsole.MarkupLine("\n[dim]After editing, restart the application.[/]\n");
     }
 }
