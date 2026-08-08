@@ -1,2 +1,13 @@
 
-test 1
+
+Agent failed to fox the PR comment.
+
+public List<string> PositiveNotes { get; set; } = [];
+
+I commented "simple text"
+
+It replied it is a simpe text.
+
+I specify that I want a single stirng, not a collection.
+
+It still thought it was right.
