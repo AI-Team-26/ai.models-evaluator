@@ -1,6 +1,26 @@
 # In Progress
 
+## feat/10_interactive_setup — Interactive Settings Editor 🚧 IN PROGRESS
+Replace manual JSON editing with a built-in Spectre-based menu system.
+- [ ] Design `EditSettingsMenu` UI flow (list fields → edit → validate → save)
+- [ ] Implement field editors: Llama.cpp path, context size, GPU layers, batch size, CPU MoE, Jinja flag
+- [ ] Add automatic validation per field (non-empty paths, positive integers, boolean toggles)
+- [ ] Auto-launch menu at app startup when `Settings.json` missing or invalid
+- [ ] Allow re-accessing editor via "Edit Settings" menu option (for adding models later)
+- [ ] Update README: "First-Time Setup" section with walkthrough screenshot/description
+
+Context / Mental Picture:
+- Use existing Spectre framework (already used elsewhere) for clean CLI menus
+- Keep `SettingsManager` as source-of-truth; just wrap its load/save in interactive UX
+- Reuse same validation rules as `GetSettings()` (throw descriptive exceptions)
+- Preserve backward compatibility — JSON remains editable by power users
+
+Notes:
+- Command syntax: none (invoked internally)
+- API reference: `Spectre.Menu`, `Spectre.InputPrompt`
+
 ---
+
 
 # Backlog
 
