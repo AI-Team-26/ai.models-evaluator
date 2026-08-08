@@ -58,17 +58,13 @@ The evaluator follows a defined process to benchmark AI models:
 
 ## Current Status
 
-### ✅ Phase 1 Complete: Repository Reorganization
-The repository has been reorganized according to the planned structure:
-- [`src/TargetCode/`](./src/TargetCode/) contains sample buggy implementations (`MathUtils.cs`) with known defects.
-- [`tests/TargetCodeTests/`](./tests/TargetCodeTests/) validates those bugs exist (currently 9 failing tests).
-- Infrastructure folders created: [`config/`](./config/), [`results/`](./results/).
-- [`src/Evaluator/`](./src/Evaluator/) placeholder ready for implementation.
+### ✅ Completed
+| Branch | Description |
+|--------|-------------|
+| [`feat/01_project_reorganization`](https://github.com/AI-Team-26/ai.models-evaluator/pull/7) | Move existing code to proper locations and set up infrastructure folders. |
+| [`feat/02_evaluator_scaffolding`](https://github.com/AI-Team-26/ai.models-evaluator/pull/8) | Scaffold Evaluator console app foundation. |
 
-### 🔜 Next Steps
-Phase 2 will implement configuration management and model metadata tracking.
-- `config/` — JSON configurations for model parameters (common vs. specific) and paths.
-- `results/` — Logs of all evaluation runs.
+
 
 ## Tech Stack
 - **C# / .NET** for the Evaluator and Target Code.
