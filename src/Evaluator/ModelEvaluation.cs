@@ -15,8 +15,8 @@ public record ModelEvaluation
     public int TotalDurationSeconds { get; set; }
     public long TotalTokensUsed { get; set; }
 
-    public List<string> PositiveNotes { get; set; } = [];
-    public List<string> NegativeNotes { get; set; } = [];
+    public string PositiveNotes { get; set; } = "";
+    public string NegativeNotes { get; set; } = "";
 
     public Dictionary<string, bool> TestResultsByTestCaseName { get; set; } = [];
 }
