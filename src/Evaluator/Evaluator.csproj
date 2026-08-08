@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Evaluator</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../TargetCode/TargetCode.csproj" />
+    <PackageReference Include="Spectre.Console" />
+  </ItemGroup>
+
+</Project>

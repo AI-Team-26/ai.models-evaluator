@@ -8,14 +8,6 @@
 
 ## Phase 2: Build Evaluator Orchestration Tool
 
-### Step A: Project Scaffolding (`feat/02_evaluator_scaffolding`)
-Create the foundation C# Console App structure.
-- [ ] Create `src/Evaluator/Evaluator.csproj` (.NET 10 console app)
-- [ ] Implement basic `Program.cs` with entry point skeleton
-- [ ] Set up dependency injection / service layer architecture
-- [ ] Add project reference to `TargetCode` (for bug examples)
-- [ ] Verify end-to-end build works after scaffolding
-
 ### Step B: Server Process Management (`feat/03_server_management`)
 Build llama.cpp process control logic before defining config schema.
 - [ ] Implement start/stop `llama-server` programmatically via `ProcessStartInfo`
@@ -26,6 +18,14 @@ Build llama.cpp process control logic before defining config schema.
 
 ### Step C: Configuration System Design (`feat/04_config_schema`)
 Define final schema based on discovered needs from Steps A+B.
+
+### Step E: Static Settings Manager (`feat/06_settings_manager`)
+Singleton manager for reading/writing `Settings.json`. Every other class accesses settings through it.
+- [ ] Create static `SettingsManager` class
+- [ ] Load `Settings.json` on startup / access
+- [ ] Save method writes back to disk
+- [ ] Always keeps latest settings in memory
+- [ ] Replace all direct file reads across project
 - [ ] Create `config/models.json` with real parameter names from server management code
   - [ ] Server executable path + common params
   - [ ] Per-model specs: id, gguf file, context size, speculation settings, batch sizes, gpu_layers, cpu_moe, jinja flag
@@ -57,18 +57,11 @@ Design outcome recording format once evaluator has execution data.
 # Completed
 
 ## feat/01_project_reorganization — Repository Restructuring
+Moved source/tests to `TargetCode/TargetCodeTests`; added `config/`, `results/`, updated sln/gitignore.
 
-**Goal:** Move existing code to proper locations and set up infrastructure folders.
+**Next:** Phase 2 — start building the Evaluator tool itself.
 
-**Steps Completed:**
-- [x] Created feature branch `feat/01_project_reorganization`
-- [x] Renamed `src/AI.Evaluator.Console` → `src/TargetCode`
-- [x] Renamed `tests/AI.Evaluator.Tests` → `tests/TargetCodeTests`
-- [x] Updated namespaces throughout (from `AI.Evaluator.Console` to `TargetCode`)
-- [x] Created placeholder directories: `config/`, `results/`
-- [x] Created empty `src/Evaluator/` folder (actual C# Console App scaffolding deferred to next phase)
-- [x] Updated solution file paths (`AI.Evaluator.slnx`)
-- [x] Updated `.gitignore` to exclude `results/*.json`
-- [x] Verified build succeeds; test suite runs correctly (9 failing = intentional bugs in target code)
+## feat/02_evaluator_scaffolding — Evaluator Console App Foundation
+Scaffolded Evaluator project: `ModelEvaluation`, `LlamaServerManager` stubs, `Configuration` + `ModelSettings` records, config loading from JSON. Still awaiting alex-piccione re-review on PR #8.
 
-**PR:** #7 merged into main
+**Remaining:** implement real `StartServer()`/`StopServer()` process control; finalize config schema; add results logging.

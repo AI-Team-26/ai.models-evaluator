@@ -25,27 +25,46 @@ The goal is to evaluate AI models by tasking them with fixing known bugs in sour
 2. **Code Quality**: How clean/efficient is the provided solution?
 3. **Time Required**: The latency/time taken for the model to generate the fix.
 
-## Evaluation Workflow
-The system uses a dedicated **Evaluator Tool** to automate the benchmarking process:
-1. **Orchestration**: Starts `llama.server` with model-specific and common parameters.
-2. **Isolation**: Creates a dedicated Git branch for each evaluation run (e.g., `eval/<short-name>-test<v1>-<20240514-1530>`).
-3. **Execution**: Sends buggy code to the model and applies the suggested fixes to the branch.
-4. **Verification**: Runs the test suite (`dotnet test`) to verify the fix.
-5. **Analysis**: Logs the model, parameters, branch, and result (Pass/Fail) for later analysis.
+## Evaluation Process Definition
+
+The evaluator follows a defined process to benchmark AI models:
+
+### 1. Configuration Loading
+- Reads `~/LlmEvaluator/Configuration.json` (user-level settings)
+- If not found, creates a default configuration file at that path
+- Configuration includes: llama.cpp executable path, common server parameters, model specs
+
+### 2. Branch Creation
+- Creates a dedicated Git branch for each evaluation run
+- Branch naming convention: `eval/<model-short-name>-test<version>-<YYYYMMDD-hhmm>`
+- Example: `eval/Qwen3_5-27B_UD_Q4-K-M_Unsloth-testv1-20240514-1530`
+
+### 3. Bug Delivery
+- Sends buggy code from `src/TargetCode/` to the model via the llama-server OpenAI-compatible endpoint
+- The model is asked to create a fix branch and correct the bugs
+
+### 4. Fix Application
+- Applies the model's suggested code changes to the evaluation branch
+- Preserves the original buggy code for comparison
+
+### 5. Verification
+- Runs `dotnet test` on the evaluation branch
+- Compares test results against the oracle test suite in `tests/TargetCodeTests/`
+
+### 6. Result Logging
+- Records evaluation outcome in `results/evaluation_<timestamp>.json`
+- Tracks: model_id, test_case_name, pass/fail, duration_ms, timestamp, git_commit_hash
+- Includes runtime metadata: evaluator_version, llama.cpp_tag, parameters_used
 
 ## Current Status
 
-### ✅ Phase 1 Complete: Repository Reorganization
-The repository has been reorganized according to the planned structure:
-- [`src/TargetCode/`](./src/TargetCode/) contains sample buggy implementations (`MathUtils.cs`) with known defects.
-- [`tests/TargetCodeTests/`](./tests/TargetCodeTests/) validates those bugs exist (currently 9 failing tests).
-- Infrastructure folders created: [`config/`](./config/), [`results/`](./results/).
-- [`src/Evaluator/`](./src/Evaluator/) placeholder ready for implementation.
+### ✅ Completed
+| Branch | Description |
+|--------|-------------|
+| [`feat/01_project_reorganization`](https://github.com/AI-Team-26/ai.models-evaluator/pull/7) | Move existing code to proper locations and set up infrastructure folders. |
+| [`feat/02_evaluator_scaffolding`](https://github.com/AI-Team-26/ai.models-evaluator/pull/8) | Scaffold Evaluator console app foundation. |
 
-### 🔜 Next Steps
-Phase 2 will implement configuration management and model metadata tracking.
-- `config/` — JSON configurations for model parameters (common vs. specific) and paths.
-- `results/` — Logs of all evaluation runs.
+
 
 ## Tech Stack
 - **C# / .NET** for the Evaluator and Target Code.

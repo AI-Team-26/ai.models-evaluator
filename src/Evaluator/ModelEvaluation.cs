@@ -1,0 +1,22 @@
+namespace Evaluator;
+
+public record ModelEvaluation
+{
+    public string EvaluatorVersion { get; init; } = "";
+    public string ModelId { get; init; } = "";
+    public string LlamaCppVersion { get; init; } = "";
+    public DateTime Timestamp { get; init; }
+
+    public int GeneralScore { get; set; }
+    public int QualityScore { get; set; }
+    public int SpeedScore { get; set; }
+    public int IntelligenceScore { get; set; }
+
+    public int TotalDurationSeconds { get; set; }
+    public long TotalTokensUsed { get; set; }
+
+    public string PositiveNotes { get; set; } = "";
+    public string NegativeNotes { get; set; } = "";
+
+    public Dictionary<string, bool> TestResultsByTestCaseName { get; set; } = [];
+}
