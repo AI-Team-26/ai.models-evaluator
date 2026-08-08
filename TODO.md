@@ -49,54 +49,11 @@ Design outcome recording format once evaluator has execution data.
 # Completed
 
 ## feat/01_project_reorganization — Repository Restructuring
+Moved source/tests to `TargetCode/TargetCodeTests`; added `config/`, `results/`, updated sln/gitignore.
 
-**Goal:** Move existing code to proper locations and set up infrastructure folders.
-
-**Steps Completed:**
-- [x] Created feature branch `feat/01_project_reorganization`
-- [x] Renamed `src/AI.Evaluator.Console` → `src/TargetCode`
-- [x] Renamed `tests/AI.Evaluator.Tests` → `tests/TargetCodeTests`
-- [x] Updated namespaces throughout (from `AI.Evaluator.Console` to `TargetCode`)
-- [x] Created placeholder directories: `config/`, `results/`
-- [x] Created empty `src/Evaluator/` folder (actual C# Console App scaffolding deferred to next phase)
-- [x] Updated solution file paths (`AI.Evaluator.slnx`)
-- [x] Updated `.gitignore` to exclude `results/*.json`
-- [x] Verified build succeeds; test suite runs correctly (9 failing = intentional bugs in target code)
-
-**PR:** #7 merged into main
+**Next:** Phase 2 — start building the Evaluator tool itself.
 
 ## feat/02_evaluator_scaffolding — Evaluator Console App Foundation
+Scaffolded Evaluator project: `ModelEvaluation`, `LlamaServerManager` stubs, `Configuration` + `ModelSettings` records, config loading from JSON. Still awaiting alex-piccione re-review on PR #8.
 
-**Goal:** Scaffold the Evaluator C# console app with domain model, server manager stub, configuration loading, and menu-driven UI.
-
-**Steps Completed:**
-- [x] Create src/Evaluator/Evaluator.csproj (.NET 10 console app)
-- [x] Implement ModelEvaluation domain record
-- [x] Implement LlamaServerManager stub with 4 methods (StartServer, StopServer, ServerInfo, CallApi)
-- [x] Implement Evaluator skeleton with TODO markers
-- [x] Add configuration loading: read ~/LlmEvaluator/Configuration.json, create if missing
-- [x] Define Evaluation Process in README
-- [x] Verify build succeeds
-- [x] Commit changes and open PR
-- [x] Address review feedback (PR #8)
-  - [x] Menu-driven UI (See Results / Run Evaluation / Change Settings)
-  - [x] Track total execution time and total tokens used in ModelEvaluation
-  - [x] Implement evaluation flow with TODO markers for each step
-  - [x] Add ServerUrl to LlamaServerManager
-  - [x] Clean up comments, keep only TODO markers
-  - [x] Config-driven: model lookup from configuration
-  - [x] Build verified, pushed to branch
-  - [x] Replied to all 27 review comments
-  - [x] Requested re-review from alex-piccione
-  - [x] Remove TestCaseVersion from ModelEvaluation
-  - [x] Change duration from ms to seconds
-  - [x] Add Spectre.Console for menu UI
-  - [x] Implement API call flow with buggy code retrieval
-  - [x] Reply to remaining 10 unresolved threads
-  - [x] Remove CallLlamaApiAsync, GetBuggyCode, HttpClient, LlamaApiResponse, UsageInfo
-  - [x] Remove all non-TODO comments
-  - [x] Make Configuration and ModelSettings record types
-  - [x] Remove TODO comment for step 3 (OpenAI endpoint)
-  - [x] Build verified, pushed to branch
-
-**PR:** #8 open (awaiting re-review from alex-piccione)
+**Remaining:** implement real `StartServer()`/`StopServer()` process control; finalize config schema; add results logging.
