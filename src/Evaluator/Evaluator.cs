@@ -32,13 +32,7 @@ internal sealed class Evaluator
 
         try
         {
-            // TODO: 1. Create git branch with naming convention
-            // TODO: 2. Start llama-server with model configuration
-            // TODO: 4. Apply model's suggested fix
-            // TODO: 5. Run test suite (dotnet test)
-            // TODO: 6. Calculate evaluation
-            // TODO: 7. Save evaluation
-            // TODO: 8. Log results
+            // TODO: Call API with prompt to ask model for fixing the code
 
             Console.WriteLine($"Model: {modelId}");
             Console.WriteLine($"Configuration: {_configurationPath}");

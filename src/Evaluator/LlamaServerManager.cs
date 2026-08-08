@@ -22,11 +22,7 @@ internal sealed class LlamaServerManager : IDisposable
         throw new NotImplementedException();
     }
 
-    public string ServerInfo()
-    {
-        // TODO: Return server status info
-        throw new NotImplementedException();
-    }
+
 
     public string CallApi(string endpoint, string payload)
     {

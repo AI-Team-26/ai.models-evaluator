@@ -38,14 +38,14 @@ public static class Program
         var resultsDir = Path.Combine(AppContext.BaseDirectory, "..", "..", "results");
         if (!Directory.Exists(resultsDir))
         {
-            AnsiConsole.WriteLine("No results directory found.");
+            AnsiConsole.MarkupLine("[red]No results directory found.[/] ");
             return;
         }
 
         var files = Directory.GetFiles(resultsDir, "evaluation_*.json");
         if (files.Length == 0)
         {
-            AnsiConsole.WriteLine("No results found.");
+            AnsiConsole.MarkupLine("[yellow]No results found.[/] ");
             return;
         }
 
@@ -77,6 +77,6 @@ public static class Program
 
     private static void ChangeSettings()
     {
-        AnsiConsole.WriteLine("Settings editor not yet implemented.");
+        AnsiConsole.MarkupLine("[dim]Settings editor not yet implemented.[/] ");
     }
 }
