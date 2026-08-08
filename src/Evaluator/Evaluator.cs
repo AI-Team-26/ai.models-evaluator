@@ -44,6 +44,7 @@ internal sealed class Evaluator
             stopwatch.Stop();
             var result = new ModelEvaluation
             {
+                EvaluatorVersion = typeof(Evaluator).Assembly.GetName()?.Version?.ToString() ?? "unknown",
                 ModelId = modelId,
                 Timestamp = DateTime.UtcNow,
                 TotalDurationSeconds = (int)stopwatch.Elapsed.TotalSeconds,
@@ -78,7 +79,8 @@ internal sealed class Evaluator
     private static Configuration CreateDefaultConfiguration() => new()
     {
         LlamaCppPath = "llama-server",
-        DefaultPort = 8080,
+        DefaultPort = 8001,
+        ModelsFilePath = "/models",
         Models = []
     };
 }
@@ -86,16 +88,17 @@ internal sealed class Evaluator
 internal sealed record Configuration
 {
     public string LlamaCppPath { get; set; } = "llama-server";
-    public int DefaultPort { get; set; } = 8080;
+    public int DefaultPort { get; set; } = 8001;
+    public string ModelsFilePath { get; set; } = "/models";
     public List<ModelSettings> Models { get; set; } = [];
 }
 
 internal sealed record ModelSettings
 {
     public string Id { get; set; } = "";
-    public string GgufFilePath { get; set; } = "";
+    public string GgufFileName { get; set; } = "";
     public int ContextSize { get; set; } = 2048;
     public int GpuLayers { get; set; } = 1;
-    public bool CpuMoe { get; set; }
+    public int CpuMoE { get; set; }
     public bool Jinja { get; set; }
 }

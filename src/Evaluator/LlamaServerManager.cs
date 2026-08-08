@@ -2,7 +2,7 @@ using System.Diagnostics;
 
 namespace Evaluator;
 
-internal sealed class LlamaServerManager : IDisposable
+internal sealed class LlamaServerManager
 {
     public bool IsRunning { get; private set; }
     public int Port { get; private set; }
@@ -28,11 +28,5 @@ internal sealed class LlamaServerManager : IDisposable
     {
         // TODO: Call llama-server HTTP API
         throw new NotImplementedException();
-    }
-
-    public void Dispose()
-    {
-        if (IsRunning)
-            StopServer();
     }
 }
