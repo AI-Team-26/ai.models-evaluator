@@ -1,6 +1,14 @@
 # In Progress
 
-<!-- Add tasks here when starting work on them -->
+## refactor/07_settings_manager — Centralize Config Management
+Replace scattered Configuration handling with a unified SettingsManager singleton.
+- [ ] Create `SettingsManager` singleton class with thread-safe lazy init
+- [ ] Implement load/save methods for `~/LlmEvaluator/Configuration.json`
+- [ ] Refactor `Program.cs` to use `SettingsManager.Instance.Configuration`
+- [ ] Refactor `LlamaServerManager` to depend on SettingsManager
+- [ ] Refactor `Evaluator` to remove local config loading, use SettingsManager
+- [ ] Update constructors for clean dependency injection pattern
+- [ ] Test end-to-end flow works correctly
 
 ---
 
