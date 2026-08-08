@@ -18,6 +18,14 @@ Build llama.cpp process control logic before defining config schema.
 
 ### Step C: Configuration System Design (`feat/04_config_schema`)
 Define final schema based on discovered needs from Steps A+B.
+
+### Step E: Static Settings Manager (`feat/06_settings_manager`)
+Singleton manager for reading/writing `Settings.json`. Every other class accesses settings through it.
+- [ ] Create static `SettingsManager` class
+- [ ] Load `Settings.json` on startup / access
+- [ ] Save method writes back to disk
+- [ ] Always keeps latest settings in memory
+- [ ] Replace all direct file reads across project
 - [ ] Create `config/models.json` with real parameter names from server management code
   - [ ] Server executable path + common params
   - [ ] Per-model specs: id, gguf file, context size, speculation settings, batch sizes, gpu_layers, cpu_moe, jinja flag
