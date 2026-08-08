@@ -6,17 +6,30 @@ public static class Program
 {
     public static async Task<int> Main(string[] args)
     {
-        var config = new Configuration
+        Settings? settings = null;
+        
+        try
         {
-            LlamaCppPath = "llama-server",
-            DefaultPort = 8001,
-            ModelsFilePath = "/models",
-            Models = []
-        };
-        var serverManager = new LlamaServerManager(config);
+            settings = SettingsManager.Instance.GetSettings();
+        }
+        catch (InvalidOperationException configEx)
+        {
+            Console.WriteLine($"\n[yellow]⚠️  Configuration Incomplete![/]");
+            Console.WriteLine(configEx.Message);
+            Console.WriteLine();
+            
+            ChangeSettings();
+            
+            Console.WriteLine();
+            Console.Write("Press any key to exit...");
+            Console.ReadKey(true);
+            return 1;
+        }
+
+        var serverManager = new LlamaServerManager(SettingsManager.Instance);
         var evaluator = new Evaluator(serverManager);
 
-        // TODO: Load real config from ~/LlmEvaluator/Configuration.json
+        while (true)
         {
             var choice = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
@@ -38,7 +51,6 @@ public static class Program
                     return 0;
             }
         }
-        return 0;
     }
 
     private static async Task ShowResultsAsync()
@@ -85,6 +97,27 @@ public static class Program
 
     private static void ChangeSettings()
     {
-        AnsiConsole.MarkupLine("[dim]Settings editor not yet implemented.[/] ");
+        var filePath = SettingsManager.Instance.SettingsFilePath;
+        
+        AnsiConsole.MarkupLine("\n[dim]=========================================[/]");
+        AnsiConsole.MarkupLine("[dim]   Manual Configuration Required[/]");
+        AnsiConsole.MarkupLine("[dim]=========================================[/]");
+        AnsiConsole.MarkupLine("\nPlease edit the following file and add your model configurations:\n");
+        AnsiConsole.MarkupLine($"[cyan]{filePath}[/]");
+        AnsiConsole.MarkupLine("\nExample JSON structure:\n");
+        AnsiConsole.MarkupLine("{");
+        AnsiConsole.MarkupLine("  [green]\"llamaCppPath\":[/] \"path/to/your/llama-server-executable\",\n");
+        AnsiConsole.MarkupLine("  [green]\"defaultPort\":[/] 8001,\n");
+        AnsiConsole.MarkupLine("  [green]\"modelsFilePath\":[/] \"/models\",\n");
+        AnsiConsole.MarkupLine("  [green]\"models\":[/][\n");
+        AnsiConsole.MarkupLine("    {\n");
+        AnsiConsole.MarkupLine("      [green]\"id\":[/] \"model-name\",\n");
+        AnsiConsole.MarkupLine("      [green]\"ggufFileName\":[/] \"model.gguf\",\n");
+        AnsiConsole.MarkupLine("      [green]\"contextSize\":[/] 2048,\n");
+        AnsiConsole.MarkupLine("      [green]\"gpuLayers\":[/] 99\n");
+        AnsiConsole.MarkupLine("    }\n");
+        AnsiConsole.MarkupLine("  ]\n");
+        AnsiConsole.MarkupLine("}\n");
+        AnsiConsole.MarkupLine("[dim]After editing, restart the application.[/]\n");
     }
 }

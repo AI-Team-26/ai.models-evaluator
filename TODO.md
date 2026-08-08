@@ -1,15 +1,5 @@
 # In Progress
 
-## refactor/07_settings_manager — Centralize Config Management
-Replace scattered Configuration handling with a unified SettingsManager singleton.
-- [ ] Create `SettingsManager` singleton class with thread-safe lazy init
-- [ ] Implement load/save methods for `~/LlmEvaluator/Configuration.json`
-- [ ] Refactor `Program.cs` to use `SettingsManager.Instance.Configuration`
-- [ ] Refactor `LlamaServerManager` to depend on SettingsManager
-- [ ] Refactor `Evaluator` to remove local config loading, use SettingsManager
-- [ ] Update constructors for clean dependency injection pattern
-- [ ] Test end-to-end flow works correctly
-
 ---
 
 # Backlog
@@ -63,6 +53,9 @@ Design outcome recording format once evaluator has execution data.
 ---
 
 # Completed
+
+## refactor/07_settings_manager — Centralized Configuration Management
+Created SettingsManager singleton; eliminated config duplication across classes.
 
 ## feat/01_project_reorganization — Repository Restructuring
 Moved source/tests to `TargetCode/TargetCodeTests`; added `config/`, `results/`, updated sln/gitignore.
