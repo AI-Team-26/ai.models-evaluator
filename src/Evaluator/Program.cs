@@ -12,7 +12,7 @@ public static class Program
         {
             settings = SettingsManager.Instance.GetSettings();
         }
-        catch (InvalidOperationException configEx)
+        catch (Exception configEx)
         {
             Console.WriteLine($"\n[yellow]⚠️  Configuration Incomplete![/]");
             Console.WriteLine(configEx.Message);
