@@ -31,6 +31,12 @@ public sealed class SettingsView() : View("Settings")
         public const string Exit           = "Exit";
     }
 
+    private static string GetInput(string label)
+    {
+        AnsiConsole.Write($"[darkgray]{label}: [/]");
+        return Console.ReadLine() ?? "";
+    }
+
     private void ShowMenu()
     {
         bool firstLoad = true;
@@ -108,8 +114,7 @@ public sealed class SettingsView() : View("Settings")
                 SettingsManager.GetSettings() with { } : // create a copy
                 new ApplicationSettings(); // new empty
 
-        AnsiConsole.MarkupLine($"\nEnter the llama.cpp folder (leave empty to keep current \"{newSettings.LlamaCppPath}\"):");
-        var newPath = Console.ReadLine();
+        var newPath = GetInput($"llama.cpp folder (current: \"{newSettings.LlamaCppPath}\")");;
 
         if (!string.IsNullOrEmpty(newPath))
         {
@@ -119,8 +124,7 @@ public sealed class SettingsView() : View("Settings")
                 AnsiConsole.MarkupLine("[red]✗ Path does not exist. Keeping current value.[/]\n");
         }
 
-        AnsiConsole.MarkupLine($"Enter the server port (leave empty to keep current \"{newSettings.ServerPort}\"):");
-        var portStr = Console.ReadLine();
+        var portStr = GetInput($"server port (current: {newSettings.ServerPort})");
 
         if (!string.IsNullOrWhiteSpace(portStr))
         {
@@ -138,8 +142,7 @@ public sealed class SettingsView() : View("Settings")
             }
         }
 
-        AnsiConsole.MarkupLine($"Enter the models folder path (leave empty to keep current \"{newSettings.ModelsFolderPath}\"):");
-        var modelFolderInput = Console.ReadLine();
+        var modelFolderInput = GetInput($"models folder path (current: \"{newSettings.ModelsFolderPath}\")");
 
         if (!string.IsNullOrEmpty(modelFolderInput))
         {
@@ -169,31 +172,25 @@ public sealed class SettingsView() : View("Settings")
     {
         AnsiConsole.MarkupLine("\n[dim]Adding new model configuration...[/]\n");
 
-        AnsiConsole.MarkupLine("GGUF file (required):");
-        var gguf = Console.ReadLine();
+        var gguf = GetInput("gguf file (required)");
         if (string.IsNullOrEmpty(gguf)) { AnsiConsole.MarkupLine("[red]Cancelled.[/]"); return; }
 
-        AnsiConsole.MarkupLine("Model ID (required, leave empty to use GGUF file):");
-        var id = Console.ReadLine();
+        var id = GetInput("model id (leave empty to use gguf name)");
         if (string.IsNullOrEmpty(id)) {
             id = Path.GetFileNameWithoutExtension(gguf);
             AnsiConsole.MarkupLine($"[dim]Using GGUF name as ID:[/] {id}\n");
         }
 
-        AnsiConsole.MarkupLine("Context size in Kilobyte (default: 64, empty for default):");
-        var ctxSizeStr = Console.ReadLine();
+        var ctxSizeStr = GetInput("context size in kilobytes (default: 64)");
         var ctxSize = (string.IsNullOrWhiteSpace(ctxSizeStr) ? 64 : int.Parse(ctxSizeStr)) * 1024;
 
-        AnsiConsole.MarkupLine("GPU layers (default: 0, empty for default):");
-        var gpuLayersStr = Console.ReadLine();
+        var gpuLayersStr = GetInput("gpu layers (default: 0)");
         var gpuLayers = string.IsNullOrWhiteSpace(gpuLayersStr) ? 0 : int.Parse(gpuLayersStr);
 
-        AnsiConsole.MarkupLine("CPU MoE threads (empty for 0):");
-        var cpuMoEInput = Console.ReadLine();
+        var cpuMoEInput = GetInput("cpu moe threads (empty for 0)");
         var cpuMoE = string.IsNullOrWhiteSpace(cpuMoEInput) ? 0 : int.Parse(cpuMoEInput);
 
-        AnsiConsole.MarkupLine("Enable Jinja? (y/n, empty=n):");
-        var jinjaInput = Console.ReadLine();
+        var jinjaInput = GetInput("enable jinja? (y/n, empty=n)");
         bool jinja = false;
         if (!string.IsNullOrEmpty(jinjaInput))
         {
