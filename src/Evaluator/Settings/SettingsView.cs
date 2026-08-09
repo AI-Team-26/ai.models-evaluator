@@ -68,8 +68,8 @@ public sealed class SettingsView() : View("Settings")
     {
         ApplicationSettings settings = SettingsManager.GetSettings();
         var llamaPath = string.IsNullOrEmpty(settings.LlamaCppPath) ? "[red](empty)[/]" : settings.LlamaCppPath;
-        AnsiConsole.MarkupLine($"[cyan]LLama.cpp folder:[/] {llamaPath}");
-        AnsiConsole.MarkupLine($"[cyan]Default Port:[/] {settings.ServerPort}");
+        AnsiConsole.MarkupLine($"[cyan]llama.cpp folder:[/] {llamaPath}");
+        AnsiConsole.MarkupLine($"[cyan]Server Port:[/] {settings.ServerPort}");
 
         if (settings.Models.Count > 0)
         {
@@ -95,26 +95,18 @@ public sealed class SettingsView() : View("Settings")
                 SettingsManager.GetSettings() with { } : // create a copy
                 new ApplicationSettings(); // new empty
 
-        AnsiConsole.MarkupLine($"\n[green]Current llama.cpp folder:[/] {newSettings.LlamaCppPath}");
-        AnsiConsole.MarkupLine($"[green]Current default port:[/] {newSettings.ServerPort}");
-
-        AnsiConsole.MarkupLine("\n[bold]Enter new llama.cpp folder (empty to keep current):[/]");
+        AnsiConsole.MarkupLine($"\n[bold]Enter the llama.cpp folder (leave empty to keep current \"{newSettings.LlamaCppPath}\"):[/]");
         var newPath = Console.ReadLine();
 
         if (!string.IsNullOrEmpty(newPath))
         {
             if (File.Exists(newPath))
-            {
                 newSettings.LlamaCppPath = newPath;
-                AnsiConsole.MarkupLine("[green]✓ Server path updated.[/]\n");
-            }
             else
-            {
                 AnsiConsole.MarkupLine("[red]✗ Path does not exist. Keeping current value.[/]\n");
-            }
         }
 
-        AnsiConsole.MarkupLine("[bold]Enter new default port (empty to keep current):[/]");
+        AnsiConsole.MarkupLine($"[bold]Enter the server port (leave empty to keep current \"{newSettings.ServerPort}\"):[/]");
         var portStr = Console.ReadLine();
 
         if (!string.IsNullOrWhiteSpace(portStr))
@@ -123,14 +115,9 @@ public sealed class SettingsView() : View("Settings")
             {
                 var port = int.Parse(portStr);
                 if (port > 0 && port < 65536)
-                {
                     newSettings.ServerPort = port;
-                    AnsiConsole.MarkupLine("[green]✓ Default port updated.[/]\n");
-                }
                 else
-                {
                     AnsiConsole.MarkupLine("[red]✗ Must be number between 1-65535. Keeping current value.[/]\n");
-                }
             }
             catch
             {
