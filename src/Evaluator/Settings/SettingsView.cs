@@ -173,26 +173,50 @@ public sealed class SettingsView() : View("Settings")
             AnsiConsole.MarkupLine($"[dim]Using GGUF name as ID:[/] {id}\n");
         }
 
+        // Parse context size
         var ctxSizeStr = Helper.GetInput("context size in kilobytes (default: 64)");
-        var ctxSize = (string.IsNullOrWhiteSpace(ctxSizeStr) ? 64 : int.Parse(ctxSizeStr)) * 1024;
-
-        var gpuLayersStr = Helper.GetInput("gpu layers (default: 0)");
-        var gpuLayers = string.IsNullOrWhiteSpace(gpuLayersStr) ? 0 : int.Parse(gpuLayersStr);
-
-        var cpuMoEInput = Helper.GetInput("cpu moe threads (empty for 0)");
-        var cpuMoE = string.IsNullOrWhiteSpace(cpuMoEInput) ? 0 : int.Parse(cpuMoEInput);
-
-        var jinjaInput = Helper.GetInput("enable jinja? (y/n, empty=n)");
-        bool jinja = false;
-        if (!string.IsNullOrEmpty(jinjaInput))
+        int ctxSize = 64;
+        if (!string.IsNullOrWhiteSpace(ctxSizeStr) && int.TryParse(ctxSizeStr, out var parsedCtx))
         {
-            jinja = jinjaInput.ToLower().StartsWith('y');
+            ctxSize = parsedCtx;
+        }
+        else if (!string.IsNullOrWhiteSpace(ctxSizeStr))
+        {
+            AnsiConsole.MarkupLine("[red]Invalid number. Using default 64 KB.[/]");
+        }
+        ctxSize *= 1024;
+
+        // Parse GPU layers
+        var gpuLayersStr = Helper.GetInput("gpu layers (default: 0)");
+        int gpuLayers = 0;
+        if (!string.IsNullOrWhiteSpace(gpuLayersStr) && int.TryParse(gpuLayersStr, out var parsedGpu))
+        {
+            gpuLayers = parsedGpu;
+        }
+        else if (!string.IsNullOrWhiteSpace(gpuLayersStr))
+        {
+            AnsiConsole.MarkupLine("[red]Invalid number. Using default 0.[/]");
         }
 
-        var settings = SettingsManager.GetSettings();
+        // Parse CPU MoE threads
+        var cpuMoEInput = Helper.GetInput("cpu moe threads (empty for 0)");
+        int cpuMoE = 0;
+        if (!string.IsNullOrWhiteSpace(cpuMoEInput) && int.TryParse(cpuMoEInput, out var parsedCpuMoE))
+        {
+            cpuMoE = parsedCpuMoE;
+        }
+        else if (!string.IsNullOrWhiteSpace(cpuMoEInput))
+        {
+            AnsiConsole.MarkupLine("[red]Invalid number. Using default 0.[/]");
+        }
 
-        // TODO: see how to update the settings with the new model
-        settings.Models ??= [];
+        // Parse Jinja toggle
+        var jinjaInput = Helper.GetInput("enable jinja? (y/n, empty=n)");
+        bool jinja = !string.IsNullOrEmpty(jinjaInput) && jinjaInput.Trim().ToLowerInvariant().StartsWith('y');
+
+        // Get fresh settings from disk and add the model
+        ApplicationSettings settings = SettingsManager.GetSettings(forceReload: true);
+        settings.Models ??= []; // defensive — should never be null but protects against corrupt state
         settings.Models.Add(new ModelSettings
         {
             Id = id,
@@ -203,7 +227,15 @@ public sealed class SettingsView() : View("Settings")
             Jinja = jinja
         });
 
-        SettingsManager.Save(settings);
+        try
+        {
+            SettingsManager.Save(settings);
+        }
+        catch (Exception exc)
+        {
+            Error("Failed to save model", exc);
+            return;
+        }
 
         Clear();
         ShowCurrentSettings();
