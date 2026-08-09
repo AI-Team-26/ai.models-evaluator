@@ -106,7 +106,7 @@ public sealed class SettingsView() : View("Settings")
                 SettingsManager.GetSettings() with { } : // create a copy
                 new ApplicationSettings(); // new empty
 
-        var newPath = UI.GetInput($"llama.cpp folder (current: \"{newSettings.LlamaCppPath}\")");
+        var newPath = Helper.GetInput($"llama.cpp folder (current: \"{newSettings.LlamaCppPath}\")");
 
         if (!string.IsNullOrEmpty(newPath))
         {
@@ -116,7 +116,7 @@ public sealed class SettingsView() : View("Settings")
                 AnsiConsole.MarkupLine("[red]✗ Path does not exist. Keeping current value.[/]\n");
         }
 
-        var portStr = UI.GetInput($"server port (current: {newSettings.ServerPort})");
+        var portStr = Helper.GetInput($"server port (current: {newSettings.ServerPort})");
 
         if (!string.IsNullOrWhiteSpace(portStr))
         {
@@ -134,7 +134,7 @@ public sealed class SettingsView() : View("Settings")
             }
         }
 
-        var modelFolderInput = UI.GetInput($"models folder path (current: \"{newSettings.ModelsFolderPath}\")");
+        var modelFolderInput = Helper.GetInput($"models folder path (current: \"{newSettings.ModelsFolderPath}\")");
 
         if (!string.IsNullOrEmpty(modelFolderInput))
         {
@@ -162,27 +162,27 @@ public sealed class SettingsView() : View("Settings")
 
     private void AddModel()
     {
-        AnsiConsole.MarkupLine("\n[dim]Adding new model configuration...[/]\n");
+        AnsiConsole.MarkupLine("\nAdd new model[/]\n");
 
-        var gguf = UI.GetInput("gguf file (required)");
+        var gguf = Helper.GetInput("gguf file (required)");
         if (string.IsNullOrEmpty(gguf)) { AnsiConsole.MarkupLine("[red]Cancelled.[/]"); return; }
 
-        var id = UI.GetInput("model id (leave empty to use gguf name)");
+        var id = Helper.GetInput("model id (leave empty to use gguf name)");
         if (string.IsNullOrEmpty(id)) {
             id = Path.GetFileNameWithoutExtension(gguf);
             AnsiConsole.MarkupLine($"[dim]Using GGUF name as ID:[/] {id}\n");
         }
 
-        var ctxSizeStr = UI.GetInput("context size in kilobytes (default: 64)");
+        var ctxSizeStr = Helper.GetInput("context size in kilobytes (default: 64)");
         var ctxSize = (string.IsNullOrWhiteSpace(ctxSizeStr) ? 64 : int.Parse(ctxSizeStr)) * 1024;
 
-        var gpuLayersStr = UI.GetInput("gpu layers (default: 0)");
+        var gpuLayersStr = Helper.GetInput("gpu layers (default: 0)");
         var gpuLayers = string.IsNullOrWhiteSpace(gpuLayersStr) ? 0 : int.Parse(gpuLayersStr);
 
-        var cpuMoEInput = UI.GetInput("cpu moe threads (empty for 0)");
+        var cpuMoEInput = Helper.GetInput("cpu moe threads (empty for 0)");
         var cpuMoE = string.IsNullOrWhiteSpace(cpuMoEInput) ? 0 : int.Parse(cpuMoEInput);
 
-        var jinjaInput = UI.GetInput("enable jinja? (y/n, empty=n)");
+        var jinjaInput = Helper.GetInput("enable jinja? (y/n, empty=n)");
         bool jinja = false;
         if (!string.IsNullOrEmpty(jinjaInput))
         {
@@ -279,24 +279,34 @@ public sealed class SettingsView() : View("Settings")
 
     private void RemoveModel()
     {
-        throw new Exception("not implemented");
-        /*
-        var settings = SettingsManager.Instance.LoadCurrent();
-        if (settings == null || settings.Models.Count == 0)
+        var settings = SettingsManager.GetSettings();
+        if (settings.Models == null || settings.Models.Count == 0)
         {
-            AnsiConsole.MarkupLine("[red]No models to remove.[/]");
+            AnsiConsole.MarkupLine("[red]No models configured.[/]");
             return;
         }
 
-        var ids = settings.Models.Select(m => m.Id).ToList();
+        var ids = settings.Models.Select(m => m.Id).ToArray();
         var selectedId = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
-                .Title("[bold]Select model to remove:[/]")
+                .Title("Select model to remove:")
                 .AddChoices(ids));
 
+        // Confirmation
+        AnsiConsole.MarkupLine($"\n[yellow]Are you sure you want to remove '{selectedId}'? (y/n)[/] ");
+        var confirm = Console.ReadLine()?.Trim().ToLowerInvariant();
+        if (confirm != "y")
+        {
+            AnsiConsole.MarkupLine("[dim]Cancelled.\n");
+            return;
+        }
+
         settings.Models.RemoveAll(m => m.Id == selectedId);
-        SettingsManager.Instance.Save(settings);
-        AnsiConsole.MarkupLine($"[green]✓ Removed model '[cyan]{selectedId}[/]'[/].");
-        */
+        SettingsManager.Save(settings);
+
+        Clear();
+        ShowCurrentSettings();
+
+        Success($"Removed model '{selectedId}'.");
     }
 }
