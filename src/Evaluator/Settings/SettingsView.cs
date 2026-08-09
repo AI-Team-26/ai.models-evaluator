@@ -162,7 +162,7 @@ public sealed class SettingsView() : View("Settings")
 
     private void AddModel()
     {
-        AnsiConsole.MarkupLine("\nAdd new model[/]\n");
+        AnsiConsole.MarkupLine("\n[cyan]Add new model[/]\n");
 
         var gguf = Helper.GetInput("gguf file (required)");
         if (string.IsNullOrEmpty(gguf)) { AnsiConsole.MarkupLine("[red]Cancelled.[/]"); return; }
