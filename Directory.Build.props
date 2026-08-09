@@ -7,5 +7,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <NoWarn>IDE0044</NoWarn>
   </PropertyGroup>
 </Project>
