@@ -15,9 +15,11 @@ public static class Program
 
             while (true)
             {
+                AnsiConsole.Write(new FigletText("LLM Evaluator"));
+                
                 var choice = AnsiConsole.Prompt(
                     new SelectionPrompt<string>()
-                        .Title("[bold]AI Model Evaluator[/]")
+                        .Title("\nSelect an option:")
                         .AddChoices("See Results", "Run Evaluation", "Change Settings", "Exit"));
 
                 switch (choice)
