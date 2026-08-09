@@ -31,12 +31,6 @@ public sealed class SettingsView() : View("Settings")
         public const string Exit           = "Exit";
     }
 
-    private static string GetInput(string label)
-    {
-        AnsiConsole.Write($"[darkgray]{label}: [/]");
-        return Console.ReadLine() ?? "";
-    }
-
     private void ShowMenu()
     {
         bool firstLoad = true;
@@ -114,7 +108,7 @@ public sealed class SettingsView() : View("Settings")
                 SettingsManager.GetSettings() with { } : // create a copy
                 new ApplicationSettings(); // new empty
 
-        var newPath = GetInput($"llama.cpp folder (current: \"{newSettings.LlamaCppPath}\")");;
+        var newPath = UI.GetInput($"llama.cpp folder (current: \"{newSettings.LlamaCppPath}\")");
 
         if (!string.IsNullOrEmpty(newPath))
         {
@@ -124,7 +118,7 @@ public sealed class SettingsView() : View("Settings")
                 AnsiConsole.MarkupLine("[red]✗ Path does not exist. Keeping current value.[/]\n");
         }
 
-        var portStr = GetInput($"server port (current: {newSettings.ServerPort})");
+        var portStr = UI.GetInput($"server port (current: {newSettings.ServerPort})");
 
         if (!string.IsNullOrWhiteSpace(portStr))
         {
@@ -142,7 +136,7 @@ public sealed class SettingsView() : View("Settings")
             }
         }
 
-        var modelFolderInput = GetInput($"models folder path (current: \"{newSettings.ModelsFolderPath}\")");
+        var modelFolderInput = UI.GetInput($"models folder path (current: \"{newSettings.ModelsFolderPath}\")");
 
         if (!string.IsNullOrEmpty(modelFolderInput))
         {
@@ -172,25 +166,25 @@ public sealed class SettingsView() : View("Settings")
     {
         AnsiConsole.MarkupLine("\n[dim]Adding new model configuration...[/]\n");
 
-        var gguf = GetInput("gguf file (required)");
+        var gguf = UI.GetInput("gguf file (required)");
         if (string.IsNullOrEmpty(gguf)) { AnsiConsole.MarkupLine("[red]Cancelled.[/]"); return; }
 
-        var id = GetInput("model id (leave empty to use gguf name)");
+        var id = UI.GetInput("model id (leave empty to use gguf name)");
         if (string.IsNullOrEmpty(id)) {
             id = Path.GetFileNameWithoutExtension(gguf);
             AnsiConsole.MarkupLine($"[dim]Using GGUF name as ID:[/] {id}\n");
         }
 
-        var ctxSizeStr = GetInput("context size in kilobytes (default: 64)");
+        var ctxSizeStr = UI.GetInput("context size in kilobytes (default: 64)");
         var ctxSize = (string.IsNullOrWhiteSpace(ctxSizeStr) ? 64 : int.Parse(ctxSizeStr)) * 1024;
 
-        var gpuLayersStr = GetInput("gpu layers (default: 0)");
+        var gpuLayersStr = UI.GetInput("gpu layers (default: 0)");
         var gpuLayers = string.IsNullOrWhiteSpace(gpuLayersStr) ? 0 : int.Parse(gpuLayersStr);
 
-        var cpuMoEInput = GetInput("cpu moe threads (empty for 0)");
+        var cpuMoEInput = UI.GetInput("cpu moe threads (empty for 0)");
         var cpuMoE = string.IsNullOrWhiteSpace(cpuMoEInput) ? 0 : int.Parse(cpuMoEInput);
 
-        var jinjaInput = GetInput("enable jinja? (y/n, empty=n)");
+        var jinjaInput = UI.GetInput("enable jinja? (y/n, empty=n)");
         bool jinja = false;
         if (!string.IsNullOrEmpty(jinjaInput))
         {
