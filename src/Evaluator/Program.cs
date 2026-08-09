@@ -97,6 +97,6 @@ public static class Program
 
     private static void ChangeSettings()
     {
-        EditSettingsMenu.Run();
+        SettingsView.Run();
     }
 }

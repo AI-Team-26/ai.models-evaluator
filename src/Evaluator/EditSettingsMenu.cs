@@ -2,56 +2,69 @@ using Spectre.Console;
 
 namespace Evaluator;
 
-public sealed class EditSettingsMenu
+public sealed class SettingsView
 {
     public static void Run()
     {
         while (true)
         {
             AnsiConsole.MarkupLine("\n[dim]=========================================[/]");
-            AnsiConsole.MarkupLine("[dim]         Configuration Editor[/]");
+            AnsiConsole.MarkupLine("[dim]         Settings Editor[/]");
             AnsiConsole.MarkupLine("[dim]=========================================[/]");
 
-            AnsiConsole.MarkupLine($"[cyan]LLama Server:[/] {_currentServerStatus()}");
-            AnsiConsole.MarkupLine($"[cyan]Models Loaded:[/] {_countModels()}");
+            ShowCurrentSettings();
 
             var choice = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
-                    .Title("\nSelect action:")
-                    .AddChoices("Edit Server Path", "Edit Default Port", 
-                                "Manage Models", "Save & Exit"));
+                    .Title("\n1. Edit 2. Add model 3. Edit model 4. Remove model 5. Exit")
+                    .AddChoices("Edit", "Add model", "Edit model", "Remove model", "Exit"));
 
             switch (choice)
             {
-                case "Edit Server Path":
-                    EditServerPath();
+                case "Edit":
+                    EditGeneralSettings();
                     break;
-                case "Edit Default Port":
-                    EditDefaultPort();
+                case "Add model":
+                    AddModel();
                     break;
-                case "Manage Models":
-                    ManageModels();
+                case "Edit model":
+                    EditModel();
                     break;
-                case "Save & Exit":
+                case "Remove model":
+                    RemoveModel();
+                    break;
+                case "Exit":
                     SaveAndExit();
                     return;
             }
         }
     }
 
-    private static string _currentServerStatus()
+    private static void ShowCurrentSettings()
     {
         var s = SettingsManager.Instance.LoadCurrent();
-        return string.IsNullOrEmpty(s?.LlamaCppPath) ? "[red]Not configured[/]" : s!.LlamaCppPath;
+        if (s == null) return;
+
+        var serverStatus = string.IsNullOrEmpty(s.LlamaCppPath) ? "[red](empty)[/]" : s.LlamaCppPath;
+        AnsiConsole.MarkupLine($"\n[cyan]LLama Server:[/] {serverStatus}");
+        AnsiConsole.MarkupLine($"[cyan]Default Port:[/] {s.DefaultPort}");
+
+        if (s.Models.Count > 0)
+        {
+            AnsiConsole.MarkupLine("\n[green]Models:[/]");
+            for (int i = 0; i < s.Models.Count; i++)
+            {
+                var m = s.Models[i];
+                AnsiConsole.MarkupLine($"  [cyan]#{i + 1}[/] {m.Id}: {m.GgufFileName}");
+            }
+        }
+        else
+        {
+            AnsiConsole.MarkupLine("\n[red]No models configured.[/]");
+        }
     }
 
-    private static int _countModels()
-    {
-        var s = SettingsManager.Instance.LoadCurrent();
-        return s?.Models.Count ?? 0;
-    }
-
-    public static void EditServerPath()
+    private static void EditGeneralSettings()
     {
         var current = SettingsManager.Instance.LoadCurrent();
         if (current == null)
@@ -60,46 +73,31 @@ public sealed class EditSettingsMenu
             return;
         }
 
-        AnsiConsole.MarkupLine($"\nCurrent server path:\n[cyan]{current.LlamaCppPath}[/]\n");
+        AnsiConsole.MarkupLine($"\n[green]Current server path:[/] {current.LlamaCppPath}");
+        AnsiConsole.MarkupLine($"[green]Current default port:[/] {current.DefaultPort}");
 
-        while (true)
+        AnsiConsole.MarkupLine("\n[bold]Enter new server path (empty to keep current):[/]");
+        var newPath = Console.ReadLine();
+
+        if (!string.IsNullOrEmpty(newPath))
         {
-            AnsiConsole.MarkupLine("Enter full path to llama-server executable:");
-            var newPath = Console.ReadLine();
-
-            if (!string.IsNullOrEmpty(newPath) && File.Exists(newPath))
+            if (File.Exists(newPath))
             {
                 current.LlamaCppPath = newPath;
                 SettingsManager.Instance.Save(current);
                 AnsiConsole.MarkupLine("[green]✓ Server path updated.[/]\n");
-                break;
             }
-            else if (!string.IsNullOrEmpty(newPath))
+            else
             {
-                AnsiConsole.MarkupLine("[red]✗ Path does not exist. Try again.[/]\n");
+                AnsiConsole.MarkupLine("[red]✗ Path does not exist. Keeping current value.[/]\n");
             }
         }
-    }
 
-    public static void EditDefaultPort()
-    {
-        var current = SettingsManager.Instance.LoadCurrent();
-        if (current == null)
+        AnsiConsole.MarkupLine("[bold]Enter new default port (empty to keep current):[/]");
+        var portStr = Console.ReadLine();
+
+        if (!string.IsNullOrWhiteSpace(portStr))
         {
-            AnsiConsole.MarkupLine("[red]Unable to load settings.[/]");
-            return;
-        }
-
-        AnsiConsole.MarkupLine($"\nCurrent default port: [cyan]{current.DefaultPort}[/]\n");
-
-        while (true)
-        {
-            AnsiConsole.MarkupLine("Enter default port (empty keeps unchanged):");
-            var portStr = Console.ReadLine();
-
-            if (string.IsNullOrWhiteSpace(portStr))
-                return;
-
             try
             {
                 var p = int.Parse(portStr);
@@ -108,78 +106,44 @@ public sealed class EditSettingsMenu
                     current.DefaultPort = p;
                     SettingsManager.Instance.Save(current);
                     AnsiConsole.MarkupLine("[green]✓ Default port updated.[/]\n");
-                    return;
                 }
                 else
                 {
-                    AnsiConsole.MarkupLine("[red]✗ Must be number between 1-65535.[/]\n");
+                    AnsiConsole.MarkupLine("[red]✗ Must be number between 1-65535. Keeping current value.[/]\n");
                 }
             }
             catch
             {
-                AnsiConsole.MarkupLine("[red]✗ Invalid number format.[/]\n");
+                AnsiConsole.MarkupLine("[red]✗ Invalid number format. Keeping current value.[/]\n");
             }
         }
     }
 
-    public static void ManageModels()
-    {
-        while (true)
-        {
-            AnsiConsole.MarkupLine($"\n[dim]=========================================[/]");
-            AnsiConsole.MarkupLine("[dim]           Model Management[/]");
-            AnsiConsole.MarkupLine("[dim]=========================================[/]");
-
-            var choices = new List<string> { "Add New Model", "List All Models" };
-            if (_countModels() > 0)
-                choices.Add("Remove Model");
-
-            choices.Add("Back");
-
-            var choice = AnsiConsole.Prompt(new SelectionPrompt<string>().Title("").AddChoices(choices));
-
-            switch (choice)
-            {
-                case "Add New Model":
-                    AddModel();
-                    break;
-                case "List All Models":
-                    ListModels();
-                    break;
-                case "Remove Model":
-                    RemoveModel();
-                    break;
-                case "Back":
-                    return;
-            }
-        }
-    }
-
-    public static void AddModel()
+    private static void AddModel()
     {
         AnsiConsole.MarkupLine("\n[dim]Adding new model configuration...[/]\n");
 
-        AnsiConsole.MarkupLine("Model ID (required):");
+        AnsiConsole.MarkupLine("[bold]Model ID (required):[/]");
         var id = Console.ReadLine();
         if (string.IsNullOrEmpty(id)) { AnsiConsole.MarkupLine("[red]Cancelled.[/]"); return; }
 
-        AnsiConsole.MarkupLine("GGUF filename (required):");
+        AnsiConsole.MarkupLine("[bold]GGUF filename (required):[/]");
         var gguf = Console.ReadLine();
         if (string.IsNullOrEmpty(gguf)) { AnsiConsole.MarkupLine("[red]Cancelled.[/]"); return; }
 
-        AnsiConsole.MarkupLine("Context size (default: 2048, empty for default):");
+        AnsiConsole.MarkupLine("[bold]Context size (default: 2048, empty for default):[/]");
         var ctxSizeStr = Console.ReadLine();
         var ctxSize = string.IsNullOrWhiteSpace(ctxSizeStr) ? 2048 : int.Parse(ctxSizeStr);
 
-        AnsiConsole.MarkupLine("GPU layers (default: 1, empty for default):");
+        AnsiConsole.MarkupLine("[bold]GPU layers (default: 1, empty for default):[/]");
         var gpuLayersStr = Console.ReadLine();
         var gpuLayers = string.IsNullOrWhiteSpace(gpuLayersStr) ? 1 : int.Parse(gpuLayersStr);
 
-        AnsiConsole.MarkupLine("CPU MoE threads (empty for 0):");
+        AnsiConsole.MarkupLine("[bold]CPU MoE threads (empty for 0):[/]");
         var cpuMoEInput = Console.ReadLine();
         var cpuMoE = string.IsNullOrWhiteSpace(cpuMoEInput) ? 0 : int.Parse(cpuMoEInput);
 
-        AnsiConsole.MarkupLine("Enable Jinja? (y/n, empty=n):");
+        AnsiConsole.MarkupLine("[bold]Enable Jinja? (y/n, empty=n):[/]");
         var jinjaInput = Console.ReadLine();
         bool jinja = false;
         if (!string.IsNullOrEmpty(jinjaInput))
@@ -206,23 +170,69 @@ public sealed class EditSettingsMenu
         AnsiConsole.MarkupLine($"[green]✓ Model '{id}' added.[/]");
     }
 
-    public static void ListModels()
+    private static void EditModel()
     {
         var settings = SettingsManager.Instance.LoadCurrent();
         if (settings == null || settings.Models.Count == 0)
         {
-            AnsiConsole.MarkupLine("[yellow]No models configured.[/]");
+            AnsiConsole.MarkupLine("[red]No models to edit.[/]");
             return;
         }
 
-        AnsiConsole.MarkupLine("\n[dim]Configured models:[/]");
-        foreach (var m in settings!.Models)
+        var ids = settings.Models.Select(m => m.Id).ToList();
+        var selectedId = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+                .Title("[bold]Select model to edit:[/]")
+                .AddChoices(ids));
+
+        var model = settings.Models.FirstOrDefault(m => m.Id == selectedId);
+        if (model == null) return;
+
+        AnsiConsole.MarkupLine($"\n[green]Editing model: {model.Id}[/]");
+        AnsiConsole.MarkupLine($"[green]Current GGUF filename:[/] {model.GgufFileName}");
+        AnsiConsole.MarkupLine($"[green]Current context size:[/] {model.ContextSize}");
+        AnsiConsole.MarkupLine($"[green]Current GPU layers:[/] {model.GpuLayers}");
+
+        AnsiConsole.MarkupLine("\n[bold]Enter new GGUF filename (empty to keep current):[/]");
+        var gguf = Console.ReadLine();
+        if (!string.IsNullOrEmpty(gguf))
         {
-            AnsiConsole.MarkupLine($"  [cyan]{m.Id}[/]: {m.GgufFileName}");
+            model.GgufFileName = gguf;
         }
+
+        AnsiConsole.MarkupLine("[bold]Enter new context size (empty to keep current):[/]");
+        var ctxSizeStr = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(ctxSizeStr))
+        {
+            try
+            {
+                model.ContextSize = int.Parse(ctxSizeStr);
+            }
+            catch
+            {
+                AnsiConsole.MarkupLine("[red]Invalid number. Keeping current value.[/]");
+            }
+        }
+
+        AnsiConsole.MarkupLine("[bold]Enter new GPU layers (empty to keep current):[/]");
+        var gpuLayersStr = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(gpuLayersStr))
+        {
+            try
+            {
+                model.GpuLayers = int.Parse(gpuLayersStr);
+            }
+            catch
+            {
+                AnsiConsole.MarkupLine("[red]Invalid number. Keeping current value.[/]");
+            }
+        }
+
+        SettingsManager.Instance.Save(settings);
+        AnsiConsole.MarkupLine("[green]✓ Model updated.[/]");
     }
 
-    public static void RemoveModel()
+    private static void RemoveModel()
     {
         var settings = SettingsManager.Instance.LoadCurrent();
         if (settings == null || settings.Models.Count == 0)
@@ -234,7 +244,7 @@ public sealed class EditSettingsMenu
         var ids = settings.Models.Select(m => m.Id).ToList();
         var selectedId = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
-                .Title("Select model to remove:")
+                .Title("[bold]Select model to remove:[/]")
                 .AddChoices(ids));
 
         settings.Models.RemoveAll(m => m.Id == selectedId);
