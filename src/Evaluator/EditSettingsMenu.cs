@@ -2,16 +2,8 @@ using Spectre.Console;
 
 namespace Evaluator;
 
-/// <summary>
-/// Interactive menu system for editing application settings via CLI prompts.
-/// Replaces manual JSON editing with guided input validation.
-/// </summary>
 public sealed class EditSettingsMenu
 {
-    /// <summary>
-    /// Launches the interactive settings editor.
-    /// Shows main menu with options to edit fields or add models.
-    /// </summary>
     public static void Run()
     {
         while (true)
@@ -20,7 +12,6 @@ public sealed class EditSettingsMenu
             AnsiConsole.MarkupLine("[dim]         Configuration Editor[/]");
             AnsiConsole.MarkupLine("[dim]=========================================[/]");
 
-            // Show current state summary
             AnsiConsole.MarkupLine($"[cyan]LLama Server:[/] {_currentServerStatus()}");
             AnsiConsole.MarkupLine($"[cyan]Models Loaded:[/] {_countModels()}");
 
@@ -33,16 +24,16 @@ public sealed class EditSettingsMenu
             switch (choice)
             {
                 case "Edit Server Path":
-                    _editServerPath();
+                    EditServerPath();
                     break;
                 case "Edit Default Port":
-                    _editDefaultPort();
+                    EditDefaultPort();
                     break;
                 case "Manage Models":
-                    _manageModels();
+                    ManageModels();
                     break;
                 case "Save & Exit":
-                    _saveAndExit();
+                    SaveAndExit();
                     return;
             }
         }
@@ -60,7 +51,7 @@ public sealed class EditSettingsMenu
         return s?.Models.Count ?? 0;
     }
 
-    private static void _editServerPath()
+    public static void EditServerPath()
     {
         var current = SettingsManager.Instance.LoadCurrent();
         if (current == null)
@@ -90,7 +81,7 @@ public sealed class EditSettingsMenu
         }
     }
 
-    private static void _editDefaultPort()
+    public static void EditDefaultPort()
     {
         var current = SettingsManager.Instance.LoadCurrent();
         if (current == null)
@@ -107,7 +98,7 @@ public sealed class EditSettingsMenu
             var portStr = Console.ReadLine();
 
             if (string.IsNullOrWhiteSpace(portStr))
-                return; // keep unchanged
+                return;
 
             try
             {
@@ -131,7 +122,7 @@ public sealed class EditSettingsMenu
         }
     }
 
-    private static void _manageModels()
+    public static void ManageModels()
     {
         while (true)
         {
@@ -150,13 +141,13 @@ public sealed class EditSettingsMenu
             switch (choice)
             {
                 case "Add New Model":
-                    _addModel();
+                    AddModel();
                     break;
                 case "List All Models":
-                    _listModels();
+                    ListModels();
                     break;
                 case "Remove Model":
-                    _removeModel();
+                    RemoveModel();
                     break;
                 case "Back":
                     return;
@@ -164,7 +155,7 @@ public sealed class EditSettingsMenu
         }
     }
 
-    private static void _addModel()
+    public static void AddModel()
     {
         AnsiConsole.MarkupLine("\n[dim]Adding new model configuration...[/]\n");
 
@@ -215,7 +206,7 @@ public sealed class EditSettingsMenu
         AnsiConsole.MarkupLine($"[green]✓ Model '{id}' added.[/]");
     }
 
-    private static void _listModels()
+    public static void ListModels()
     {
         var settings = SettingsManager.Instance.LoadCurrent();
         if (settings == null || settings.Models.Count == 0)
@@ -231,7 +222,7 @@ public sealed class EditSettingsMenu
         }
     }
 
-    private static void _removeModel()
+    public static void RemoveModel()
     {
         var settings = SettingsManager.Instance.LoadCurrent();
         if (settings == null || settings.Models.Count == 0)
@@ -251,9 +242,8 @@ public sealed class EditSettingsMenu
         AnsiConsole.MarkupLine($"[green]✓ Removed model '[cyan]{selectedId}[/]'[/].");
     }
 
-    private static void _saveAndExit()
+    private static void SaveAndExit()
     {
-        // Save is already done on each edit
         AnsiConsole.MarkupLine("\n[yellow]Configuration saved. Restart the app to apply changes.[/]");
     }
 }

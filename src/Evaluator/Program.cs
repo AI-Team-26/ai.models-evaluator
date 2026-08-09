@@ -97,27 +97,6 @@ public static class Program
 
     private static void ChangeSettings()
     {
-        var filePath = SettingsManager.Instance.SettingsFilePath;
-        
-        AnsiConsole.MarkupLine("\n[dim]=========================================[/]");
-        AnsiConsole.MarkupLine("[dim]   Manual Configuration Required[/]");
-        AnsiConsole.MarkupLine("[dim]=========================================[/]");
-        AnsiConsole.MarkupLine("\nPlease edit the following file and add your model configurations:\n");
-        AnsiConsole.MarkupLine($"[cyan]{filePath}[/]");
-        AnsiConsole.MarkupLine("\nExample JSON structure:\n");
-        AnsiConsole.MarkupLine("{");
-        AnsiConsole.MarkupLine("  [green]\"llamaCppPath\":[/] \"path/to/your/llama-server-executable\",\n");
-        AnsiConsole.MarkupLine("  [green]\"defaultPort\":[/] 8001,\n");
-        AnsiConsole.MarkupLine("  [green]\"modelsFilePath\":[/] \"/models\",\n");
-        AnsiConsole.MarkupLine("  [green]\"models\":[/][\n");
-        AnsiConsole.MarkupLine("    {\n");
-        AnsiConsole.MarkupLine("      [green]\"id\":[/] \"model-name\",\n");
-        AnsiConsole.MarkupLine("      [green]\"ggufFileName\":[/] \"model.gguf\",\n");
-        AnsiConsole.MarkupLine("      [green]\"contextSize\":[/] 2048,\n");
-        AnsiConsole.MarkupLine("      [green]\"gpuLayers\":[/] 99\n");
-        AnsiConsole.MarkupLine("    }\n");
-        AnsiConsole.MarkupLine("  ]\n");
-        AnsiConsole.MarkupLine("}\n");
-        AnsiConsole.MarkupLine("[dim]After editing, restart the application.[/]\n");
+        EditSettingsMenu.Run();
     }
 }
