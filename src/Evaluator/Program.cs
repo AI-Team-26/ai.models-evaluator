@@ -1,4 +1,5 @@
 using Evaluator.Settings;
+using Evaluator.UI;
 using Spectre.Console;
 
 namespace Evaluator;
@@ -23,7 +24,7 @@ public static class Program
 
             while (true)
             {
-                UI.UI.Clear();
+                Helper.Clear();
 
                 var choice = AnsiConsole.Prompt(
                     new SelectionPrompt<string>()

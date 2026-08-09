@@ -2,11 +2,11 @@ using Spectre.Console;
 
 namespace Evaluator.UI
 {
-    internal static class UI
+    internal static class Helper
     {
         public static string GetInput(string label)
         {
-            AnsiConsole.MarkupLine($"[darkgray]{label}: [/]");
+            AnsiConsole.MarkupLine($"[gray]{label}: [/]");
             return Console.ReadLine() ?? "";
         }
 

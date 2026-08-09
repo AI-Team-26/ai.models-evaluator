@@ -28,7 +28,7 @@ public sealed class SettingsView() : View("Settings")
         public const string AddModel       = "Add model";
         public const string EditModel      = "Edit model";
         public const string RemoveModel    = "Remove model";
-        public const string Exit           = "Exit";
+        public const string BackToMain     = "Back to main";
     }
 
     private void ShowMenu()
@@ -46,8 +46,7 @@ public sealed class SettingsView() : View("Settings")
 
             var choice = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
-                    //.Title("\nSelect an option:")
-                    .AddChoices(Menu.EditSettings, Menu.AddModel, Menu.EditModel, Menu.RemoveModel, Menu.Exit));
+                    .AddChoices(Menu.EditSettings, Menu.AddModel, Menu.EditModel, Menu.RemoveModel, Menu.BackToMain));
 
             switch (choice)
             {
@@ -63,8 +62,7 @@ public sealed class SettingsView() : View("Settings")
                 case Menu.RemoveModel:
                     RemoveModel();
                     break;
-                case "Exit":
-                    //SaveAndExit();
+                case Menu.BackToMain:
                     return;
             }
         }
