@@ -20,14 +20,10 @@ namespace Evaluator.UI
     {
         public void Clear()
         {
-            //UI.ShowTitle(title);
-            //UI.Clear();
-            //AnsiConsole.Write(new FigletText("LLM Evaluator"));
-            //UI.ShowTitle(title);
             Console.Clear();
             AnsiConsole.Write(new FigletText("LLM Evaluator"));
             AnsiConsole.MarkupLine($"[yellow dim]==============================================================================[/]");
-            AnsiConsole.MarkupLine($"[yellow bold]{title}[/]");
+            AnsiConsole.MarkupLine($"[yellow bold] {title}[/]");
             AnsiConsole.MarkupLine($"[yellow dim]==============================================================================[/]");
         }
 

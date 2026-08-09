@@ -134,7 +134,9 @@ public static class SettingsManager
             var json = File.ReadAllText(filePath);
             settings = JsonSerializer.Deserialize<ApplicationSettings>(json)
                 ?? throw new Exception($"Settings file at {filePath} is empty or corrupt.");
-            return ValidateOrThrow(settings);
+
+            return settings;
+            //return ValidateOrThrow(settings);
         }
         catch (FileNotFoundException)
         {
@@ -147,7 +149,7 @@ public static class SettingsManager
         }
         catch (Exception exc)
         {
-            throw new Exception("Failed to load Settings.", exc);
+            throw new Exception($"Failed to load Settings. {exc.Message}", exc);
         }
     }
 

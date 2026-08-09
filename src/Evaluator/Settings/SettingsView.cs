@@ -11,7 +11,7 @@ public sealed class SettingsView() : View("Settings")
 
         if (SettingsManager.HasSettings)
         {
-            ShowCurrentSettings();
+            //ShowCurrentSettings();
             ShowMenu();
         }
         else
@@ -33,10 +33,16 @@ public sealed class SettingsView() : View("Settings")
 
     private void ShowMenu()
     {
+        bool firstLoad = true;
         while (true)
         {
             Clear();
             AnsiConsole.MarkupLine($"[gray]Settimgs are stored in \"{SettingsManager.SettingsFilePath}\".[/]\n");
+
+            if (firstLoad)
+                ShowCurrentSettings();
+
+            firstLoad = false;
 
             var choice = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
@@ -67,13 +73,16 @@ public sealed class SettingsView() : View("Settings")
     private static void ShowCurrentSettings()
     {
         ApplicationSettings settings = SettingsManager.GetSettings();
+
+        AnsiConsole.MarkupLine("\n[bold cyan]====== Current Settings ======[/]\n");
+
         var llamaPath = string.IsNullOrEmpty(settings.LlamaCppPath) ? "[red](empty)[/]" : settings.LlamaCppPath;
         AnsiConsole.MarkupLine($"[cyan]llama.cpp folder:[/] {llamaPath}");
         AnsiConsole.MarkupLine($"[cyan]Server Port:[/] {settings.ServerPort}");
 
         if (settings.Models.Count > 0)
         {
-            AnsiConsole.MarkupLine("\n[green]Models:[/]");
+            AnsiConsole.MarkupLine("\n[cyan]Models:[/]");
             for (int i = 0; i < settings.Models.Count; i++)
             {
                 var m = settings.Models[i];
@@ -84,11 +93,13 @@ public sealed class SettingsView() : View("Settings")
         {
             AnsiConsole.MarkupLine("\n[red]No models configured.[/]");
         }
+
+        AnsiConsole.MarkupLine("[bold cyan]=============================[/]\n");
     }
 
     private void EditGeneralSettings()
     {
-        ShowCurrentSettings();
+        //ShowCurrentSettings();
 
         ApplicationSettings newSettings = 
             SettingsManager.HasSettings ? 
@@ -128,7 +139,12 @@ public sealed class SettingsView() : View("Settings")
         try
         {
             SettingsManager.Save(newSettings);
+
+            Clear();
+            ShowCurrentSettings();
+
             Success("Settings saved");
+            
         }
         catch (Exception exc)
         {

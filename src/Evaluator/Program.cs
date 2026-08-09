@@ -16,15 +16,15 @@ public static class Program
             var serverManager = new LlamaServerManager();
             var evaluator = new Evaluator(serverManager);
 
-            const string SeeResults    = "See Results";
-            const string RunEval       = "Run Evaluation";
+            const string SeeResults = "See Results";
+            const string RunEval = "Run Evaluation";
             const string ViewSettings_ = "View Settings";
-            const string Exit          = "Exit";
+            const string Exit = "Exit";
 
             while (true)
             {
                 UI.UI.Clear();
-                
+
                 var choice = AnsiConsole.Prompt(
                     new SelectionPrompt<string>()
                         .AddChoices(RunEval, SeeResults, ViewSettings_, Exit));
@@ -34,27 +34,23 @@ public static class Program
                     case RunEval:
                         await RunEvaluationAsync(evaluator);
                         break;
+
                     case SeeResults:
                         await ShowResultsAsync();
                         break;
+
                     case ViewSettings_:
                         ViewSettings();
                         break;
+
                     case Exit:
                         return 0;
                 }
             }
         }
-        catch (Exception configEx)
+        catch (Exception exc)
         {
-            AnsiConsole.MarkupLine("\n[dim]=========================================[/]");
-            AnsiConsole.MarkupLine("[yellow]⚠️  Settings Incomplete![/]");
-            AnsiConsole.MarkupLine("[dim]=========================================[/]");
-            AnsiConsole.MarkupLine($"[red]Error:[/] {configEx.Message}");
-            AnsiConsole.MarkupLine("\nStarting Settings Editor...");
-
-            ViewSettings();
-
+            AnsiConsole.WriteException(exc);
             AnsiConsole.MarkupLine("\n[yellow]Press any key to exit...[/]");
             Console.ReadKey(true);
             return 1;
