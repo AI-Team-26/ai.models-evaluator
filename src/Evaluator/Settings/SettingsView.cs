@@ -1,9 +1,7 @@
-using Evaluator.Settings;
 using Evaluator.UI;
 using Spectre.Console;
-using System.Data;
 
-namespace Evaluator;
+namespace Evaluator.Settings;
 
 public sealed class SettingsView() : View("Settings")
 {
@@ -24,16 +22,13 @@ public sealed class SettingsView() : View("Settings")
     }
 
 
-    enum M
-    {
-        EditSettings,
-        AddModel
-    }
-
     record struct Menu
     {
-        public const string EditSettings = "Edit settings";
-        public const string AddModel = "Add model";
+        public const string EditSettings   = "Edit settings";
+        public const string AddModel       = "Add model";
+        public const string EditModel      = "Edit model";
+        public const string RemoveModel    = "Remove model";
+        public const string Exit           = "Exit";
     }
 
     private void ShowMenu()
@@ -41,12 +36,12 @@ public sealed class SettingsView() : View("Settings")
         while (true)
         {
             Clear();
-            AnsiConsole.MarkupLine($"[gray]Settimgs are stored in \"{SettingsManager.SettingsFilePath}\".[/]");
+            AnsiConsole.MarkupLine($"[gray]Settimgs are stored in \"{SettingsManager.SettingsFilePath}\".[/]\n");
 
             var choice = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
                     //.Title("\nSelect an option:")
-                    .AddChoices(Menu.EditSettings, Menu.AddModel, "Edit model", "Remove model", "Exit"));
+                    .AddChoices(Menu.EditSettings, Menu.AddModel, Menu.EditModel, Menu.RemoveModel, Menu.Exit));
 
             switch (choice)
             {
@@ -56,10 +51,10 @@ public sealed class SettingsView() : View("Settings")
                 case Menu.AddModel:
                     AddModel();
                     break;
-                case "Edit model":
+                case Menu.EditModel:
                     EditModel();
                     break;
-                case "Remove model":
+                case Menu.RemoveModel:
                     RemoveModel();
                     break;
                 case "Exit":
@@ -72,9 +67,9 @@ public sealed class SettingsView() : View("Settings")
     private static void ShowCurrentSettings()
     {
         ApplicationSettings settings = SettingsManager.GetSettings();
-        var serverStatus = string.IsNullOrEmpty(settings.LlamaCppPath) ? "[red](empty)[/]" : settings.LlamaCppPath;
-        AnsiConsole.MarkupLine($"[cyan]LLama Server:[/] {serverStatus}");
-        AnsiConsole.MarkupLine($"[cyan]Default Port:[/] {settings.DefaultPort}");
+        var llamaPath = string.IsNullOrEmpty(settings.LlamaCppPath) ? "[red](empty)[/]" : settings.LlamaCppPath;
+        AnsiConsole.MarkupLine($"[cyan]LLama.cpp folder:[/] {llamaPath}");
+        AnsiConsole.MarkupLine($"[cyan]Default Port:[/] {settings.ServerPort}");
 
         if (settings.Models.Count > 0)
         {
@@ -100,10 +95,10 @@ public sealed class SettingsView() : View("Settings")
                 SettingsManager.GetSettings() with { } : // create a copy
                 new ApplicationSettings(); // new empty
 
-        AnsiConsole.MarkupLine($"\n[green]Current server path:[/] {newSettings.LlamaCppPath}");
-        AnsiConsole.MarkupLine($"[green]Current default port:[/] {newSettings.DefaultPort}");
+        AnsiConsole.MarkupLine($"\n[green]Current llama.cpp folder:[/] {newSettings.LlamaCppPath}");
+        AnsiConsole.MarkupLine($"[green]Current default port:[/] {newSettings.ServerPort}");
 
-        AnsiConsole.MarkupLine("\n[bold]Enter new server path (empty to keep current):[/]");
+        AnsiConsole.MarkupLine("\n[bold]Enter new llama.cpp folder (empty to keep current):[/]");
         var newPath = Console.ReadLine();
 
         if (!string.IsNullOrEmpty(newPath))
@@ -129,7 +124,7 @@ public sealed class SettingsView() : View("Settings")
                 var port = int.Parse(portStr);
                 if (port > 0 && port < 65536)
                 {
-                    newSettings.DefaultPort = port;
+                    newSettings.ServerPort = port;
                     AnsiConsole.MarkupLine("[green]✓ Default port updated.[/]\n");
                 }
                 else

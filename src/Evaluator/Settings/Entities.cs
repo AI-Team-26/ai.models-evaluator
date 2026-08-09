@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Evaluator.Settings
+﻿namespace Evaluator.Settings
 {
 
     public sealed record ApplicationSettings
     {
+        // Folder path of llama.cpp wjhere the llama-server.exe can be found
         public string LlamaCppPath { get; set; } = "";
-        public int DefaultPort { get; set; } = 0;
+        public int ServerPort { get; set; } = 0;
         public string ModelsFilePath { get; set; } = "";
         public List<ModelSettings> Models { get; set; } = [];
     }

@@ -29,8 +29,8 @@ internal sealed class Evaluator
         {
             Console.WriteLine($"Model: {modelId}");
             Console.WriteLine($"Settings file: {SettingsManager.SettingsFilePath}");
-            Console.WriteLine($"llama.cpp path: {settings.LlamaCppPath}");
-            Console.WriteLine($"Port: {settings.DefaultPort}");
+            Console.WriteLine($"llama.cpp folder path: {settings.LlamaCppPath}");
+            Console.WriteLine($"Port: {settings.ServerPort}");
         }
         finally
         {

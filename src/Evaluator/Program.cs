@@ -16,27 +16,31 @@ public static class Program
             var serverManager = new LlamaServerManager();
             var evaluator = new Evaluator(serverManager);
 
+            const string SeeResults    = "See Results";
+            const string RunEval       = "Run Evaluation";
+            const string ViewSettings_ = "View Settings";
+            const string Exit          = "Exit";
+
             while (true)
             {
                 UI.UI.Clear();
                 
                 var choice = AnsiConsole.Prompt(
                     new SelectionPrompt<string>()
-                        .Title("\nSelect an option:")
-                        .AddChoices("See Results", "Run Evaluation", "View Settings", "Exit"));
+                        .AddChoices(RunEval, SeeResults, ViewSettings_, Exit));
 
                 switch (choice)
                 {
-                    case "See Results":
-                        await ShowResultsAsync();
-                        break;
-                    case "Run Evaluation":
+                    case RunEval:
                         await RunEvaluationAsync(evaluator);
                         break;
-                    case "View Settings":
+                    case SeeResults:
+                        await ShowResultsAsync();
+                        break;
+                    case ViewSettings_:
                         ViewSettings();
                         break;
-                    case "Exit":
+                    case Exit:
                         return 0;
                 }
             }
