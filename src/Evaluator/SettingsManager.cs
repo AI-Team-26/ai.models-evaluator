@@ -136,14 +136,14 @@ public sealed class SettingsManager
     {
         if (string.IsNullOrWhiteSpace(settings.LlamaCppPath))
             throw new InvalidOperationException(
-                "Configuration Error: llama.cpp server path must be specified in Settings.json\n" +
+                "Settings Error: llama.cpp server path must be specified in Settings.json\n" +
                 "Please edit the settings file and provide the full path to your llama-server executable.");
 
         foreach (var model in settings.Models)
         {
             if (string.IsNullOrWhiteSpace(model.Id))
                 throw new InvalidOperationException(
-                    "Configuration Error: Each model requires an ID field");
+                    "Settings Error: Each model requires an ID field");
 
             if (string.IsNullOrWhiteSpace(model.GgufFileName))
                 throw new InvalidOperationException(

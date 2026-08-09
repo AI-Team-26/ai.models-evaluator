@@ -254,6 +254,6 @@ public sealed class SettingsView
 
     private static void SaveAndExit()
     {
-        AnsiConsole.MarkupLine("\n[yellow]Configuration saved. Restart the app to apply changes.[/]");
+        AnsiConsole.MarkupLine("\n[yellow]Settings saved. Restart the app to apply changes.[/]");
     }
 }

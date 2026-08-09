@@ -15,7 +15,7 @@ public static class Program
         catch (Exception configEx)
         {
             AnsiConsole.MarkupLine("\n[dim]=========================================[/]");
-            AnsiConsole.MarkupLine("[yellow]⚠️  Configuration Incomplete![/]");
+            AnsiConsole.MarkupLine("[yellow]⚠️  Settings Incomplete![/]");
             AnsiConsole.MarkupLine("[dim]=========================================[/]");
             AnsiConsole.MarkupLine($"[red]Error:[/] {configEx.Message}");
             AnsiConsole.MarkupLine("\nStarting Settings Editor...");
