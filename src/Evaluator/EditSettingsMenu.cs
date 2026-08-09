@@ -6,17 +6,56 @@ public sealed class SettingsView
 {
     public static void Run()
     {
+        Console.Clear();
+
+        var settings = SettingsManager.Instance.LoadCurrent();
+        if (settings == null)
+        {
+            ShowCreateSettings();
+            return;
+        }
+
+        ShowEditorMenu();
+    }
+
+    private static void ShowCreateSettings()
+    {
+        AnsiConsole.MarkupLine("\n[dim]=========================================[/]");
+        AnsiConsole.MarkupLine("[dim]       Settings Editor[/]");
+        AnsiConsole.MarkupLine("[dim]=========================================[/]");
+        AnsiConsole.MarkupLine("\n[yellow]Settings file not found.[/]");
+        AnsiConsole.MarkupLine("We will create it for you.\n");
+
+        var filePath = SettingsManager.Instance.SettingsFilePath;
+        AnsiConsole.MarkupLine($"[green]Settings will be saved to:[/] {filePath}");
+
+        var defaultSettings = new Settings
+        {
+            LlamaCppPath = "",
+            DefaultPort = 8001,
+            ModelsFilePath = "/models",
+            Models = []
+        };
+
+        SettingsManager.Instance.Save(defaultSettings);
+        AnsiConsole.MarkupLine("\n[green]✓ Settings created![/]");
+        AnsiConsole.MarkupLine("\n[yellow]Press any key to exit...");
+        Console.ReadKey(true);
+    }
+
+    private static void ShowEditorMenu()
+    {
         while (true)
         {
             AnsiConsole.MarkupLine("\n[dim]=========================================[/]");
-            AnsiConsole.MarkupLine("[dim]         Settings Editor[/]");
-            AnsiConsole.MarkupLine("[dim]=========================================[/]");
+            AnsiConsole.MarkupLine("[dim]       Settings Editor[/]");
+            AnsiConsole.MarkupLine("[dim]=========================================[/]\n");
 
             ShowCurrentSettings();
 
             var choice = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
-                    .Title("\n1. Edit 2. Add model 3. Edit model 4. Remove model 5. Exit")
+                    .Title("[bold]1. Edit 2. Add model 3. Edit model 4. Remove model 5. Exit[/]")
                     .AddChoices("Edit", "Add model", "Edit model", "Remove model", "Exit"));
 
             switch (choice)
@@ -46,7 +85,7 @@ public sealed class SettingsView
         if (s == null) return;
 
         var serverStatus = string.IsNullOrEmpty(s.LlamaCppPath) ? "[red](empty)[/]" : s.LlamaCppPath;
-        AnsiConsole.MarkupLine($"\n[cyan]LLama Server:[/] {serverStatus}");
+        AnsiConsole.MarkupLine($"[cyan]LLama Server:[/] {serverStatus}");
         AnsiConsole.MarkupLine($"[cyan]Default Port:[/] {s.DefaultPort}");
 
         if (s.Models.Count > 0)

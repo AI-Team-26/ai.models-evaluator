@@ -121,9 +121,13 @@ public sealed class SettingsManager
             var loaded = JsonSerializer.Deserialize<Settings>(json);
 
             if (loaded == null)
-                throw new InvalidDataException("Empty or corrupt settings file detected");
+                throw new InvalidOperationException($"Settings file at {filePath} is empty or corrupt.");
 
             return ValidateOrThrow(loaded);
+        }
+        catch (FileNotFoundException)
+        {
+            throw new InvalidOperationException($"Settings file not found at {filePath}. Starting Settings Editor...");
         }
         catch (JsonException ex)
         {

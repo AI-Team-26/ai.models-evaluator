@@ -6,11 +6,35 @@ public static class Program
 {
     public static async Task<int> Main(string[] args)
     {
-        Settings? settings = null;
-        
         try
         {
-            settings = SettingsManager.Instance.GetSettings();
+            var settings = SettingsManager.Instance.GetSettings();
+
+            var serverManager = new LlamaServerManager(SettingsManager.Instance);
+            var evaluator = new Evaluator(serverManager);
+
+            while (true)
+            {
+                var choice = AnsiConsole.Prompt(
+                    new SelectionPrompt<string>()
+                        .Title("[bold]AI Model Evaluator[/]")
+                        .AddChoices("See Results", "Run Evaluation", "Change Settings", "Exit"));
+
+                switch (choice)
+                {
+                    case "See Results":
+                        await ShowResultsAsync();
+                        break;
+                    case "Run Evaluation":
+                        await RunEvaluationAsync(evaluator);
+                        break;
+                    case "Change Settings":
+                        ChangeSettings();
+                        break;
+                    case "Exit":
+                        return 0;
+                }
+            }
         }
         catch (Exception configEx)
         {
@@ -19,38 +43,12 @@ public static class Program
             AnsiConsole.MarkupLine("[dim]=========================================[/]");
             AnsiConsole.MarkupLine($"[red]Error:[/] {configEx.Message}");
             AnsiConsole.MarkupLine("\nStarting Settings Editor...");
-            
+
             ChangeSettings();
-            
+
             AnsiConsole.MarkupLine("\n[yellow]Press any key to exit...");
             Console.ReadKey(true);
             return 1;
-        }
-
-        var serverManager = new LlamaServerManager(SettingsManager.Instance);
-        var evaluator = new Evaluator(serverManager);
-
-        while (true)
-        {
-            var choice = AnsiConsole.Prompt(
-                new SelectionPrompt<string>()
-                    .Title("[bold]AI Model Evaluator[/]")
-                    .AddChoices("See Results", "Run Evaluation", "Change Settings", "Exit"));
-
-            switch (choice)
-            {
-                case "See Results":
-                    await ShowResultsAsync();
-                    break;
-                case "Run Evaluation":
-                    await RunEvaluationAsync(evaluator);
-                    break;
-                case "Change Settings":
-                    ChangeSettings();
-                    break;
-                case "Exit":
-                    return 0;
-            }
         }
     }
 
