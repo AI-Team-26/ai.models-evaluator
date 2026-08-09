@@ -108,7 +108,7 @@ public sealed class SettingsView() : View("Settings")
                 SettingsManager.GetSettings() with { } : // create a copy
                 new ApplicationSettings(); // new empty
 
-        AnsiConsole.MarkupLine($"\n[bold]Enter the llama.cpp folder (leave empty to keep current \"{newSettings.LlamaCppPath}\"):[/]");
+        AnsiConsole.MarkupLine($"\nEnter the llama.cpp folder (leave empty to keep current \"{newSettings.LlamaCppPath}\"):");
         var newPath = Console.ReadLine();
 
         if (!string.IsNullOrEmpty(newPath))
@@ -119,7 +119,7 @@ public sealed class SettingsView() : View("Settings")
                 AnsiConsole.MarkupLine("[red]✗ Path does not exist. Keeping current value.[/]\n");
         }
 
-        AnsiConsole.MarkupLine($"[bold]Enter the server port (leave empty to keep current \"{newSettings.ServerPort}\"):[/]");
+        AnsiConsole.MarkupLine($"Enter the server port (leave empty to keep current \"{newSettings.ServerPort}\"):");
         var portStr = Console.ReadLine();
 
         if (!string.IsNullOrWhiteSpace(portStr))
@@ -138,7 +138,7 @@ public sealed class SettingsView() : View("Settings")
             }
         }
 
-        AnsiConsole.MarkupLine($"[bold]Enter the models folder path (leave empty to keep current \"{newSettings.ModelsFolderPath}\"):[/]");
+        AnsiConsole.MarkupLine($"Enter the models folder path (leave empty to keep current \"{newSettings.ModelsFolderPath}\"):");
         var modelFolderInput = Console.ReadLine();
 
         if (!string.IsNullOrEmpty(modelFolderInput))
@@ -169,30 +169,30 @@ public sealed class SettingsView() : View("Settings")
     {
         AnsiConsole.MarkupLine("\n[dim]Adding new model configuration...[/]\n");
 
-        AnsiConsole.MarkupLine("[bold]GGUF file (required):[/]");
+        AnsiConsole.MarkupLine("GGUF file (required):");
         var gguf = Console.ReadLine();
         if (string.IsNullOrEmpty(gguf)) { AnsiConsole.MarkupLine("[red]Cancelled.[/]"); return; }
 
-        AnsiConsole.MarkupLine("[bold]Model ID (required, leave empty to use GGUF file):[/]");
+        AnsiConsole.MarkupLine("Model ID (required, leave empty to use GGUF file):");
         var id = Console.ReadLine();
         if (string.IsNullOrEmpty(id)) {
             id = Path.GetFileNameWithoutExtension(gguf);
             AnsiConsole.MarkupLine($"[dim]Using GGUF name as ID:[/] {id}\n");
         }
 
-        AnsiConsole.MarkupLine("[bold]Context size in Kilobyte (default: 64, empty for default):[/]");
+        AnsiConsole.MarkupLine("Context size in Kilobyte (default: 64, empty for default):");
         var ctxSizeStr = Console.ReadLine();
         var ctxSize = (string.IsNullOrWhiteSpace(ctxSizeStr) ? 64 : int.Parse(ctxSizeStr)) * 1024;
 
-        AnsiConsole.MarkupLine("[bold]GPU layers (default: 0, empty for default):[/]");
+        AnsiConsole.MarkupLine("GPU layers (default: 0, empty for default):");
         var gpuLayersStr = Console.ReadLine();
         var gpuLayers = string.IsNullOrWhiteSpace(gpuLayersStr) ? 0 : int.Parse(gpuLayersStr);
 
-        AnsiConsole.MarkupLine("[bold]CPU MoE threads (empty for 0):[/]");
+        AnsiConsole.MarkupLine("CPU MoE threads (empty for 0):");
         var cpuMoEInput = Console.ReadLine();
         var cpuMoE = string.IsNullOrWhiteSpace(cpuMoEInput) ? 0 : int.Parse(cpuMoEInput);
 
-        AnsiConsole.MarkupLine("[bold]Enable Jinja? (y/n, empty=n):[/]");
+        AnsiConsole.MarkupLine("Enable Jinja? (y/n, empty=n):");
         var jinjaInput = Console.ReadLine();
         bool jinja = false;
         if (!string.IsNullOrEmpty(jinjaInput))
@@ -202,7 +202,7 @@ public sealed class SettingsView() : View("Settings")
 
         var settings = SettingsManager.GetSettings();
 
-        // TODO: see how to update the settings wiuth the new model
+        // TODO: see how to update the settings with the new model
         settings.Models ??= [];
         settings.Models.Add(new ModelSettings
         {
@@ -215,6 +215,10 @@ public sealed class SettingsView() : View("Settings")
         });
 
         SettingsManager.Save(settings);
+
+        Clear();
+        ShowCurrentSettings();
+
         Success($"Model '{id}' added.");
     }
 
