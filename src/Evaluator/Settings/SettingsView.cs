@@ -1,69 +1,59 @@
+using Evaluator.Settings;
+using Evaluator.UI;
 using Spectre.Console;
+using System.Data;
 
 namespace Evaluator;
 
-public sealed class SettingsView
+public sealed class SettingsView() : View("Settings")
 {
-    public static void Run()
+    public void Run()
     {
-        Console.Clear();
+        Clear();
 
-        var settings = SettingsManager.Instance.LoadCurrent();
-        if (settings == null)
+        if (SettingsManager.HasSettings)
         {
-            ShowCreateSettings();
-            return;
+            ShowCurrentSettings();
+            ShowMenu();
         }
-
-        ShowEditorMenu();
-    }
-
-    private static void ShowCreateSettings()
-    {
-        AnsiConsole.MarkupLine("\n[dim]=========================================[/]");
-        AnsiConsole.MarkupLine("[dim]       Settings Editor[/]");
-        AnsiConsole.MarkupLine("[dim]=========================================[/]");
-        AnsiConsole.MarkupLine("\n[yellow]Settings file not found.[/]");
-        AnsiConsole.MarkupLine("We will create it for you.\n");
-
-        var filePath = SettingsManager.Instance.SettingsFilePath;
-        AnsiConsole.MarkupLine($"[green]Settings will be saved to:[/] {filePath}");
-
-        var defaultSettings = new Settings
+        else
         {
-            LlamaCppPath = "",
-            DefaultPort = 8001,
-            ModelsFilePath = "/models",
-            Models = []
-        };
-
-        SettingsManager.Instance.Save(defaultSettings);
-        AnsiConsole.MarkupLine("\n[green]✓ Settings created![/]");
-        AnsiConsole.MarkupLine("\n[yellow]Press any key to exit...");
-        Console.ReadKey(true);
+            AnsiConsole.MarkupLine("Settings are not set. Set it now.");
+            EditGeneralSettings();
+        }
     }
 
-    private static void ShowEditorMenu()
+
+    enum M
+    {
+        EditSettings,
+        AddModel
+    }
+
+    record struct Menu
+    {
+        public const string EditSettings = "Edit settings";
+        public const string AddModel = "Add model";
+    }
+
+    private void ShowMenu()
     {
         while (true)
         {
-            AnsiConsole.MarkupLine("\n[dim]=========================================[/]");
-            AnsiConsole.MarkupLine("[dim]       Settings Editor[/]");
-            AnsiConsole.MarkupLine("[dim]=========================================[/]\n");
-
-            ShowCurrentSettings();
+            Clear();
+            AnsiConsole.MarkupLine($"[gray]Settimgs are stored in \"{SettingsManager.SettingsFilePath}\".[/]");
 
             var choice = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
-                    .Title("[bold]1. Edit 2. Add model 3. Edit model 4. Remove model 5. Exit[/]")
-                    .AddChoices("Edit", "Add model", "Edit model", "Remove model", "Exit"));
+                    //.Title("\nSelect an option:")
+                    .AddChoices(Menu.EditSettings, Menu.AddModel, "Edit model", "Remove model", "Exit"));
 
             switch (choice)
             {
-                case "Edit":
+                case Menu.EditSettings:
                     EditGeneralSettings();
                     break;
-                case "Add model":
+                case Menu.AddModel:
                     AddModel();
                     break;
                 case "Edit model":
@@ -73,7 +63,7 @@ public sealed class SettingsView
                     RemoveModel();
                     break;
                 case "Exit":
-                    SaveAndExit();
+                    //SaveAndExit();
                     return;
             }
         }
@@ -81,19 +71,17 @@ public sealed class SettingsView
 
     private static void ShowCurrentSettings()
     {
-        var s = SettingsManager.Instance.LoadCurrent();
-        if (s == null) return;
-
-        var serverStatus = string.IsNullOrEmpty(s.LlamaCppPath) ? "[red](empty)[/]" : s.LlamaCppPath;
+        ApplicationSettings settings = SettingsManager.GetSettings();
+        var serverStatus = string.IsNullOrEmpty(settings.LlamaCppPath) ? "[red](empty)[/]" : settings.LlamaCppPath;
         AnsiConsole.MarkupLine($"[cyan]LLama Server:[/] {serverStatus}");
-        AnsiConsole.MarkupLine($"[cyan]Default Port:[/] {s.DefaultPort}");
+        AnsiConsole.MarkupLine($"[cyan]Default Port:[/] {settings.DefaultPort}");
 
-        if (s.Models.Count > 0)
+        if (settings.Models.Count > 0)
         {
             AnsiConsole.MarkupLine("\n[green]Models:[/]");
-            for (int i = 0; i < s.Models.Count; i++)
+            for (int i = 0; i < settings.Models.Count; i++)
             {
-                var m = s.Models[i];
+                var m = settings.Models[i];
                 AnsiConsole.MarkupLine($"  [cyan]#{i + 1}[/] {m.Id}: {m.GgufFileName}");
             }
         }
@@ -103,17 +91,17 @@ public sealed class SettingsView
         }
     }
 
-    private static void EditGeneralSettings()
+    private void EditGeneralSettings()
     {
-        var current = SettingsManager.Instance.LoadCurrent();
-        if (current == null)
-        {
-            AnsiConsole.MarkupLine("[red]Unable to load settings.[/]");
-            return;
-        }
+        ShowCurrentSettings();
 
-        AnsiConsole.MarkupLine($"\n[green]Current server path:[/] {current.LlamaCppPath}");
-        AnsiConsole.MarkupLine($"[green]Current default port:[/] {current.DefaultPort}");
+        ApplicationSettings newSettings = 
+            SettingsManager.HasSettings ? 
+                SettingsManager.GetSettings() with { } : // create a copy
+                new ApplicationSettings(); // new empty
+
+        AnsiConsole.MarkupLine($"\n[green]Current server path:[/] {newSettings.LlamaCppPath}");
+        AnsiConsole.MarkupLine($"[green]Current default port:[/] {newSettings.DefaultPort}");
 
         AnsiConsole.MarkupLine("\n[bold]Enter new server path (empty to keep current):[/]");
         var newPath = Console.ReadLine();
@@ -122,8 +110,7 @@ public sealed class SettingsView
         {
             if (File.Exists(newPath))
             {
-                current.LlamaCppPath = newPath;
-                SettingsManager.Instance.Save(current);
+                newSettings.LlamaCppPath = newPath;
                 AnsiConsole.MarkupLine("[green]✓ Server path updated.[/]\n");
             }
             else
@@ -139,11 +126,10 @@ public sealed class SettingsView
         {
             try
             {
-                var p = int.Parse(portStr);
-                if (p > 0 && p < 65536)
+                var port = int.Parse(portStr);
+                if (port > 0 && port < 65536)
                 {
-                    current.DefaultPort = p;
-                    SettingsManager.Instance.Save(current);
+                    newSettings.DefaultPort = port;
                     AnsiConsole.MarkupLine("[green]✓ Default port updated.[/]\n");
                 }
                 else
@@ -156,9 +142,19 @@ public sealed class SettingsView
                 AnsiConsole.MarkupLine("[red]✗ Invalid number format. Keeping current value.[/]\n");
             }
         }
+
+        try
+        {
+            SettingsManager.Save(newSettings);
+            Success("Settings saved");
+        }
+        catch (Exception exc)
+        {
+            Error("Failed to save Settings", exc);
+        }
     }
 
-    private static void AddModel()
+    private void AddModel()
     {
         AnsiConsole.MarkupLine("\n[dim]Adding new model configuration...[/]\n");
 
@@ -190,10 +186,9 @@ public sealed class SettingsView
             jinja = jinjaInput.ToLower().StartsWith('y');
         }
 
-        var manager = SettingsManager.Instance;
-        var settings = manager.LoadCurrent();
-        if (settings == null) return;
+        var settings = SettingsManager.GetSettings();
 
+        // TODO: see how to update the settings wiuth the new model
         settings.Models ??= [];
         settings.Models.Add(new ModelSettings
         {
@@ -205,12 +200,15 @@ public sealed class SettingsView
             Jinja = jinja
         });
 
-        manager.Save(settings);
-        AnsiConsole.MarkupLine($"[green]✓ Model '{id}' added.[/]");
+        SettingsManager.Save(settings);
+        Success($"Model '{id}' added.");
     }
 
-    private static void EditModel()
+    private void EditModel()
     {
+        throw new Exception("not implemented");
+
+        /*
         var settings = SettingsManager.Instance.LoadCurrent();
         if (settings == null || settings.Models.Count == 0)
         {
@@ -269,10 +267,13 @@ public sealed class SettingsView
 
         SettingsManager.Instance.Save(settings);
         AnsiConsole.MarkupLine("[green]✓ Model updated.[/]");
+        */
     }
 
-    private static void RemoveModel()
+    private void RemoveModel()
     {
+        throw new Exception("not implemented");
+        /*
         var settings = SettingsManager.Instance.LoadCurrent();
         if (settings == null || settings.Models.Count == 0)
         {
@@ -289,10 +290,6 @@ public sealed class SettingsView
         settings.Models.RemoveAll(m => m.Id == selectedId);
         SettingsManager.Instance.Save(settings);
         AnsiConsole.MarkupLine($"[green]✓ Removed model '[cyan]{selectedId}[/]'[/].");
-    }
-
-    private static void SaveAndExit()
-    {
-        AnsiConsole.MarkupLine("\n[yellow]Settings saved. Restart the app to apply changes.[/]");
+        */
     }
 }

@@ -1,3 +1,4 @@
+using Evaluator.Settings;
 using System.Diagnostics;
 
 namespace Evaluator;
@@ -13,7 +14,7 @@ internal sealed class Evaluator
 
     public async Task EvaluateAsync(string modelId, CancellationToken ct = default)
     {
-        var settings = SettingsManager.Instance.GetSettings();
+        var settings = SettingsManager.GetSettings();
         var modelConfig = settings.Models.FirstOrDefault(m => m.Id == modelId);
 
         if (modelConfig is null)
@@ -27,7 +28,7 @@ internal sealed class Evaluator
         try
         {
             Console.WriteLine($"Model: {modelId}");
-            Console.WriteLine($"Settings file: {SettingsManager.Instance.SettingsFilePath}");
+            Console.WriteLine($"Settings file: {SettingsManager.SettingsFilePath}");
             Console.WriteLine($"llama.cpp path: {settings.LlamaCppPath}");
             Console.WriteLine($"Port: {settings.DefaultPort}");
         }

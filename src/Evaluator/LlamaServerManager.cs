@@ -1,24 +1,16 @@
-using System.Diagnostics;
-using System.Linq;
+using Evaluator.Settings;
 
 namespace Evaluator;
 
 internal sealed class LlamaServerManager
 {
-    private readonly SettingsManager _settingsManager;
-
-    public LlamaServerManager(SettingsManager settingsManager)
-    {
-        _settingsManager = settingsManager ?? throw new ArgumentNullException(nameof(settingsManager));
-    }
-
     public bool IsRunning { get; private set; }
     public int Port { get; private set; }
     public string ServerUrl { get; private set; } = "";
 
     public void StartServer(string modelId, int port)
     {
-        var settings = _settingsManager.GetSettings();
+        var settings = SettingsManager.GetSettings();
         var modelConfig = settings.Models.FirstOrDefault(m => m.Id == modelId);
         
         if (modelConfig == null)

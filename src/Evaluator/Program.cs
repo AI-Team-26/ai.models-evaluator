@@ -1,3 +1,4 @@
+using Evaluator.Settings;
 using Spectre.Console;
 
 namespace Evaluator;
@@ -8,19 +9,21 @@ public static class Program
     {
         try
         {
-            var settings = SettingsManager.Instance.GetSettings();
+            // Force to set Settings if not exists (first run of the app)
+            if (!SettingsManager.HasSettings)
+                ViewSettings();
 
-            var serverManager = new LlamaServerManager(SettingsManager.Instance);
+            var serverManager = new LlamaServerManager();
             var evaluator = new Evaluator(serverManager);
 
             while (true)
             {
-                AnsiConsole.Write(new FigletText("LLM Evaluator"));
+                UI.UI.Clear();
                 
                 var choice = AnsiConsole.Prompt(
                     new SelectionPrompt<string>()
                         .Title("\nSelect an option:")
-                        .AddChoices("See Results", "Run Evaluation", "Change Settings", "Exit"));
+                        .AddChoices("See Results", "Run Evaluation", "View Settings", "Exit"));
 
                 switch (choice)
                 {
@@ -30,8 +33,8 @@ public static class Program
                     case "Run Evaluation":
                         await RunEvaluationAsync(evaluator);
                         break;
-                    case "Change Settings":
-                        ChangeSettings();
+                    case "View Settings":
+                        ViewSettings();
                         break;
                     case "Exit":
                         return 0;
@@ -46,9 +49,9 @@ public static class Program
             AnsiConsole.MarkupLine($"[red]Error:[/] {configEx.Message}");
             AnsiConsole.MarkupLine("\nStarting Settings Editor...");
 
-            ChangeSettings();
+            ViewSettings();
 
-            AnsiConsole.MarkupLine("\n[yellow]Press any key to exit...");
+            AnsiConsole.MarkupLine("\n[yellow]Press any key to exit...[/]");
             Console.ReadKey(true);
             return 1;
         }
@@ -96,8 +99,8 @@ public static class Program
         }
     }
 
-    private static void ChangeSettings()
+    private static void ViewSettings()
     {
-        SettingsView.Run();
+        new SettingsView().Run();
     }
 }
