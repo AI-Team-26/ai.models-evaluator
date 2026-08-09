@@ -182,7 +182,7 @@ public static class SettingsManager
         {
             LlamaCppPath = "",
             DefaultPort = 8001,
-            ModelsFilePath = "/models",
+            ModelsFolderPath = "/models",
             Models = []
         };
     }*/

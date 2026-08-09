@@ -16,7 +16,7 @@ internal sealed class LlamaServerManager
         if (modelConfig == null)
             throw new ArgumentException($"Model '{modelId}' not found in configuration.");
 
-        string ggufPath = Path.Combine(settings.ModelsFilePath, modelConfig.GgufFileName);
+        string ggufPath = Path.Combine(settings.ModelsFolderPath, modelConfig.GgufFileName);
 
         // TODO: Use 'ggufPath' for llama-server process start
         // TODO: Implement real Process.Start for llama-server
