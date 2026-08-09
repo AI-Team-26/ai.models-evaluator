@@ -14,14 +14,15 @@ public static class Program
         }
         catch (Exception configEx)
         {
-            Console.WriteLine($"\n[yellow]⚠️  Configuration Incomplete![/]");
-            Console.WriteLine(configEx.Message);
-            Console.WriteLine();
+            AnsiConsole.MarkupLine("\n[dim]=========================================[/]");
+            AnsiConsole.MarkupLine("[yellow]⚠️  Configuration Incomplete![/]");
+            AnsiConsole.MarkupLine("[dim]=========================================[/]");
+            AnsiConsole.MarkupLine($"[red]Error:[/] {configEx.Message}");
+            AnsiConsole.MarkupLine("\nStarting Settings Editor...");
             
             ChangeSettings();
             
-            Console.WriteLine();
-            Console.Write("Press any key to exit...");
+            AnsiConsole.MarkupLine("\n[yellow]Press any key to exit...");
             Console.ReadKey(true);
             return 1;
         }
