@@ -39,8 +39,8 @@ public sealed class SettingsView() : View("Settings")
             Clear();
             AnsiConsole.MarkupLine($"[gray]Settimgs are stored in \"{SettingsManager.SettingsFilePath}\".[/]\n");
 
-            if (firstLoad)
-                ShowCurrentSettings();
+            ShowCurrentSettings();
+            //if (firstLoad)
 
             firstLoad = false;
 
@@ -72,29 +72,29 @@ public sealed class SettingsView() : View("Settings")
     {
         ApplicationSettings settings = SettingsManager.GetSettings();
 
-        AnsiConsole.MarkupLine("\n[bold cyan]====== Current Settings ======[/]\n");
+        AnsiConsole.MarkupLine("[bold cyan]╔══ Current Settings ════════════════════════════════════╗[/]\n");
 
         var llamaPath = string.IsNullOrEmpty(settings.LlamaCppPath) ? "(empty)" : settings.LlamaCppPath;
-        AnsiConsole.MarkupLine($"[cyan]llama.cpp folder:[/] {llamaPath}");
-        AnsiConsole.MarkupLine($"[cyan]Server Port:[/] {settings.ServerPort}");
+        AnsiConsole.MarkupLine($"[cyan]║ llama.cpp folder:[/] {llamaPath}");
+        AnsiConsole.MarkupLine($"[cyan]║ Server Port:[/] {settings.ServerPort}");
         var modelFolder = string.IsNullOrEmpty(settings.ModelsFolderPath) ? "(empty)" : settings.ModelsFolderPath;
-        AnsiConsole.MarkupLine($"[cyan]Models Folder:[/] {modelFolder}");
+        AnsiConsole.MarkupLine($"[cyan]║ Models Folder:[/] {modelFolder}");
 
         if (settings.Models.Count > 0)
         {
-            AnsiConsole.MarkupLine("\n[cyan]Models:[/]");
+            AnsiConsole.MarkupLine("\n[cyan]║ Models:[/]");
             for (int i = 0; i < settings.Models.Count; i++)
             {
                 var m = settings.Models[i];
-                AnsiConsole.MarkupLine($"  [cyan]#{i + 1}[/] {m.Id}: {m.GgufFileName}");
+                AnsiConsole.MarkupLine($"[cyan]║ #{i + 1}[/] {m.Id}: {m.GgufFileName}");
             }
         }
         else
         {
-            AnsiConsole.MarkupLine("\n[red]No models configured.[/]");
+            AnsiConsole.MarkupLine("\n[cyan]║ [red]No models configured.[/][/]");
         }
 
-        AnsiConsole.MarkupLine("[bold cyan]=============================[/]\n");
+        AnsiConsole.MarkupLine("[bold cyan]╚════════════════════════════════════════════════════════╝[/]\n");
     }
 
     private void EditGeneralSettings()
@@ -164,17 +164,17 @@ public sealed class SettingsView() : View("Settings")
     {
         AnsiConsole.MarkupLine("\n[cyan]Add new model[/]\n");
 
-        var gguf = Helper.GetInput("gguf file (required)");
+        var gguf = Helper.GetInput("GGUF file (required)");
         if (string.IsNullOrEmpty(gguf)) { AnsiConsole.MarkupLine("[red]Cancelled.[/]"); return; }
 
-        var id = Helper.GetInput("model id (leave empty to use gguf name)");
+        var id = Helper.GetInput("Model id (leave empty to use gguf name)");
         if (string.IsNullOrEmpty(id)) {
             id = Path.GetFileNameWithoutExtension(gguf);
             AnsiConsole.MarkupLine($"[dim]Using GGUF name as ID:[/] {id}\n");
         }
 
         // Parse context size
-        var ctxSizeStr = Helper.GetInput("context size in kilobytes (default: 64)");
+        var ctxSizeStr = Helper.GetInput("Context size in kilobytes (default: 64)");
         int ctxSize = 64;
         if (!string.IsNullOrWhiteSpace(ctxSizeStr) && int.TryParse(ctxSizeStr, out var parsedCtx))
         {
@@ -187,7 +187,7 @@ public sealed class SettingsView() : View("Settings")
         ctxSize *= 1024;
 
         // Parse GPU layers
-        var gpuLayersStr = Helper.GetInput("gpu layers (default: 0)");
+        var gpuLayersStr = Helper.GetInput("GPU layers (default: 0)");
         int gpuLayers = 0;
         if (!string.IsNullOrWhiteSpace(gpuLayersStr) && int.TryParse(gpuLayersStr, out var parsedGpu))
         {
@@ -199,7 +199,7 @@ public sealed class SettingsView() : View("Settings")
         }
 
         // Parse CPU MoE threads
-        var cpuMoEInput = Helper.GetInput("cpu moe threads (empty for 0)");
+        var cpuMoEInput = Helper.GetInput("CPU MoE (empty for 0)");
         int cpuMoE = 0;
         if (!string.IsNullOrWhiteSpace(cpuMoEInput) && int.TryParse(cpuMoEInput, out var parsedCpuMoE))
         {
@@ -211,7 +211,7 @@ public sealed class SettingsView() : View("Settings")
         }
 
         // Parse Jinja toggle
-        var jinjaInput = Helper.GetInput("enable jinja? (y/n, empty=n)");
+        var jinjaInput = Helper.GetInput("Enable jinja? (y/n, empty=n)");
         bool jinja = !string.IsNullOrEmpty(jinjaInput) && jinjaInput.Trim().ToLowerInvariant().StartsWith('y');
 
         // Get fresh settings from disk and add the model
