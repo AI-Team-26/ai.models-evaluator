@@ -7,6 +7,9 @@ Replace manual JSON editing with a built-in Spectre-based menu system.
 - [x] Add automatic validation per field (non-empty paths, positive integers, boolean toggles)
 - [ ] Auto-launch menu at app startup when `Settings.json` missing or invalid
 - [x] Allow re-accessing editor via "Edit Settings" menu option (for adding models later)
+- [ ] Verify ID does not already exist in AddModel (prevent duplicates)
+- [ ] Implement RemoveModel functionality (confirm before deletion)
+- [ ] Implement EditModel functionality (modify selected model's properties interactively)
 - [ ] Update README: "First-Time Setup" section with walkthrough screenshot/description
 
 Context / Mental Picture:
