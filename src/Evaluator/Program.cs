@@ -10,9 +10,13 @@ public static class Program
     {
         try
         {
-            // Force to set Settings if not exists (first run of the app)
             if (!SettingsManager.HasSettings)
-                ViewSettings();
+            {
+                AnsiConsole.MarkupLine("[yellow]⚠ Settings are not configured. Some features like Run Evaluation will not work until you set them up.[/]");
+                AnsiConsole.MarkupLine("[dim]You can configure settings later via the View Settings menu option.[/]");
+                AnsiConsole.MarkupLine("\n[yellow]Press any key to continue...[/]");
+                Console.ReadKey(true);
+            }
 
             var serverManager = new LlamaServerManager();
             var evaluator = new Evaluator(serverManager);
@@ -33,6 +37,13 @@ public static class Program
                 switch (choice)
                 {
                     case RunEval:
+                        if (!SettingsManager.HasSettings)
+                        {
+                            AnsiConsole.MarkupLine("[red]⚠ Settings are not configured. Please set up settings first via the View Settings menu.[/]");
+                            AnsiConsole.MarkupLine("\n[yellow]Press any key to continue...[/]");
+                            Console.ReadKey(true);
+                            break;
+                        }
                         await RunEvaluationAsync(evaluator);
                         break;
 
