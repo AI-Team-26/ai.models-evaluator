@@ -132,7 +132,7 @@ public static class SettingsManager
         try
         {
             var json = File.ReadAllText(filePath);
-            settings = JsonSerializer.Deserialize<ApplicationSettings>(json)
+            settings = JsonSerializer.Deserialize<ApplicationSettings>(json, jsonOptions)
                 ?? throw new Exception($"Settings file at {filePath} is empty or corrupt.");
 
             return settings;

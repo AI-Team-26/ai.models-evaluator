@@ -33,16 +33,12 @@ public sealed class SettingsView() : View("Settings")
 
     private void ShowMenu()
     {
-        bool firstLoad = true;
         while (true)
         {
             Clear();
             AnsiConsole.MarkupLine($"[gray]Settimgs are stored in \"{SettingsManager.SettingsFilePath}\".[/]\n");
 
             ShowCurrentSettings();
-            //if (firstLoad)
-
-            firstLoad = false;
 
             var choice = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
@@ -171,6 +167,14 @@ public sealed class SettingsView() : View("Settings")
         if (string.IsNullOrEmpty(id)) {
             id = Path.GetFileNameWithoutExtension(gguf);
             AnsiConsole.MarkupLine($"[dim]Using GGUF name as ID:[/] {id}\n");
+        // Check if a model with this ID already exists
+        var existingSettings = SettingsManager.GetSettings(forceReload: true);
+        if (existingSettings.Models != null && existingSettings.Models.Any(m => m.Id == id))
+        {
+            AnsiConsole.MarkupLine($"[red]A model with ID '{id}' already exists. Please choose a different ID.[/]");
+            return;
+        }
+
         }
 
         // Parse context size
@@ -245,8 +249,81 @@ public sealed class SettingsView() : View("Settings")
 
     private void EditModel()
     {
-        throw new Exception("not implemented");
+        var settings = SettingsManager.GetSettings(forceReload: true);
+        if (settings.Models == null || settings.Models.Count == 0)
+        {
+            AnsiConsole.MarkupLine("[red]No models configured.[/]");
+            return;
+        }
 
+        var ids = settings.Models.Select(m => m.Id).ToArray();
+        var selectedId = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+                .Title("Select model to edit:")
+                .AddChoices(ids));
+
+        // Find the model to edit
+        var modelToEdit = settings.Models.FirstOrDefault(m => m.Id == selectedId);
+        if (modelToEdit == null)
+        {
+            AnsiConsole.MarkupLine("[red]Error finding model to edit.[/]");
+            return;
+        }
+
+        Clear();
+        AnsiConsole.MarkupLine($"[green]Editing model: {modelToEdit.Id}[/]\n");
+
+        // Get fresh input for each field with default values from existing model
+        var ggufInput = Helper.GetInput($"GGUF file (current: \"{modelToEdit.GgufFileName}\")");
+        if (!string.IsNullOrEmpty(ggufInput))
+        {
+            modelToEdit.GgufFileName = ggufInput;
+        }
+
+        var ctxSizeStr = Helper.GetInput($"Context size in kilobytes (default: {modelToEdit.ContextSize / 1024})");
+        if (!string.IsNullOrWhiteSpace(ctxSizeStr) && int.TryParse(ctxSizeStr, out var parsedCtx))
+        {
+            modelToEdit.ContextSize = parsedCtx * 1024; // Convert KB back to bytes
+        }
+        else if (!string.IsNullOrWhiteSpace(ctxSizeStr))
+        {
+            AnsiConsole.MarkupLine("[red]Invalid number format. Keeping current value.[/]");
+        }
+
+        var gpuLayersStr = Helper.GetInput($"GPU layers (current: {modelToEdit.GpuLayers})");
+        if (!string.IsNullOrWhiteSpace(gpuLayersStr) && int.TryParse(gpuLayersStr, out var parsedGpu))
+        {
+            modelToEdit.GpuLayers = parsedGpu;
+        }
+        else if (!string.IsNullOrWhiteSpace(gpuLayersStr))
+        {
+            AnsiConsole.MarkupLine("[red]Invalid number format. Keeping current value.[/]");
+        }
+
+        var cpuMoEInput = Helper.GetInput($"CPU MoE threads (current: {modelToEdit.CpuMoE})");
+        if (!string.IsNullOrWhiteSpace(cpuMoEInput) && int.TryParse(cpuMoEInput, out var parsedCpuMoE))
+        {
+            modelToEdit.CpuMoE = parsedCpuMoE;
+        }
+        else if (!string.IsNullOrWhiteSpace(cpuMoEInput))
+        {
+            AnsiConsole.MarkupLine("[red]Invalid number format. Keeping current value.[/]");
+        }
+
+        var jinjaInput = Helper.GetInput($"Enable Jinja? (y/n, empty=n) (current: {(modelToEdit.Jinja ? "yes" : "no")})");
+        bool jinja = !string.IsNullOrEmpty(jinjaInput) && jinjaInput.Trim().ToLowerInvariant().StartsWith('y');
+        modelToEdit.Jinja = jinja;
+
+        try
+        {
+            SettingsManager.Save(settings);
+            Success($"Model '{selectedId}' updated.");
+        }
+        catch (Exception exc)
+        {
+            Error("Failed to save changes", exc);
+        }
+    }
         /*
         var settings = SettingsManager.Instance.LoadCurrent();
         if (settings == null || settings.Models.Count == 0)
