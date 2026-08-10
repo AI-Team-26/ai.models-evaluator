@@ -1,3 +1,5 @@
+using Evaluator.Settings;
+using Evaluator.UI;
 using Spectre.Console;
 
 namespace Evaluator;
@@ -6,50 +8,64 @@ public static class Program
 {
     public static async Task<int> Main(string[] args)
     {
-        Settings? settings = null;
-        
         try
         {
-            settings = SettingsManager.Instance.GetSettings();
+            if (!SettingsManager.HasSettings)
+            {
+                AnsiConsole.MarkupLine("[yellow]⚠ Settings are not configured. Some features like Run Evaluation will not work until you set them up.[/]");
+                AnsiConsole.MarkupLine("[dim]You can configure settings later via the View Settings menu option.[/]");
+                AnsiConsole.MarkupLine("\n[yellow]Press any key to continue...[/]");
+                Console.ReadKey(true);
+            }
+
+            var serverManager = new LlamaServerManager();
+            var evaluator = new Evaluator(serverManager);
+
+            const string SeeResults = "See Results";
+            const string RunEval = "Run Evaluation";
+            const string ViewSettings_ = "View Settings";
+            const string Exit = "❌ Exit";
+
+            while (true)
+            {
+                Helper.Clear();
+
+                var choice = AnsiConsole.Prompt(
+                    new SelectionPrompt<string>()
+                        .AddChoices(RunEval, SeeResults, ViewSettings_, Exit));
+
+                switch (choice)
+                {
+                    case RunEval:
+                        if (!SettingsManager.HasSettings)
+                        {
+                            AnsiConsole.MarkupLine("[red]⚠ Settings are not configured. Please set up settings first via the View Settings menu.[/]");
+                            AnsiConsole.MarkupLine("\n[yellow]Press any key to continue...[/]");
+                            Console.ReadKey(true);
+                            break;
+                        }
+                        await RunEvaluationAsync(evaluator);
+                        break;
+
+                    case SeeResults:
+                        await ShowResultsAsync();
+                        break;
+
+                    case ViewSettings_:
+                        ViewSettings();
+                        break;
+
+                    case Exit:
+                        return 0;
+                }
+            }
         }
-        catch (InvalidOperationException configEx)
+        catch (Exception exc)
         {
-            Console.WriteLine($"\n[yellow]⚠️  Configuration Incomplete![/]");
-            Console.WriteLine(configEx.Message);
-            Console.WriteLine();
-            
-            ChangeSettings();
-            
-            Console.WriteLine();
-            Console.Write("Press any key to exit...");
+            AnsiConsole.WriteException(exc);
+            AnsiConsole.MarkupLine("\n[yellow]Press any key to exit...[/]");
             Console.ReadKey(true);
             return 1;
-        }
-
-        var serverManager = new LlamaServerManager(SettingsManager.Instance);
-        var evaluator = new Evaluator(serverManager);
-
-        while (true)
-        {
-            var choice = AnsiConsole.Prompt(
-                new SelectionPrompt<string>()
-                    .Title("[bold]AI Model Evaluator[/]")
-                    .AddChoices("See Results", "Run Evaluation", "Change Settings", "Exit"));
-
-            switch (choice)
-            {
-                case "See Results":
-                    await ShowResultsAsync();
-                    break;
-                case "Run Evaluation":
-                    await RunEvaluationAsync(evaluator);
-                    break;
-                case "Change Settings":
-                    ChangeSettings();
-                    break;
-                case "Exit":
-                    return 0;
-            }
         }
     }
 
@@ -95,29 +111,8 @@ public static class Program
         }
     }
 
-    private static void ChangeSettings()
+    private static void ViewSettings()
     {
-        var filePath = SettingsManager.Instance.SettingsFilePath;
-        
-        AnsiConsole.MarkupLine("\n[dim]=========================================[/]");
-        AnsiConsole.MarkupLine("[dim]   Manual Configuration Required[/]");
-        AnsiConsole.MarkupLine("[dim]=========================================[/]");
-        AnsiConsole.MarkupLine("\nPlease edit the following file and add your model configurations:\n");
-        AnsiConsole.MarkupLine($"[cyan]{filePath}[/]");
-        AnsiConsole.MarkupLine("\nExample JSON structure:\n");
-        AnsiConsole.MarkupLine("{");
-        AnsiConsole.MarkupLine("  [green]\"llamaCppPath\":[/] \"path/to/your/llama-server-executable\",\n");
-        AnsiConsole.MarkupLine("  [green]\"defaultPort\":[/] 8001,\n");
-        AnsiConsole.MarkupLine("  [green]\"modelsFilePath\":[/] \"/models\",\n");
-        AnsiConsole.MarkupLine("  [green]\"models\":[/][\n");
-        AnsiConsole.MarkupLine("    {\n");
-        AnsiConsole.MarkupLine("      [green]\"id\":[/] \"model-name\",\n");
-        AnsiConsole.MarkupLine("      [green]\"ggufFileName\":[/] \"model.gguf\",\n");
-        AnsiConsole.MarkupLine("      [green]\"contextSize\":[/] 2048,\n");
-        AnsiConsole.MarkupLine("      [green]\"gpuLayers\":[/] 99\n");
-        AnsiConsole.MarkupLine("    }\n");
-        AnsiConsole.MarkupLine("  ]\n");
-        AnsiConsole.MarkupLine("}\n");
-        AnsiConsole.MarkupLine("[dim]After editing, restart the application.[/]\n");
+        new SettingsView().Run();
     }
 }
