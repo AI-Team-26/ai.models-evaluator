@@ -70,7 +70,7 @@ public sealed class SettingsView() : View("Settings")
 
     private static void ShowCurrentSettings()
     {
-        ApplicationSettings settings = SettingsManager.GetSettings();
+        ApplicationSettings settings = SettingsManager.GetSettings(forceReload: true);
 
         AnsiConsole.MarkupLine("[bold cyan]╔══ Current Settings ════════════════════════════════════╗[/]\n");
 
