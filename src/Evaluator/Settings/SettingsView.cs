@@ -324,67 +324,6 @@ public sealed class SettingsView() : View("Settings")
             Error("Failed to save changes", exc);
         }
     }
-        /*
-        var settings = SettingsManager.Instance.LoadCurrent();
-        if (settings == null || settings.Models.Count == 0)
-        {
-            AnsiConsole.MarkupLine("[red]No models to edit.[/]");
-            return;
-        }
-
-        var ids = settings.Models.Select(m => m.Id).ToList();
-        var selectedId = AnsiConsole.Prompt(
-            new SelectionPrompt<string>()
-                .Title("[bold]Select model to edit:[/]")
-                .AddChoices(ids));
-
-        var model = settings.Models.FirstOrDefault(m => m.Id == selectedId);
-        if (model == null) return;
-
-        AnsiConsole.MarkupLine($"\n[green]Editing model: {model.Id}[/]");
-        AnsiConsole.MarkupLine($"[green]Current GGUF filename:[/] {model.GgufFileName}");
-        AnsiConsole.MarkupLine($"[green]Current context size:[/] {model.ContextSize}");
-        AnsiConsole.MarkupLine($"[green]Current GPU layers:[/] {model.GpuLayers}");
-
-        AnsiConsole.MarkupLine("\n[bold]Enter new GGUF filename (empty to keep current):[/]");
-        var gguf = Console.ReadLine();
-        if (!string.IsNullOrEmpty(gguf))
-        {
-            model.GgufFileName = gguf;
-        }
-
-        AnsiConsole.MarkupLine("[bold]Enter new context size (empty to keep current):[/]");
-        var ctxSizeStr = Console.ReadLine();
-        if (!string.IsNullOrWhiteSpace(ctxSizeStr))
-        {
-            try
-            {
-                model.ContextSize = int.Parse(ctxSizeStr);
-            }
-            catch
-            {
-                AnsiConsole.MarkupLine("[red]Invalid number. Keeping current value.[/]");
-            }
-        }
-
-        AnsiConsole.MarkupLine("[bold]Enter new GPU layers (empty to keep current):[/]");
-        var gpuLayersStr = Console.ReadLine();
-        if (!string.IsNullOrWhiteSpace(gpuLayersStr))
-        {
-            try
-            {
-                model.GpuLayers = int.Parse(gpuLayersStr);
-            }
-            catch
-            {
-                AnsiConsole.MarkupLine("[red]Invalid number. Keeping current value.[/]");
-            }
-        }
-
-        SettingsManager.Instance.Save(settings);
-        AnsiConsole.MarkupLine("[green]✓ Model updated.[/]");
-        */
-    }
 
     private void RemoveModel()
     {
