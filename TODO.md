@@ -1,34 +1,6 @@
 # In Progress
 
-## feat/10_interactive_setup — Interactive Settings Editor 🚧 IN PROGRESS
-Replace manual JSON editing with a built-in Spectre-based menu system.
-- [x] Design `EditSettingsMenu` UI flow (list fields → edit → validate → save)
-- [x] Implement field editors: Llama.cpp path, context size, GPU layers, batch size, CPU MoE, Jinja flag
-- [x] Add automatic validation per field (non-empty paths, positive integers, boolean toggles)
-- [ ] Add IsValid property to SettingsManager with validation feedback
-- [ ] Implement validator function that sets internal validation state
-- [ ] Display validation warnings when viewing settings
-- [ ] Prevent evaluation runs with invalid settings
-- [ ] Fix Windows path validation issue (paths with backslashes are incorrectly rejected)
-- [ ] Improve edit mode input prompts to show current values instead of "default:"
-- [x] Allow re-accessing editor via "Edit Settings" menu option (for adding models later)
-- [ ] Enhance Settings UI layout and formatting for better readability
-- [ ] Verify ID does not already exist in AddModel (prevent duplicates)
-- [ ] Implement RemoveModel functionality (confirm before deletion)
-- [ ] Implement EditModel functionality (modify selected model's properties interactively)
-
-Context / Mental Picture:
-- Use existing Spectre framework (already used elsewhere) for clean CLI menus
-- Keep `SettingsManager` as source-of-truth; just wrap its load/save in interactive UX
-- Reuse same validation rules as `GetSettings()` (throw descriptive exceptions)
-- Preserve backward compatibility — JSON remains editable by power users
-
-Bug Report:
-- On Windows systems, paths using backslashes are being incorrectly validated as non-existent even when they're valid
-
-Notes:
-- Command syntax: none (invoked internally)
-- API reference: `Spectre.Menu`, `Spectre.InputPrompt`
+*(Nothing in progress at the moment.)*
 
 ---
 
@@ -87,3 +59,6 @@ Design outcome recording format once evaluator has execution data.
 
 ## refactor/07_settings_manager — Centralized Configuration Management ✅ MERGED
 Created SettingsManager singleton; eliminated config duplication across classes.
+
+## feat/10_interactive_setup — Interactive Settings Editor ✅ MERGED
+Replaced manual JSON editing with a built-in Spectre-based menu system. Implemented Edit/Add/Remove/Edit model flows, settings validation, dynamic screen-width separators, and warning-based UX for unconfigured settings.
