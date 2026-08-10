@@ -18,9 +18,11 @@ namespace Evaluator.UI
         {
             Console.Clear();
             AnsiConsole.Write(new FigletText("LLM Evaluator"));
-            AnsiConsole.MarkupLine($"[yellow dim]============================================================================================[/]");
+            var width = AnsiConsole.Profile.Width;
+            var separator = new string('=', width);
+            AnsiConsole.MarkupLine($"[yellow dim]{separator}[/]");
             AnsiConsole.MarkupLine($"[yellow bold] {title}[/]");
-            AnsiConsole.MarkupLine($"[yellow dim]============================================================================================[/]");
+            AnsiConsole.MarkupLine($"[yellow dim]{separator}[/]");
         }
 
         public void Success(string text, bool wait=true)

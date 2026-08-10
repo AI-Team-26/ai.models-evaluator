@@ -20,7 +20,7 @@ public static class Program
             const string SeeResults = "See Results";
             const string RunEval = "Run Evaluation";
             const string ViewSettings_ = "View Settings";
-            const string Exit = "Exit";
+            const string Exit = "❌ Exit";
 
             while (true)
             {

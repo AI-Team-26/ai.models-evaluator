@@ -36,7 +36,7 @@ public sealed class SettingsView() : View("Settings")
         while (true)
         {
             Clear();
-            AnsiConsole.MarkupLine($"[gray]Settimgs are stored in \"{SettingsManager.SettingsFilePath}\".[/]\n");
+            AnsiConsole.MarkupLine($"[gray]Settings are stored in \"{SettingsManager.SettingsFilePath}\".[/]\n");
 
             ShowCurrentSettings();
 

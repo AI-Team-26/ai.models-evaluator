@@ -5,18 +5,26 @@ Replace manual JSON editing with a built-in Spectre-based menu system.
 - [x] Design `EditSettingsMenu` UI flow (list fields → edit → validate → save)
 - [x] Implement field editors: Llama.cpp path, context size, GPU layers, batch size, CPU MoE, Jinja flag
 - [x] Add automatic validation per field (non-empty paths, positive integers, boolean toggles)
-- [ ] Auto-launch menu at app startup when `Settings.json` missing or invalid
+- [ ] Add IsValid property to SettingsManager with validation feedback
+- [ ] Implement validator function that sets internal validation state
+- [ ] Display validation warnings when viewing settings
+- [ ] Prevent evaluation runs with invalid settings
+- [ ] Fix Windows path validation issue (paths with backslashes are incorrectly rejected)
+- [ ] Improve edit mode input prompts to show current values instead of "default:"
 - [x] Allow re-accessing editor via "Edit Settings" menu option (for adding models later)
+- [ ] Enhance Settings UI layout and formatting for better readability
 - [ ] Verify ID does not already exist in AddModel (prevent duplicates)
 - [ ] Implement RemoveModel functionality (confirm before deletion)
 - [ ] Implement EditModel functionality (modify selected model's properties interactively)
-- [ ] Update README: "First-Time Setup" section with walkthrough screenshot/description
 
 Context / Mental Picture:
 - Use existing Spectre framework (already used elsewhere) for clean CLI menus
 - Keep `SettingsManager` as source-of-truth; just wrap its load/save in interactive UX
 - Reuse same validation rules as `GetSettings()` (throw descriptive exceptions)
 - Preserve backward compatibility — JSON remains editable by power users
+
+Bug Report:
+- On Windows systems, paths using backslashes are being incorrectly validated as non-existent even when they're valid
 
 Notes:
 - Command syntax: none (invoked internally)

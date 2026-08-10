@@ -3,7 +3,7 @@
 
     public sealed record ApplicationSettings
     {
-        // Folder path of llama.cpp wjhere the llama-server.exe can be found
+        // Folder path of llama.cpp where the llama-server.exe can be found
         public string LlamaCppPath { get; set; } = "";
         public int ServerPort { get; set; } = 0;
         public string ModelsFolderPath { get; set; } = "";
