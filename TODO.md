@@ -9,31 +9,16 @@
 
 ## Phase 2: Build Evaluator Orchestration Tool
 
-### Step B: Server Process Management (`feat/03_server_management`)
-Build llama.cpp process control logic before defining config schema.
+### Next Priority: Server Process Management (`feat/03_server_management`)
+Implement actual llama.cpp process control logic.
+- [ ] Research llama-server CLI flags and API endpoints
 - [ ] Implement start/stop `llama-server` programmatically via `ProcessStartInfo`
 - [ ] Health check endpoint polling (wait until server responds on port X)
 - [ ] Port conflict detection + auto-selection fallback mechanism
 - [ ] Graceful shutdown handling (SIGINT/SIGTERM cleanup)
 - [ ] Log output redirection (capture stderr/stdout from server process)
 
-### Step C: Configuration System Design (`feat/04_config_schema`)
-Define final schema based on discovered needs from Steps A+B.
-
-### Step E: Static Settings Manager (`feat/06_settings_manager`)
-Singleton manager for reading/writing `Settings.json`. Every other class accesses settings through it.
-- [ ] Create static `SettingsManager` class
-- [ ] Load `Settings.json` on startup / access
-- [ ] Save method writes back to disk
-- [ ] Always keeps latest settings in memory
-- [ ] Replace all direct file reads across project
-- [ ] Create `config/models.json` with real parameter names from server management code
-  - [ ] Server executable path + common params
-  - [ ] Per-model specs: id, gguf file, context size, speculation settings, batch sizes, gpu_layers, cpu_moe, jinja flag
-- [ ] Document usage pattern in README (how to add new model entries)
-- [ ] Consider adding JSON schema validation file if needed
-
-### Step D: Results Logging (`feat/05_results_logging`)
+### Results Logging (`feat/05_results_logging`)
 Design outcome recording format once evaluator has execution data.
 - [ ] Define `results/evaluation_<timestamp>.json` structure
   - [ ] Track: model_id, test_case_name, pass/fail, duration_ms, timestamp, git_commit_hash
@@ -61,4 +46,10 @@ Design outcome recording format once evaluator has execution data.
 Created SettingsManager singleton; eliminated config duplication across classes.
 
 ## feat/10_interactive_setup — Interactive Settings Editor ✅ MERGED
-Replaced manual JSON editing with a built-in Spectre-based menu system. Implemented Edit/Add/Remove/Edit model flows, settings validation, dynamic screen-width separators, and warning-based UX for unconfigured settings.
+Built full TUI configuration wizard using Spectre.Console. Users can add/edit/remove models without touching JSON files directly.
+
+~~**Step C: Configuration Schema Design**~~ ~~(Obsolete)~~
+Skipped — went straight to implementation with interactive UI instead of upfront schema design.
+
+~~**Step E: Static Settings Manager**~~ ~~(Completed differently than planned)~~
+Implemented as SettingsManager singleton with interactive TUI wizard. No separate models.json created; everything lives in single Settings.json file managed through the app's menu system.

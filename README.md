@@ -29,10 +29,10 @@ The goal is to evaluate AI models by tasking them with fixing known bugs in sour
 
 The evaluator follows a defined process to benchmark AI models:
 
-### 1. Configuration Loading
-- Reads `~/LlmEvaluator/Configuration.json` (user-level settings)
-- If not found, creates a default configuration file at that path
-- Configuration includes: llama.cpp executable path, common server parameters, model specs
+### 1. Configuration Setup
+- Stores user settings in `~/.LlmEvaluator/Settings.json`
+- First-time users are guided through an **interactive terminal UI** (Spectre.Console-based menu system)
+- No manual JSON editing required — all configuration done via built-in wizard
 
 ### 2. Branch Creation
 - Creates a dedicated Git branch for each evaluation run
@@ -56,13 +56,83 @@ The evaluator follows a defined process to benchmark AI models:
 - Tracks: model_id, test_case_name, pass/fail, duration_ms, timestamp, git_commit_hash
 - Includes runtime metadata: evaluator_version, llama.cpp_tag, parameters_used
 
-## Current Status
+## Getting Started
 
-### ✅ Completed
-| Branch | Description |
-|--------|-------------|
-| [`feat/01_project_reorganization`](https://github.com/AI-Team-26/ai.models-evaluator/pull/7) | Move existing code to proper locations and set up infrastructure folders. |
-| [`feat/02_evaluator_scaffolding`](https://github.com/AI-Team-26/ai.models-evaluator/pull/8) | Scaffold Evaluator console app foundation. |
+### Prerequisites
+1. **llama.cpp installed locally**
+   - Download pre-built binaries or compile from source
+   - You need access to the `llama-server` executable
+   - This tool does NOT install llama.cpp; you must have it already available
+
+2. **.NET SDK 10+** 
+   - Required to build and run the evaluator
+
+3. **GGUF Model Files**
+   - Place your quantized models (.gguf files) in a folder of your choice
+   - Examples: Phi-4, Llama-3.2, Mistral, etc.
+
+### Initial Setup Wizard
+
+On first run, if no configuration exists, the app launches an interactive setup:
+
+```bash
+dotnet run --project src/Evaluator
+```
+
+The wizard guides you through:
+1. **Set llama.cpp Path:** Browse to where `llama-server.exe` (or `llama-server`) is located
+2. **Set Models Folder:** Specify where your `.gguf` model files are stored
+3. **Configure Server Port:** Choose which port the inference server should use (default: 8080)
+4. **Add Your First Model:** Enter model details:
+   - Model ID (internal name, e.g., "phi-4")
+   - GGUF filename (e.g., "phi-4-Q4_K_M.gguf")
+   - Context size (e.g., 4096, 8192)
+   - GPU layers (-1 for auto-detect, or specify count)
+   - CPU MoE flag (for hybrid architectures)
+   - Jinja template support (true/false)
+
+You can always re-run the setup later by selecting **"Edit Settings"** from the main menu.
+
+### Example Settings Structure
+
+Your configuration lives in `~/.LlmEvaluator/Settings.json`. Here's what a typical config looks like:
+
+```json
+{
+  "llamaCppPath": "/opt/llama.cpp/build/bin",
+  "serverPort": 8080,
+  "modelsFolderPath": "/home/user/models",
+  "models": [
+    {
+      "id": "phi-4",
+      "ggufFileName": "phi-4-Q4_K_M.gguf",
+      "contextSize": 4096,
+      "gpuLayers": -1,
+      "cpuMoE": false,
+      "jinja": true
+    }
+  ]
+}
+```
+
+No manual editing needed — use the built-in TUI to manage everything!
+
+---
+
+## Development Status
+
+### ✅ Completed Features
+- Project scaffolding and structure organization
+- Interactive settings editor (add/edit/remove models via TUI)
+- Centralized configuration management (`SettingsManager` singleton)
+- Validation and UX improvements for incomplete configs
+
+### 🚧 In Progress / Planned
+- Real `llama-server` process control (start/stop, health checks, log capture)
+- Results logging format design
+- Full evaluation pipeline implementation
+
+See [TODO.md](./TODO.md) for detailed backlog.
 
 
 
