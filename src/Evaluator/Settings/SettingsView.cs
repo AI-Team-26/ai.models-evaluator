@@ -70,30 +70,30 @@ public sealed class SettingsView() : View("Settings")
         AnsiConsole.MarkupLine("[bold cyan]=== Current Settings ===================================[/]\n");
 
         var llamaPath = string.IsNullOrEmpty(settings.LlamaCppPath) ? "(empty)" : settings.LlamaCppPath;
-        AnsiConsole.Write(new Markup($"[cyan]> llama.cpp folder:[/] {llamaPath}"));
-        AnsiConsole.Write(new Markup($"[cyan]> Server Host:[/] {settings.Host}"));
-        AnsiConsole.Write(new Markup($"[cyan]> Server Port:[/] {settings.ServerPort}"));
-        AnsiConsole.Write(new Markup($"[cyan]> Cache Type K:[/] {settings.CacheTypeK}"));
-        AnsiConsole.Write(new Markup($"[cyan]> Cache Type V:[/] {settings.CacheTypeV}"));
+        AnsiConsole.MarkupLine($"[cyan]> llama.cpp folder:[/] {llamaPath}");
+        AnsiConsole.MarkupLine($"[cyan]> Server Host:[/] {settings.Host}");
+        AnsiConsole.MarkupLine($"[cyan]> Server Port:[/] {settings.ServerPort}");
+        AnsiConsole.MarkupLine($"[cyan]> Cache Type K:[/] {settings.CacheTypeK}");
+        AnsiConsole.MarkupLine($"[cyan]> Cache Type V:[/] {settings.CacheTypeV}");
 
         var sd = settings.SamplingDefaults ?? new SamplingDefaults();
         AnsiConsole.MarkupLine("\n[cyan]> [yellow]Sampling Defaults:[/]");
-        AnsiConsole.WriteLine($"[cyan]  Temperature: {sd.Temperature}, TopK: {sd.TopK}, TopP: {sd.TopP}");
-        AnsiConsole.WriteLine($"[cyan]  MinP: {sd.MinP}, RepeatPenalty: {sd.RepeatPenalty}, RepeatLastN: {sd.RepeatLastN}");
+        AnsiConsole.MarkupLine($"[cyan]  Temperature: {sd.Temperature}, TopK: {sd.TopK}, TopP: {sd.TopP}[/]");
+        AnsiConsole.MarkupLine($"[cyan]  MinP: {sd.MinP}, RepeatPenalty: {sd.RepeatPenalty}, RepeatLastN: {sd.RepeatLastN}[/]");
 
         var srvd = settings.ServerDefaults ?? new ServerDefaults();
         AnsiConsole.MarkupLine("\n[dim]> --- Readonly Server Defaults (not editable via UI) ----[/]");
-        AnsiConsole.Write(new Markup($"[dim]  parallel={srvd.Parallel}, prio={srvd.Prio}, flash-attn={srvd.FlashAttn}[/]"));
-        AnsiConsole.Write(new Markup($"[dim]  kv-unified={srvd.KvUnified}, load-mode={srvd.LoadMode}, fit={srvd.Fit}[/]"));
-        AnsiConsole.Write(new Markup($"[dim]  cache-reuse={srvd.CacheReuse}, draft-p-min={srvd.DraftPMin}[/]"));
-        AnsiConsole.Write(new Markup($"[dim]  log-verbosity={srvd.LogVerbosity}[/]"));
-        AnsiConsole.Write(new Markup($"[dim]  samplers=\"{srvd.Samplers}\"[/]"));
-        AnsiConsole.Write(new Markup($"[dim]  context-shift={srvd.ContextShift}, reasoning-preserve={srvd.ReasoningPreserve}[/]"));
-        AnsiConsole.Write(new Markup($"[dim]  reasoning={srvd.Reasoning}, reasoning-budget={srvd.ReasoningBudget}[/]"));
-        AnsiConsole.Write(new Markup($"[dim]  batch-size={srvd.BatchSize}, ubatch-size={srvd.UbatchSize}, spec-type={srvd.SpecType}[/]"));
+        AnsiConsole.MarkupLine($"[dim]  parallel={srvd.Parallel}, prio={srvd.Prio}, flash-attn={srvd.FlashAttn}[/]");
+        AnsiConsole.MarkupLine($"[dim]  kv-unified={srvd.KvUnified}, load-mode={srvd.LoadMode}, fit={srvd.Fit}[/]");
+        AnsiConsole.MarkupLine($"[dim]  cache-reuse={srvd.CacheReuse}, draft-p-min={srvd.DraftPMin}[/]");
+        AnsiConsole.MarkupLine($"[dim]  log-verbosity={srvd.LogVerbosity}[/]");
+        AnsiConsole.MarkupLine($"[dim]  samplers=\"{srvd.Samplers}\"[/]");
+        AnsiConsole.MarkupLine($"[dim]  context-shift={srvd.ContextShift}, reasoning-preserve={srvd.ReasoningPreserve}[/]");
+        AnsiConsole.MarkupLine($"[dim]  reasoning={srvd.Reasoning}, reasoning-budget={srvd.ReasoningBudget}[/]");
+        AnsiConsole.MarkupLine($"[dim]  batch-size={srvd.BatchSize}, ubatch-size={srvd.UbatchSize}, spec-type={srvd.SpecType}[/]");
 
         var modelFolder = string.IsNullOrEmpty(settings.ModelsFolderPath) ? "(empty)" : settings.ModelsFolderPath;
-        AnsiConsole.Write(new Markup($"\n[cyan]> Models Folder:[/] {modelFolder}"));
+        AnsiConsole.MarkupLine($"\n[cyan]> Models Folder:[/] {modelFolder}");
 
         if (settings.Models.Count > 0)
         {
@@ -102,7 +102,7 @@ public sealed class SettingsView() : View("Settings")
             {
                 var m = settings.Models[i];
                 var aliasDisplay = string.IsNullOrWhiteSpace(m.Alias) ? "" : $" (alias: {m.Alias})";
-                AnsiConsole.Write(new Markup($"[cyan] #{i + 1}[/] {m.Id}: {m.GgufFileName}{aliasDisplay}"));
+                AnsiConsole.MarkupLine($"[cyan] #{i + 1}[/] {m.Id}: {m.GgufFileName}{aliasDisplay}[/]");
             }
         }
         else
@@ -127,7 +127,7 @@ public sealed class SettingsView() : View("Settings")
             if (File.Exists(newPath))
                 newSettings.LlamaCppPath = newPath;
             else
-                AnsiConsole.MarkupLine("[red]X Path does not exist. Keeping current value.[/]\n");
+                AnsiConsole.MarkupLine("[red]\u2717 Path does not exist. Keeping current value.[/]\n");
         }
 
         var hostInput = Helper.GetInput($"server host (current: \"{newSettings.Host}\")");
@@ -146,11 +146,11 @@ public sealed class SettingsView() : View("Settings")
                 if (port > 0 && port < 65536)
                     newSettings.ServerPort = port;
                 else
-                    AnsiConsole.MarkupLine("[red]X Must be number between 1-65535. Keeping current value.[/]\n");
+                    AnsiConsole.MarkupLine("[red]\u2717 Must be number between 1-65535. Keeping current value.[/]\n");
             }
             catch
             {
-                AnsiConsole.MarkupLine("[red]X Invalid number format. Keeping current value.[/]\n");
+                AnsiConsole.MarkupLine("[red]\u2717 Invalid number format. Keeping current value.[/]\n");
             }
         }
 
@@ -175,7 +175,7 @@ public sealed class SettingsView() : View("Settings")
             if (Directory.Exists(modelFolderInput))
                 newSettings.ModelsFolderPath = modelFolderInput;
             else
-                AnsiConsole.MarkupLine("[red]X Path does not exist. Keeping current value.[/]\n");
+                AnsiConsole.MarkupLine("[red]\u2717 Path does not exist. Keeping current value.[/]\n");
         }
 
         try
@@ -436,7 +436,7 @@ public sealed class SettingsView() : View("Settings")
         var normalized = raw.Replace(',', '.');
         if (double.TryParse(normalized, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var v))
             return v;
-        AnsiConsole.MarkupLine("[red]X Invalid number. Keeping current value.[/]\n");
+        AnsiConsole.MarkupLine("[red]\u2717 Invalid number. Keeping current value.[/]\n");
         return fallback;
     }
 
@@ -446,7 +446,7 @@ public sealed class SettingsView() : View("Settings")
         if (string.IsNullOrWhiteSpace(raw)) return fallback;
         if (int.TryParse(raw, out var v))
             return v;
-        AnsiConsole.MarkupLine("[red]X Invalid integer. Keeping current value.[/]\n");
+        AnsiConsole.MarkupLine("[red]\u2717 Invalid integer. Keeping current value.[/]\n");
         return fallback;
     }
 }

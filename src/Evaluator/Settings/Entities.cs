@@ -36,10 +36,10 @@ namespace Evaluator.Settings
     {
         public int Parallel { get; set; } = 1;
         public int Prio { get; set; } = 3;
-        public string FlashAttn { get; set; } = "on";
+        public bool FlashAttn { get; set; } = true;
         public bool KvUnified { get; set; } = true;
         public string LoadMode { get; set; } = "mmap";
-        public string Fit { get; set; } = "off";
+        public bool Fit { get; set; } = false;
         public int CacheReuse { get; set; } = 256;
         public double DraftPMin { get; set; } = 0.7;
         public int LogVerbosity { get; set; } = 3;
@@ -48,7 +48,7 @@ namespace Evaluator.Settings
         public bool ReasoningPreserve { get; set; } = true;
         public string Reasoning { get; set; } = "on";
         public int ReasoningBudget { get; set; } = 4096;
-        public string ReasoningBudgetMessage { get; set; } = "... Considering the limited time by the user, I have to give the solution based on the thinking directly now.";
+        public string ReasoningBudgetMessage { get; set; } = "";
         public int BatchSize { get; set; } = 1024;
         public int UbatchSize { get; set; } = 512;
         public string SpecType { get; set; } = "none";

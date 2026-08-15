@@ -67,6 +67,8 @@ public static class SettingsManager
                 ?? throw new Exception($"Settings file at {filePath} is empty or corrupt.");
 
             // Ensure backward compatibility with older settings files lacking expanded fields
+            if (settings.Models == null)
+                settings = settings with { Models = [] };
             if (settings.SamplingDefaults == null)
                 settings = settings with { SamplingDefaults = new SamplingDefaults() };
             if (settings.ServerDefaults == null)
