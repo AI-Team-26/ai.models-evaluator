@@ -1,19 +1,73 @@
 # In Progress
 
-*(Nothing in progress at the moment.)*
+**Branch:** `feat/12c__settings_expansion`
+**Goal:** Repeat `feat/12` work — expand settings schema & update UI — implemented by Qwen3-Coder-Next-REAP-40B-A3B.i1-IQ3_M_mradermacher.gguf.
+**Context:** Same as `feat/12`, but performed by different LLM model.
+**Model Used:** `Qwen3-Coder-Next-REAP-40B-A3B.i1-IQ3_M_mradermacher.gguf`
+
+Steps:
+- [ ] **Step 1: Expand `Entities.cs`**
+  - [ ] Add `Host` property to `ApplicationSettings` (default `127.0.0.1`)
+  - [ ] Add `CacheTypeK` and `CacheTypeV` to `ApplicationSettings` (default `q8_0`)
+  - [ ] Create `SamplingDefaults` record with: `Temperature` (double, `0.1`), `TopK` (int, `20`), `TopP` (double, `0.80`), `MinP` (double, `0.05`), `RepeatPenalty` (double, `1.15`), `RepeatLastN` (int, `1024`)
+  - [ ] Add `SamplingDefaults` property to `ApplicationSettings`
+  - [ ] Create `ServerDefaults` record with all readonly fields (see table above)
+  - [ ] Add `ServerDefaults` property to `ApplicationSettings`
+  - [ ] Add `Alias` property to `ModelSettings` (default `""`)
+  - [ ] Ensure backward compatibility: if `ServerDefaults` or `SamplingDefaults` are null after deserialization (old settings files), initialize with defaults in `SettingsManager.Load()`
+- [ ] **Step 2: Update `SettingsManager.Load()`**
+  - [ ] After deserialization, null-coalesce `ServerDefaults` and `SamplingDefaults` with `new ServerDefaults()` / `new SamplingDefaults()`
+  - [ ] Null-coalesce `Host` with `"127.0.0.1"` if empty
+  - [ ] Null-coalesce `CacheTypeK`/`CacheTypeV` with `"q8_0"` if empty
+- [ ] **Step 3: Update `SettingsView` — general settings editor**
+  - [ ] Add `Host` input to `EditGeneralSettings()`
+  - [ ] Add `CacheTypeK` and `CacheTypeV` inputs to `EditGeneralSettings()`
+  - [ ] Add sampling defaults editing (Temperature, TopK, TopP, MinP, RepeatPenalty, RepeatLastN) to `EditGeneralSettings()` or a new `EditSamplingDefaults()` method
+- [ ] **Step 4: Update `SettingsView` — model add/edit flows**
+  - [ ] Add `Alias` input to `AddModel()` (leave empty = auto-gen from GGUF filename)
+  - [ ] Add `Alias` input to `EditModel()`
+  - [ ] Auto-generate alias from GGUF filename (strip `.gguf`) when alias is empty
+- [ ] **Step 5: Update `ShowCurrentSettings()`**
+  - [ ] Display `Host` alongside `ServerPort`
+  - [ ] Display `CacheTypeK` / `CacheTypeV`
+  - [ ] Display sampling defaults section
+  - [ ] Display `ServerDefaults` (readonly) section — all readonly fields shown but marked as read-only
+  - [ ] Display `Alias` for each model
+- [ ] **Step 6: Build and verify**
+  - [ ] `dotnet build` passes
+  - [ ] `dotnet run` — verify settings load/save works with new fields
+  - [ ] Verify old settings file (without new fields) still loads (backward compat)
+
+Notes:
+- Do NOT implement `LlamaServerManager` changes in this branch — that’s `feat/03_server_management`.
+- The `ServerDefaults` record is a nested object in JSON. Example structure:
+  ```json
+  {
+    "host": "127.0.0.1",
+    "serverPort": 8001,
+    "cacheTypeK": "q8_0",
+    "cacheTypeV": "q8_0",
+    "samplingDefaults": { "temperature": 0.1, "topK": 20, ... },
+    "serverDefaults": { "parallel": 1, "prio": 3, ... },
+    "models": [ { "id": "...", "alias": "...", ... } ]
+  }
+  ```
+- `--reasoning-budget-message` is a long string with quotes — ensure proper JSON escaping.
 
 ---
 
 
 # Backlog
 
-## Phase 2: Build Evaluator Orchestration Tool
+> ⚧ *This section contains tasks previously started or completed.*
 
-### Next Priority: Expand Settings for llama-server flags (`feat/12_settings_expansion`)
+## Phase 2: Previous Tasks & Backlog
+
+### Previously Started: Expand Settings for llama-server flags (`feat/12b__settings_expansion`)
 Expand `ApplicationSettings` and `ModelSettings` to cover all llama-server CLI flags from the reference command. Split into editable (UI) and readonly (shown in Settings view, not editable via UI). This is a prerequisite for `feat/03_server_management`.
 
-**Branch:** `feat/12_settings_expansion`
-**Goal:** Expand the settings schema to cover all llama-server CLI flags, with editable/readonly distinction, and update the SettingsView UI accordingly.
+**Branch:** `feat/12b__settings_expansion`
+**Goal:** Same as above — expand settings schema & UI updates — implemented by model Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL_unsloth.gguf.
 
 **Context / Mental Picture:**
 - Reference llama-server command uses ~30 CLI flags. Currently only 6 are in settings (port, model, ctx-size, n-gpu-layers, n-cpu-moe, jinja).
