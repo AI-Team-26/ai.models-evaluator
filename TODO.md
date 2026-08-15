@@ -123,37 +123,21 @@ Expand `ApplicationSettings` and `ModelSettings` to cover all llama-server CLI f
 | `--n-cpu-moe` | Model (existing) | ✅ | — |
 
 **Steps:**
-- [ ] **Step 1: Expand `Entities.cs`**
-  - [ ] Add `Host` property to `ApplicationSettings` (default `127.0.0.1`)
-  - [ ] Add `CacheTypeK` and `CacheTypeV` to `ApplicationSettings` (default `q8_0`)
-  - [ ] Create `SamplingDefaults` record with: `Temperature` (double, `0.1`), `TopK` (int, `20`), `TopP` (double, `0.80`), `MinP` (double, `0.05`), `RepeatPenalty` (double, `1.15`), `RepeatLastN` (int, `1024`)
-  - [ ] Add `SamplingDefaults` property to `ApplicationSettings`
-  - [ ] Create `ServerDefaults` record with all readonly fields (see table above)
-  - [ ] Add `ServerDefaults` property to `ApplicationSettings`
-  - [ ] Add `Alias` property to `ModelSettings` (default `""`)
-  - [ ] Ensure backward compatibility: if `ServerDefaults` or `SamplingDefaults` are null after deserialization (old settings files), initialize with defaults in `SettingsManager.Load()`
-- [ ] **Step 2: Update `SettingsManager.Load()`**
-  - [ ] After deserialization, null-coalesce `ServerDefaults` and `SamplingDefaults` with `new ServerDefaults()` / `new SamplingDefaults()`
-  - [ ] Null-coalesce `Host` with `"127.0.0.1"` if empty
-  - [ ] Null-coalesce `CacheTypeK`/`CacheTypeV` with `"q8_0"` if empty
-- [ ] **Step 3: Update `SettingsView` — general settings editor**
-  - [ ] Add `Host` input to `EditGeneralSettings()`
-  - [ ] Add `CacheTypeK` and `CacheTypeV` inputs to `EditGeneralSettings()`
-  - [ ] Add sampling defaults editing (Temperature, TopK, TopP, MinP, RepeatPenalty, RepeatLastN) to `EditGeneralSettings()` or a new `EditSamplingDefaults()` method
-- [ ] **Step 4: Update `SettingsView` — model add/edit flows**
-  - [ ] Add `Alias` input to `AddModel()` (leave empty = auto-gen from GGUF filename)
-  - [ ] Add `Alias` input to `EditModel()`
-  - [ ] Auto-generate alias from GGUF filename (strip `.gguf`) when alias is empty
-- [ ] **Step 5: Update `ShowCurrentSettings()`**
-  - [ ] Display `Host` alongside `ServerPort`
-  - [ ] Display `CacheTypeK` / `CacheTypeV`
-  - [ ] Display sampling defaults section
-  - [ ] Display `ServerDefaults` (readonly) section — all readonly fields shown but marked as read-only
-  - [ ] Display `Alias` for each model
+- [x] **Step 1: Expand `Entities.cs`** ✅
+  - [x] Add `Host`, `CacheTypeK/V`, `SamplingDefaults`, `ServerDefaults` records & properties
+  - [x] Add `Alias` to `ModelSettings`
+- [x] **Step 2: Update `SettingsManager.Load()`** ✅
+  - [x] Backward-compat initialization for missing nested objects
+- [x] **Step 3: Update `SettingsView` — general settings editor** ✅
+  - [x] Added Host, CacheTypeK/V inputs + EditSamplingDefaults()
+- [x] **Step 4: Update `SettingsView` — model add/edit flows** ✅
+  - [x] Alias input with auto-generation from GGUF filename
+- [x] **Step 5: Update `ShowCurrentSettings()`** ✅
+  - [x] Displays all new fields including readonly ServerDefaults section
 - [ ] **Step 6: Build and verify**
-  - [ ] `dotnet build` passes
-  - [ ] `dotnet run` — verify settings load/save works with new fields
-  - [ ] Verify old settings file (without new fields) still loads (backward compat)
+  - [x] `dotnet build` passes ✅
+  - [ ] `dotnet run` — manual verification of UI flow
+  - [ ] Test backward compatibility with old settings.json
 
 **Notes:**
 - Do NOT implement `LlamaServerManager` changes in this branch — that's `feat/03_server_management`.
