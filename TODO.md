@@ -55,11 +55,37 @@ Notes:
 - `--reasoning-budget-message` is a long string with quotes — ensure proper JSON escaping.
 
 ---
-
-
 # Backlog
 
-> ⚧ *This section contains tasks previously started or completed.*
+## feat/13_avalonia_ui_scaffolding
+Create a basic Avalonia UI project scaffolding with a simple home page.
+
+**Branch:** `feat/13_avalonia_ui_scaffolding`
+**Goal:** Scaffold a new Avalonia UI project that displays a simple "Hello World" home page.
+
+**Context / Mental Picture:**
+- New C# Avalonia application project under `src/AvaloniaUI/`
+- No MVVM framework yet — plain XAML with code-behind for simplicity
+- Minimal setup: just verify Avalonia runs and shows a window
+- Will reference the existing `Evaluator` project later once basics work
+
+**Steps:**
+- [ ] Create new Avalonia project: `dotnet new avalonia-mvvm -o src/AvaloniaUI` (or console template if simpler)
+- [ ] Add required NuGet packages via `Directory.Packages.props` (Avalonia, Avalonia.Themes.Fluent)
+- [ ] Update `.slnx` to include the new project
+- [ ] Verify build: `dotnet build`
+- [ ] Verify run: `dotnet run --project src/AvaloniaUI/AvaloniaUI.csproj` shows a window
+- [ ] Replace default content with a simple "AI Models Evaluator" label/home page
+- [ ] Commit and test again
+
+**Notes:**
+- Template command may vary; check latest Avalonia docs if needed
+- Start with Windows-only target for now (no need for multiplatform config yet)
+- Keep styling minimal — system defaults are fine
+
+---
+
+## Phase 2: Previous Tasks & Backlog
 
 ## Phase 2: Previous Tasks & Backlog
 
