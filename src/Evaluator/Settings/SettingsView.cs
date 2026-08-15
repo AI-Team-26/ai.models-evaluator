@@ -67,7 +67,7 @@ public sealed class SettingsView() : View("Settings")
     {
         ApplicationSettings settings = SettingsManager.GetSettings(forceReload: true);
 
-        AnsiConsole.MarkupLine("[bold cyan]=== Current Settings ===================================[/]\n");
+        AnsiConsole.MarkupLine("[bold cyan]╔════════════════════════════════════════════╗[/][dim]\n");
 
         var llamaPath = string.IsNullOrEmpty(settings.LlamaCppPath) ? "(empty)" : settings.LlamaCppPath;
         AnsiConsole.MarkupLine($"[cyan]> llama.cpp folder:[/] {llamaPath}");
