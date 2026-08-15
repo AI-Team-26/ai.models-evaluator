@@ -2,7 +2,7 @@
 
 **Branch:** `feat/12e__settings_expansion`
 **Goal:** Repeat `feat/12` work — expand settings schema & update UI — implemented by Qwen3.5-27B-IQ4_XS_unsloth.gguf.
-**Status:** Addressing review comments
+**Status:** Awaiting re-review after addressing Agent-Dev-2's feedback
 **Model Used:** `Qwen3.5-27B-IQ4_XS_unsloth.gguf`
 
 Steps:
