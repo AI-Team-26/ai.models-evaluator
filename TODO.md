@@ -1,7 +1,6 @@
 # In Progress
 
-## feat/12_settings_expansion (`feat/12e__settings_expansion`) ✅ MERGED
-Expand ApplicationSettings and ModelSettings for llama-server CLI flags with editable/readonly distinction.
+*(Nothing in progress at the moment.)*
 
 ---
 

@@ -4,8 +4,8 @@ namespace Evaluator.Settings;
 
 public static class SettingsManager
 {
-    private const string AppicationDir = "LlmEvaluator";
-    private const string FileName = "Settings.json";
+    private static string AppicationDir = "LlmEvaluator";
+    private static string FileName = "Settings.json";
 
     private static ApplicationSettings? settings;
     private static JsonSerializerOptions jsonOptions = new()

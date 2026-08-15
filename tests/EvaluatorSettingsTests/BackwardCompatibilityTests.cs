@@ -1,20 +1,25 @@
 using System.IO;
 using System.Reflection;
-using System.Text.Json;
 using Evaluator.Settings;
 using NUnit.Framework;
 
 [TestFixture]
 public sealed class BackwardCompatibilityTests
 {
-    private const string TempDir = "__test_settings_tmp";
+    private static readonly string TempDir = Path.Combine(Path.GetTempPath(), "EvaluatorSettingsTests");
+    private const string OriginalAppicationDir = "LlmEvaluator";
+    private const string OriginalFileName = "Settings.json";
 
     [SetUp]
     public void SetUp()
     {
+        // Clean up temp dir from previous run
         if (Directory.Exists(TempDir))
             Directory.Delete(TempDir, recursive: true);
         Directory.CreateDirectory(TempDir);
+        // Reset cached settings from previous test
+        var field = typeof(SettingsManager).GetField("settings", BindingFlags.NonPublic | BindingFlags.Static)!;
+        field.SetValue(null, null);
     }
 
     [TearDown]
@@ -22,20 +27,34 @@ public sealed class BackwardCompatibilityTests
     {
         if (Directory.Exists(TempDir))
             Directory.Delete(TempDir, recursive: true);
+        // Always reset cached settings
+        var field = typeof(SettingsManager).GetField("settings", BindingFlags.NonPublic | BindingFlags.Static)!;
+        field.SetValue(null, null);
     }
 
-    private void PatchSettingsPath(string path)
+    private void OverrideSettingsPath()
     {
-        var field = typeof(SettingsManager).GetField("AppicationDir", BindingFlags.NonPublic | BindingFlags.Static);
-        var fileField = typeof(SettingsManager).GetField("FileName", BindingFlags.NonPublic | BindingFlags.Static);
-        // Use reflection to override the static fields temporarily via a helper method
-        // Instead, we'll set up a temp directory and mock via environment
+        var dirField = typeof(SettingsManager).GetField("AppicationDir", BindingFlags.NonPublic | BindingFlags.Static)!;
+        var fileField = typeof(SettingsManager).GetField("FileName", BindingFlags.NonPublic | BindingFlags.Static)!;
+        dirField.SetValue(null, TempDir);
+        fileField.SetValue(null, "Settings.json");
+    }
+
+    private string ComputeFullTempPath() => Path.Combine(TempDir, "Settings.json");
+
+    private void RestoreSettingsPath()
+    {
+        var dirField = typeof(SettingsManager).GetField("AppicationDir", BindingFlags.NonPublic | BindingFlags.Static)!;
+        var fileField = typeof(SettingsManager).GetField("FileName", BindingFlags.NonPublic | BindingFlags.Static)!;
+        dirField.SetValue(null, OriginalAppicationDir);
+        fileField.SetValue(null, OriginalFileName);
+        var field = typeof(SettingsManager).GetField("settings", BindingFlags.NonPublic | BindingFlags.Static)!;
+        field.SetValue(null, null);
     }
 
     [Test]
     public void Load_oldSettingsFile_withoutNewFields_appliesDefaults()
     {
-        // Write an old-format JSON (no Host, CacheTypeK/V, SamplingDefaults, ServerDefaults, Alias)
         var oldJson = @"{
   ""llamaCppPath"": ""/tmp/llama"",
   ""serverPort"": 8001,
@@ -45,45 +64,31 @@ public sealed class BackwardCompatibilityTests
   ]
 }";
 
-        var filePath = Path.Combine(TempDir, "Settings.json");
-        File.WriteAllText(filePath, oldJson);
+        File.WriteAllText(ComputeFullTempPath(), oldJson);
 
-        // Redirect the static path by writing to our temp dir instead
-        // We can't easily patch static consts, so we test through direct serialization/deserialization
-        var jsonOptions = new System.Text.Json.JsonSerializerOptions
+        OverrideSettingsPath();
+
+        try
         {
-            WriteIndented = true,
-            PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase
-        };
+            var loaded = SettingsManager.GetSettings(forceReload: true);
 
-        var deserialized = System.Text.Json.JsonSerializer.Deserialize<ApplicationSettings>(oldJson, jsonOptions)!;
-
-        // Simulate what Load() does for backward compat
-        if (deserialized.Models == null)
-            deserialized = deserialized with { Models = [] };
-        if (deserialized.SamplingDefaults == null)
-            deserialized = deserialized with { SamplingDefaults = new SamplingDefaults() };
-        if (deserialized.ServerDefaults == null)
-            deserialized = deserialized with { ServerDefaults = new ServerDefaults() };
-        if (string.IsNullOrEmpty(deserialized.Host))
-            deserialized = deserialized with { Host = "127.0.0.1" };
-        if (string.IsNullOrEmpty(deserialized.CacheTypeK))
-            deserialized = deserialized with { CacheTypeK = "q8_0" };
-        if (string.IsNullOrEmpty(deserialized.CacheTypeV))
-            deserialized = deserialized with { CacheTypeV = "q8_0" };
-
-        Assert.That(deserialized.Host, Is.EqualTo("127.0.0.1"));
-        Assert.That(deserialized.CacheTypeK, Is.EqualTo("q8_0"));
-        Assert.That(deserialized.CacheTypeV, Is.EqualTo("q8_0"));
-        Assert.That(deserialized.SamplingDefaults.Temperature, Is.EqualTo(0.1));
-        Assert.That(deserialized.SamplingDefaults.TopK, Is.EqualTo(20));
-        Assert.That(deserialized.SamplingDefaults.RepeatLastN, Is.EqualTo(1024));
-        Assert.That(deserialized.ServerDefaults.Parallel, Is.EqualTo(1));
-        Assert.That(deserialized.ServerDefaults.Prio, Is.EqualTo(3));
-        Assert.That(deserialized.ServerDefaults.FlashAttn, Is.True);
-        Assert.That(deserialized.ServerDefaults.ReasoningBudget, Is.EqualTo(4096));
-        Assert.That(deserialized.Models.Count, Is.EqualTo(1));
-        Assert.That(deserialized.Models[0].Alias, Is.EqualTo(""));
+            Assert.That(loaded.Host, Is.EqualTo("127.0.0.1"));
+            Assert.That(loaded.CacheTypeK, Is.EqualTo("q8_0"));
+            Assert.That(loaded.CacheTypeV, Is.EqualTo("q8_0"));
+            Assert.That(loaded.SamplingDefaults.Temperature, Is.EqualTo(0.1));
+            Assert.That(loaded.SamplingDefaults.TopK, Is.EqualTo(20));
+            Assert.That(loaded.SamplingDefaults.RepeatLastN, Is.EqualTo(1024));
+            Assert.That(loaded.ServerDefaults.Parallel, Is.EqualTo(1));
+            Assert.That(loaded.ServerDefaults.Prio, Is.EqualTo(3));
+            Assert.That(loaded.ServerDefaults.FlashAttn, Is.True);
+            Assert.That(loaded.ServerDefaults.ReasoningBudget, Is.EqualTo(4096));
+            Assert.That(loaded.Models.Count, Is.EqualTo(1));
+            Assert.That(loaded.Models[0].Alias, Is.EqualTo(""));
+        }
+        finally
+        {
+            RestoreSettingsPath();
+        }
     }
 
     [Test]
@@ -103,22 +108,33 @@ public sealed class BackwardCompatibilityTests
   ]
 }";
 
-        var deserialized = System.Text.Json.JsonSerializer.Deserialize<ApplicationSettings>(newJson, new JsonSerializerOptions { WriteIndented = true, PropertyNamingPolicy = JsonNamingPolicy.CamelCase })!;
+        File.WriteAllText(ComputeFullTempPath(), newJson);
 
-        Assert.That(deserialized.LlamaCppPath, Is.EqualTo("/opt/llama"));
-        Assert.That(deserialized.ServerPort, Is.EqualTo(9000));
-        Assert.That(deserialized.Host, Is.EqualTo("0.0.0.0"));
-        Assert.That(deserialized.CacheTypeK, Is.EqualTo("f16"));
-        Assert.That(deserialized.CacheTypeV, Is.EqualTo("bf16"));
-        Assert.That(deserialized.SamplingDefaults.Temperature, Is.EqualTo(0.5));
-        Assert.That(deserialized.SamplingDefaults.TopK, Is.EqualTo(50));
-        Assert.That(deserialized.ServerDefaults.Parallel, Is.EqualTo(2));
-        Assert.That(deserialized.ServerDefaults.FlashAttn, Is.False);
-        Assert.That(deserialized.ServerDefaults.Reasoning, Is.EqualTo("off"));
-        Assert.That(deserialized.Models.Count, Is.EqualTo(1));
-        Assert.That(deserialized.Models[0].Id, Is.EqualTo("m1"));
-        Assert.That(deserialized.Models[0].Alias, Is.EqualTo("my-model"));
-        Assert.That(deserialized.Models[0].Jinja, Is.True);
+        OverrideSettingsPath();
+
+        try
+        {
+            var loaded = SettingsManager.GetSettings(forceReload: true);
+
+            Assert.That(loaded.LlamaCppPath, Is.EqualTo("/opt/llama"));
+            Assert.That(loaded.ServerPort, Is.EqualTo(9000));
+            Assert.That(loaded.Host, Is.EqualTo("0.0.0.0"));
+            Assert.That(loaded.CacheTypeK, Is.EqualTo("f16"));
+            Assert.That(loaded.CacheTypeV, Is.EqualTo("bf16"));
+            Assert.That(loaded.SamplingDefaults.Temperature, Is.EqualTo(0.5));
+            Assert.That(loaded.SamplingDefaults.TopK, Is.EqualTo(50));
+            Assert.That(loaded.ServerDefaults.Parallel, Is.EqualTo(2));
+            Assert.That(loaded.ServerDefaults.FlashAttn, Is.False);
+            Assert.That(loaded.ServerDefaults.Reasoning, Is.EqualTo("off"));
+            Assert.That(loaded.Models.Count, Is.EqualTo(1));
+            Assert.That(loaded.Models[0].Id, Is.EqualTo("m1"));
+            Assert.That(loaded.Models[0].Alias, Is.EqualTo("my-model"));
+            Assert.That(loaded.Models[0].Jinja, Is.True);
+        }
+        finally
+        {
+            RestoreSettingsPath();
+        }
     }
 
     [Test]
@@ -140,14 +156,23 @@ public sealed class BackwardCompatibilityTests
             ]
         };
 
-        var json = JsonSerializer.Serialize(original, new JsonSerializerOptions { WriteIndented = true, PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
-        var roundTripped = JsonSerializer.Deserialize<ApplicationSettings>(json, new JsonSerializerOptions { WriteIndented = true, PropertyNamingPolicy = JsonNamingPolicy.CamelCase })!;
+        OverrideSettingsPath();
 
-        Assert.That(roundTripped.Host, Is.EqualTo("127.0.0.1"));
-        Assert.That(roundTripped.CacheTypeK, Is.EqualTo("q8_0"));
-        Assert.That(roundTripped.SamplingDefaults.Temperature, Is.EqualTo(0.3));
-        Assert.That(roundTripped.SamplingDefaults.RepeatLastN, Is.EqualTo(768));
-        Assert.That(roundTripped.ServerDefaults.BatchSize, Is.EqualTo(1024));
-        Assert.That(roundTripped.Models[0].Alias, Is.EqualTo("GPT model"));
+        try
+        {
+            SettingsManager.Save(original);
+            var roundTripped = SettingsManager.GetSettings(forceReload: true);
+
+            Assert.That(roundTripped.Host, Is.EqualTo("127.0.0.1"));
+            Assert.That(roundTripped.CacheTypeK, Is.EqualTo("q8_0"));
+            Assert.That(roundTripped.SamplingDefaults.Temperature, Is.EqualTo(0.3));
+            Assert.That(roundTripped.SamplingDefaults.RepeatLastN, Is.EqualTo(768));
+            Assert.That(roundTripped.ServerDefaults.BatchSize, Is.EqualTo(1024));
+            Assert.That(roundTripped.Models[0].Alias, Is.EqualTo("GPT model"));
+        }
+        finally
+        {
+            RestoreSettingsPath();
+        }
     }
 }

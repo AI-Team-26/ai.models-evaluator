@@ -110,7 +110,7 @@ public sealed class SettingsView() : View("Settings")
             AnsiConsole.MarkupLine("\n[cyan]> [red]No models configured.[/][/]");
         }
 
-        AnsiConsole.MarkupLine("[bold cyan]=========================================================[/]\n");
+        AnsiConsole.MarkupLine("[bold cyan]╚════════════════════════════════════════════╝[/]\n");
     }
 
     private void EditGeneralSettings()
