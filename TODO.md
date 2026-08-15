@@ -1,9 +1,9 @@
 # In Progress
 
-**Branch:** `feat/12c__settings_expansion`
-**Goal:** Repeat `feat/12` work — expand settings schema & update UI — implemented by Qwen3-Coder-Next-REAP-40B-A3B.i1-IQ3_M_mradermacher.gguf.
+**Branch:** `feat/12e__settings_expansion`
+**Goal:** Repeat `feat/12` work — expand settings schema & update UI — implemented by Qwen3.5-27B-IQ4_XS_unsloth.gguf.
 **Context:** Same as `feat/12`, but performed by different LLM model.
-**Model Used:** `Qwen3-Coder-Next-REAP-40B-A3B.i1-IQ3_M_mradermacher.gguf`
+**Model Used:** `Qwen3.5-27B-IQ4_XS_unsloth.gguf`
 
 Steps:
 - [ ] **Step 1: Expand `Entities.cs`**
