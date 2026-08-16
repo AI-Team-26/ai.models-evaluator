@@ -22,6 +22,8 @@ Create a basic Avalonia UI project scaffolding with a simple home page.
 - [ ] Replace default content with a simple "AI Models Evaluator" label/home page
 - [ ] Commit and test again
 
+**PR:** #19 — [feat/13: Scaffold Avalonia UI project](https://github.com/AI-Team-26/ai.models-evaluator/pull/19)
+
 **Notes:**
 - Start with Windows-only target for now (no need for multiplatform config yet)
 - Keep styling minimal — system defaults are fine
