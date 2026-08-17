@@ -12,7 +12,7 @@ This project contains **intentional bugs** in the `src/TargetCode/` directory. T
 
 The test suite in `tests/TargetCodeTests/` contains the expected correct behavior. When an AI model proposes a fix, these tests verify if the fix actually resolves the bugs.
 
-**Important:** Do not "fix" these bugs for production use — they are intentional test cases for AI evaluation.
+**Important:** Do not "fix" these bugs — they are intentional test cases for AI evaluation.
 
 ## 🏗️ High-Level Architecture
 
