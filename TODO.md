@@ -1,40 +1,4 @@
-# In Progress
 
-## feat/12g__settings_extension
-**Goal:** Fresh implementation of expanded settings schema & UI updates — implemented for model Nemotron-3.5-Lightning_(bartowski)_96k.
-
-**Context / Mental Picture:**
-- Reference llama-server command uses ~30 CLI flags. Currently only 6 are in settings (port, model, ctx-size, n-gpu-layers, n-cpu-moe, jinja).
-- Flags categorized into three groups:
-  1. **App-level editable** — shown and editable in Settings UI (general settings editor).
-  2. **App-level readonly** — shown in Settings view (read-only display), stored in JSON with hardcoded defaults. Not editable via UI.
-  3. **Per-model editable** — shown and editable in add/edit model flows.
-- Readonly fields stored in `ServerDefaults` record nested in `ApplicationSettings`. Null-coalesce on load for old files.
-- Sampling params shared across all models as `SamplingDefaults`.
-- `--cache-type-k` and `--cache-type-v` app-level editable, default `q8_0`.
-- `--alias` per-model, editable. If empty, auto-generate from GGUF filename (strip `.gguf`).
-- Do NOT implement `LlamaServerManager` changes — that's `feat/03_server_management`.
-
-**Steps:**
-- [x] Step 1: Expand `Entities.cs`
-  - [x] Add `Host`, `CacheTypeK/V`, `SamplingDefaults`, `ServerDefaults` records & properties
-  - [x] Add `Alias` to `ModelSettings`
-- [x] Step 2: Update `SettingsManager.Load()`
-  - [x] Backward-compat null-coalesce for missing nested objects
-- [x] Step 3: Update `SettingsView` — general settings editor
-  - [x] Add Host, CacheTypeK/V inputs + sampling defaults display
-- [ ] Step 4: Update `SettingsView` — model add/edit flows
-  - [ ] Alias input with auto-generation from GGUF filename
-- [x] Step 5: Update `ShowCurrentSettings()`
-  - [x] Display all new fields including readonly ServerDefaults section
-- [x] Step 6: Build and verify
-  - [x] `dotnet build` passes
-  - [ ] `dotnet run` — manual verification of UI flow
-  - [ ] Test backward compatibility with old settings.json
-
-**Notes:**
-- The `ServerDefaults` record is a nested object in JSON.
-- `--reasoning-budget-message` is a long string with quotes — ensure proper JSON escaping.
 
 ---
 
@@ -221,3 +185,18 @@ Skipped — went straight to implementation with interactive UI instead of upfro
 
 ~~**Step E: Static Settings Manager**~~ ~~(Completed differently than planned)~~
 Implemented as SettingsManager singleton with interactive TUI wizard. No separate models.json created; everything lives in single Settings.json file managed through the app's menu system.
+
+## feat/12g__settings_extension — Expanded settings schema for Nemotron-3.5-Lightning model ✅ COMPLETED
+**Goal:** Fresh implementation of expanded settings schema & UI updates for model Nemotron-3.5-Lightning_(bartowski)_96k.
+
+**Changes Made:**
+- Expanded `ApplicationSettings` with `Host`, `CacheTypeK`, `CacheTypeV`, `SamplingDefaults`, `ServerDefaults` properties
+- Added `Alias` property to `ModelSettings` with auto-generation from GGUF filename
+- Updated `SettingsManager.Load()` with backward-compatibility null-coalescing
+- Updated `SettingsView` general settings editor with new field inputs
+- Updated `SettingsView` model add/edit flows with alias input
+- Updated `ShowCurrentSettings()` to display all new fields including readonly ServerDefaults section
+
+**Build Status:** `dotnet build` passes successfully.
+
+**PR:** #20 created for this feature branch.
