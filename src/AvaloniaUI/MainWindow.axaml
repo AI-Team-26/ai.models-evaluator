@@ -4,6 +4,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="AvaloniaUI.MainWindow"
-        Title="AvaloniaUI">
-    Welcome to Avalonia!
+        Title="AI Models Evaluator">
+    <TextBlock Text="AI Models Evaluator"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               FontSize="24"
+               FontWeight="Bold" />
 </Window>
