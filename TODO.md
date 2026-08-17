@@ -1,9 +1,6 @@
-# In Progress
 
-*(Nothing in progress at the moment.)*
 
 ---
-
 
 # Backlog
 
@@ -112,8 +109,7 @@ Expand `ApplicationSettings` and `ModelSettings` to cover all llama-server CLI f
   - [ ] Null-coalesce `CacheTypeK`/`CacheTypeV` with `"q8_0"` if empty
 - [ ] **Step 3: Update `SettingsView` — general settings editor**
   - [ ] Add `Host` input to `EditGeneralSettings()`
-  - [ ] Add `CacheTypeK` and `CacheTypeV` inputs to `EditGeneralSettings()`
-  - [ ] Add sampling defaults editing (Temperature, TopK, TopP, MinP, RepeatPenalty, RepeatLastN) to `EditGeneralSettings()` or a new `EditSamplingDefaults()` method
+  - [ ] Add `CacheTypeK` and `CacheTypeV` inputs to `EditGeneralSettings()
 - [ ] **Step 4: Update `SettingsView` — model add/edit flows**
   - [ ] Add `Alias` input to `AddModel()` (leave empty = auto-gen from GGUF filename)
   - [ ] Add `Alias` input to `EditModel()`
@@ -189,3 +185,18 @@ Skipped — went straight to implementation with interactive UI instead of upfro
 
 ~~**Step E: Static Settings Manager**~~ ~~(Completed differently than planned)~~
 Implemented as SettingsManager singleton with interactive TUI wizard. No separate models.json created; everything lives in single Settings.json file managed through the app's menu system.
+
+## feat/12g__settings_extension — Expanded settings schema for Nemotron-3.5-Lightning model ✅ COMPLETED
+**Goal:** Fresh implementation of expanded settings schema & UI updates for model Nemotron-3.5-Lightning_(bartowski)_96k.
+
+**Changes Made:**
+- Expanded `ApplicationSettings` with `Host`, `CacheTypeK`, `CacheTypeV`, `SamplingDefaults`, `ServerDefaults` properties
+- Added `Alias` property to `ModelSettings` with auto-generation from GGUF filename
+- Updated `SettingsManager.Load()` with backward-compatibility null-coalescing
+- Updated `SettingsView` general settings editor with new field inputs
+- Updated `SettingsView` model add/edit flows with alias input
+- Updated `ShowCurrentSettings()` to display all new fields including readonly ServerDefaults section
+
+**Build Status:** `dotnet build` passes successfully.
+
+**PR:** #20 created for this feature branch.

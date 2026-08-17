@@ -26,16 +26,17 @@ public static class SettingsManager
     /// <summary>
     /// Raise an Exception if Settings cannot be loaded.
     /// </summary>
-    public static ApplicationSettings GetSettings(bool forceReload=false)
+    public static ApplicationSettings GetSettings(bool forceReload = false)
     {
-        if (settings == null || forceReload) {
+        if (settings == null || forceReload)
+        {
             if (!FileExists())
                 throw new Exception("Settings file not found.");
 
             return Load();
         }
 
-        return settings ?? throw new Exception("Settings is null"); // in theory settings in never null here
+        return settings ?? throw new Exception("Settings is null"); // in theory settings is never null here
     }
 
     public static void Save(ApplicationSettings newSettings)
@@ -55,7 +56,6 @@ public static class SettingsManager
         }
     }
 
-
     private static ApplicationSettings Load()
     {
         var filePath = SettingsFilePath;
@@ -66,6 +66,18 @@ public static class SettingsManager
             settings = JsonSerializer.Deserialize<ApplicationSettings>(json, jsonOptions)
                 ?? throw new Exception($"Settings file at {filePath} is empty or corrupt.");
 
+            // Backward compatibility: initialize nullable nested objects with defaults for old settings files
+            if (settings?.ServerDefaults == null)
+                settings.ServerDefaults = new ServerDefaults();
+            if (settings?.SamplingDefaults == null)
+                settings.SamplingDefaults = new SamplingDefaults();
+            if (string.IsNullOrEmpty(settings?.Host))
+                settings.Host = "127.0.0.1";
+            if (string.IsNullOrEmpty(settings?.CacheTypeK))
+                settings.CacheTypeK = "q8_0";
+            if (string.IsNullOrEmpty(settings?.CacheTypeV))
+                settings.CacheTypeV = "q8_0";
+
             return settings;
         }
         catch (FileNotFoundException)
@@ -75,12 +87,11 @@ public static class SettingsManager
         catch (JsonException ex)
         {
             throw new Exception(
-                $"Corrupt settings file at {filePath}. Delete it to regenerate.\nError: {ex.Message}", ex);
+                $"Corrupt settings file at {filePath}. Delete it to regenerate.{System.Environment.NewLine}Error: {ex.Message}", ex);
         }
         catch (Exception exc)
         {
-            throw new Exception($"Failed to load Settings. {exc.Message}", exc);
+            throw new Exception($"Failed to load Settings.: {exc.Message}", exc);
         }
     }
-
 }
