@@ -1,41 +1,36 @@
 # In Progress
 
-## feat/13_avalonia_ui_scaffolding — Avalonia UI Scaffolding
-Create a basic Avalonia UI project scaffolding with a simple home page.
+*(Nothing in progress at the moment.)*
 
-**Branch:** `feat/13_avalonia_ui_scaffolding`
-**Goal:** Scaffold a new Avalonia UI project that displays a simple "Hello World" home page.
+---
+
+# Backlog
+
+## fix/01_ci_test_failures
+Make CI `test` workflow pass on `main`.
+
+**Branch:** `fix/01_ci_test_failures`
+**Goal:** Fix the 9 failing tests in `TargetCodeTests` so the CI `test.yml` workflow is green.
 
 **Context / Mental Picture:**
-- New C# Avalonia application project under `src/AvaloniaUI/`
-- No MVVM framework yet — plain XAML with code-behind for simplicity
-- Minimal setup: just verify Avalonia runs and shows a window
-- Will reference the existing `Evaluator` project later once basics work
-- Central package management via `Directory.Packages.props`
+- The `test.yml` workflow runs `dotnet test` on every push/PR to `main`.
+- Currently 9 of 13 tests in `TargetCodeTests` fail (`SumRange`, `SplitCsv`, `SafeProduct`).
+- These are intentionally buggy target code methods that the evaluator is designed to evaluate.
+- **Decision needed:** Either fix the bugs in `TargetCode` so tests pass, OR mark these tests as expected-to-fail (e.g., `[Ignore]`) since they represent the "buggy code" the evaluator tests against.
+- The `build.yml` workflow already passes.
 
 **Steps:**
-- [x] Create new Avalonia project under `src/AvaloniaUI/`
-- [x] Add Avalonia NuGet packages to `Directory.Packages.props`
-- [x] Update `AI.Evaluator.slnx` to include the new project
-- [x] Verify build: `dotnet build` ✅ (0 warnings, 0 errors)
-- [x] Replace default content with a simple "AI Models Evaluator" label/home page
-- [x] Fix: `OutputType` changed from `WinExe` to `Exe` for cross-platform CI compatibility
-- [x] Commit and test again
-
-**PR:** #19 — [feat/13: Scaffold Avalonia UI project](https://github.com/AI-Team-26/ai.models-evaluator/pull/19)
+- [ ] Investigate which tests fail and why (run `dotnet test` locally)
+- [ ] Decide approach: fix the bugs vs. mark as expected failures
+- [ ] Implement the fix
+- [ ] Verify `dotnet test` passes locally
+- [ ] Verify CI `test.yml` passes on the PR
 
 **Notes:**
-- Start with Windows-only target for now (no need for multiplatform config yet)
-- Keep styling minimal — system defaults are fine
+- This is a pre-existing issue on `main` — not caused by any open PR.
+- The failing tests are: `SumRange_basic_range_includes_end`, `SumRange_negative_to_positive`, `SumRange_single_element_returns_itself`, `SafeProduct_exceeds_int_max_still_accurate`, `SafeProduct_large_values_no_overflow`, `SplitCsv_quoted_field_with_comma_keeps_intact`, and others.
 
 ---
-
-# Backlog
-
----
-
-
-# Backlog
 
 ## feat/13_avalonia_ui_scaffolding
 Create a basic Avalonia UI project scaffolding with a simple home page.
@@ -208,14 +203,11 @@ Design outcome recording format once evaluator has execution data.
 
 # Completed
 
+## feat/13_avalonia_ui_scaffolding — Avalonia UI Scaffolding ✅ MERGED
+Scaffolded a new Avalonia UI project under `src/AvaloniaUI/` with a simple "AI Models Evaluator" home page. Central package management, cross-platform `Exe` output type.
+
 ## refactor/07_settings_manager — Centralized Configuration Management ✅ MERGED
 Created SettingsManager singleton; eliminated config duplication across classes.
 
 ## feat/10_interactive_setup — Interactive Settings Editor ✅ MERGED
 Built full TUI configuration wizard using Spectre.Console. Users can add/edit/remove models without touching JSON files directly.
-
-~~**Step C: Configuration Schema Design**~~ ~~(Obsolete)~~
-Skipped — went straight to implementation with interactive UI instead of upfront schema design.
-
-~~**Step E: Static Settings Manager**~~ ~~(Completed differently than planned)~~
-Implemented as SettingsManager singleton with interactive TUI wizard. No separate models.json created; everything lives in single Settings.json file managed through the app's menu system.
