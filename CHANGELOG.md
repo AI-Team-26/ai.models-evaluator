@@ -17,3 +17,8 @@ All notable changes to this project will be documented in this file.
 - Centralized NuGet package management via Directory.Build.props
 - Solution structure: src/ for source code, tests/ for unit tests
 - .NET 10.0 target framework
+
+### Documentation
+- Added `docs/experimental_prs.md` documenting the experimental `feat/12` settings-expansion
+  history: the branch was used to test multiple LLM models, producing several parallel PRs
+  (#16, #17, #18, #20, #22, #23) that are now superseded by #22 and should be ignored.
