@@ -7,6 +7,32 @@
 
 # Backlog
 
+## fix/01_ci_test_failures
+Make CI `test` workflow pass on `main`.
+
+**Branch:** `fix/01_ci_test_failures`
+**Goal:** Fix the 9 failing tests in `TargetCodeTests` so the CI `test.yml` workflow is green.
+
+**Context / Mental Picture:**
+- The `test.yml` workflow runs `dotnet test` on every push/PR to `main`.
+- Currently 9 of 13 tests in `TargetCodeTests` fail (`SumRange`, `SplitCsv`, `SafeProduct`).
+- These are intentionally buggy target code methods that the evaluator is designed to evaluate.
+- **Decision needed:** Either fix the bugs in `TargetCode` so tests pass, OR mark these tests as expected-to-fail (e.g., `[Ignore]`) since they represent the "buggy code" the evaluator tests against.
+- The `build.yml` workflow already passes.
+
+**Steps:**
+- [ ] Investigate which tests fail and why (run `dotnet test` locally)
+- [ ] Decide approach: fix the bugs vs. mark as expected failures
+- [ ] Implement the fix
+- [ ] Verify `dotnet test` passes locally
+- [ ] Verify CI `test.yml` passes on the PR
+
+**Notes:**
+- This is a pre-existing issue on `main` — not caused by any open PR.
+- The failing tests are: `SumRange_basic_range_includes_end`, `SumRange_negative_to_positive`, `SumRange_single_element_returns_itself`, `SafeProduct_exceeds_int_max_still_accurate`, `SafeProduct_large_values_no_overflow`, `SplitCsv_quoted_field_with_comma_keeps_intact`, and others.
+
+---
+
 ## feat/13_avalonia_ui_scaffolding
 Create a basic Avalonia UI project scaffolding with a simple home page.
 
