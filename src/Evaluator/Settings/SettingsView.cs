@@ -70,9 +70,39 @@ public sealed class SettingsView() : View("Settings")
 
         AnsiConsole.MarkupLine("[bold cyan]╔══ Current Settings ════════════════════════════════════╗[/]\n");
 
-        var llamaPath = string.IsNullOrEmpty(settings.LlamaCppPath) ? "(empty)" : settings.LlamaCppPath;
-        AnsiConsole.MarkupLine($"[cyan]║ llama.cpp folder:[/] {llamaPath}");
+        // Display host address
+        AnsiConsole.MarkupLine($"[cyan]║ Host:[/] {settings.Host}");
+        // Display server port
         AnsiConsole.MarkupLine($"[cyan]║ Server Port:[/] {settings.ServerPort}");
+        // Display cache types
+        AnsiConsole.MarkupLine($"[cyan]║ Cache Type K:[/] {settings.CacheTypeK}");
+        AnsiConsole.MarkupLine($"[cyan]║ Cache Type V:[/] {settings.CacheTypeV}");
+        // Display sampling defaults
+        AnsiConsole.MarkupLine($"[cyan]║ Temperature:[/] {settings.SamplingDefaults.Temperature}");
+        AnsiConsole.MarkupLine($"[cyan]║ Top K:[/] {settings.SamplingDefaults.TopK}");
+        AnsiConsole.MarkupLine($"[cyan]║ Top P:[/] {settings.SamplingDefaults.TopP}");
+        AnsiConsole.MarkupLine($"[cyan]║ Min P:[/] {settings.SamplingDefaults.MinP}");
+        AnsiConsole.MarkupLine($"[cyan]║ Repeat Penalty:[/] {settings.SamplingDefaults.RepeatPenalty}");
+        AnsiConsole.MarkupLine($"[cyan]║ Repeat Last N:[/] {settings.SamplingDefaults.RepeatLastN}");
+        // Display readonly server defaults
+        AnsiConsole.MarkupLine($"[cyan]║ Parallel:[/] {settings.ServerDefaults.Parallel}");
+        AnsiConsole.MarkupLine($"[cyan]║ Prio:[/] {settings.ServerDefaults.Prio}");
+        AnsiConsole.MarkupLine($"[cyan]║ Flash Attn:[/] {settings.ServerDefaults.FlashAttn}");
+        AnsiConsole.MarkupLine($"[cyan]║ KV Unified:[/] {(settings.ServerDefaults.KvUnified ? "true" : "false")}");
+        AnsiConsole.MarkupLine($"[cyan]║ Load Mode:[/] {settings.ServerDefaults.LoadMode}");
+        AnsiConsole.MarkupLine($"[cyan]║ Fit:[/] {settings.ServerDefaults.Fit}");
+        AnsiConsole.MarkupLine($"[cyan]║ Cache Reuse:[/] {settings.ServerDefaults.CacheReuse}");
+        AnsiConsole.MarkupLine($"[cyan]║ Draft P Min:[/] {settings.ServerDefaults.DraftPMin}");
+        AnsiConsole.MarkupLine($"[cyan]║ Log Verbosity:[/] {settings.ServerDefaults.LogVerbosity}");
+        AnsiConsole.MarkupLine($"[cyan]║ Samplers:[/] {settings.ServerDefaults.Samplers}");
+        AnsiConsole.MarkupLine($"[cyan]║ Context Shift:[/] {(settings.ServerDefaults.ContextShift ? "true" : "false")}");
+        AnsiConsole.MarkupLine($"[cyan]║ Reasoning Preserve:[/] {(settings.ServerDefaults.ReasoningPreserve ? "true" : "false")}");
+        AnsiConsole.MarkupLine($"[cyan]║ Reasoning:[/] {settings.ServerDefaults.Reasoning}");
+        AnsiConsole.MarkupLine($"[cyan]║ Reasoning Budget:[/] {settings.ServerDefaults.ReasoningBudget}");
+        AnsiConsole.MarkupLine($"[cyan]║ Reasoning Budget Message:[/] {settings.ServerDefaults.ReasoningBudgetMessage}");
+        AnsiConsole.MarkupLine($"[cyan]║ Batch Size:[/] {settings.ServerDefaults.BatchSize}");
+        AnsiConsole.MarkupLine($"[cyan]║ UBatch Size:[/] {settings.ServerDefaults.UbatchSize}");
+        AnsiConsole.MarkupLine($"[cyan]║ Spec Type:[/] {settings.ServerDefaults.SpecType}");
         var modelFolder = string.IsNullOrEmpty(settings.ModelsFolderPath) ? "(empty)" : settings.ModelsFolderPath;
         AnsiConsole.MarkupLine($"[cyan]║ Models Folder:[/] {modelFolder}");
 
@@ -82,7 +112,7 @@ public sealed class SettingsView() : View("Settings")
             for (int i = 0; i < settings.Models.Count; i++)
             {
                 var m = settings.Models[i];
-                AnsiConsole.MarkupLine($"[cyan]║ #{i + 1}[/] {m.Id}: {m.GgufFileName}");
+                AnsiConsole.MarkupLine($"[cyan]║ #{i + 1}[/] {m.Id}: {m.GgufFileName} [Alias: {m.Alias}]");
             }
         }
         else
