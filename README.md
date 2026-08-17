@@ -3,6 +3,17 @@
 
 An automated system to benchmark AI language models on their ability to identify and fix bugs in source code.
 
+## 🎯 Purpose
+
+This project contains **intentional bugs** in the `src/TargetCode/` directory. The bugs are deliberately written to test AI models' ability to:
+1. Identify the root cause of failures
+2. Propose correct fixes
+3. Maintain code quality
+
+The test suite in `tests/TargetCodeTests/` contains the expected correct behavior. When an AI model proposes a fix, these tests verify if the fix actually resolves the bugs.
+
+**Important:** Do not "fix" these bugs — they are intentional test cases for AI evaluation.
+
 ## 🏗️ High-Level Architecture
 
 | Component | Purpose |
