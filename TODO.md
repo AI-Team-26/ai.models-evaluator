@@ -20,10 +20,16 @@ Expand `ApplicationSettings` and `ModelSettings` to cover all llama-server CLI f
 - Skip: threads, mlock, no-mmap (obsolete or use llama-server defaults).
 
 **Steps:**
-- [ ] Step 1: Update Entities.cs — expand ApplicationSettings and ModelSettings records
-- [ ] Step 2: Update SettingsManager.Load() — ensure backward compatibility with null-coalescing
-- [ ] Step 3: Build and verify
-- [ ] Step 4: Open PR
+- [x] Step 1: Update Entities.cs — expand ApplicationSettings and ModelSettings records
+- [x] Step 2: Update SettingsManager.Load() — ensure backward compatibility with null-coalescing
+- [x] Step 3: Build and verify
+- [x] Step 4: Open PR
+
+**PR:** #27 open.
+
+**Notes:**
+- Data layer only (no UI updates)
+- Model: Qwen3.5-27B-IQ3_M_(gammaception)_128k
 
 **Context / Mental Picture:**
 - The feat/12 settings expansion was used as an experimental testbed for different LLMs
