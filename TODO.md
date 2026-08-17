@@ -1,6 +1,59 @@
 # In Progress
 
-*(Nothing in progress at the moment.)*
+## feat/121_settings_expansion — Expand settings for KAT-Coder-V2.5-Dev-Cerebellum-14GB-v2_deucebucket.gguf
+Expand `ApplicationSettings` and `ModelSettings` to cover all llama-server CLI flags. Split into editable (UI) and readonly (shown in Settings view).
+
+**Branch:** `feat/121_settings_expansion`
+**Goal:** Full settings expansion implemented for model KAT-Coder-V2.5-Dev-Cerebellum-14GB-v2_deucebucket.gguf.
+
+**Context / Mental Picture:**
+- Reference llama-server command uses ~30 CLI flags. Currently only 6 are in settings (port, model, ctx-size, n-gpu-layers, n-cpu-moe, jinja).
+- Flags categorized into three groups:
+  1. **App-level editable** — shown and editable in the Settings UI (general settings editor).
+  2. **App-level readonly** — shown in the Settings view (read-only display), stored in JSON with hardcoded defaults. Not editable via UI.
+  3. **Per-model editable** — shown and editable in the add/edit model flows.
+- Readonly fields stored in a `ServerDefaults` record nested in `ApplicationSettings`. Null-coalesce on load for old settings files.
+- Sampling params (`--temperature`, `--top-k`, `--top-p`, `--min-p`, `--repeat-penalty`, `--repeat-last-n`) are app-level editable defaults shared across all models.
+- `--cache-type-k` and `--cache-type-v` are app-level editable, default `q8_0`.
+- `--alias` is per-model, editable. If left empty, auto-generate from GGUF filename (strip `.gguf`).
+- Reasoning flags are app-level readonly for now.
+- Skip: `--threads`, `--mlock`, `--no-mmap` (obsolete or use llama-server defaults).
+
+**Steps:**
+- [x] **Step 1: Expand `Entities.cs`**
+  - [x] Add `Host` property to `ApplicationSettings` (default `127.0.0.1`)
+  - [x] Add `CacheTypeK` and `CacheTypeV` to `ApplicationSettings` (default `q8_0`)
+  - [x] Create `SamplingDefaults` record with: `Temperature` (double, `0.1`), `TopK` (int, `20`), `TopP` (double, `0.80`), `MinP` (double, `0.05`), `RepeatPenalty` (double, `1.15`), `RepeatLastN` (int, `1024`)
+  - [x] Add `SamplingDefaults` property to `ApplicationSettings`
+  - [x] Create `ServerDefaults` record with all readonly fields
+  - [x] Add `ServerDefaults` property to `ApplicationSettings`
+  - [x] Add `Alias` property to `ModelSettings` (default `""`)
+  - [x] Ensure backward compatibility: if `ServerDefaults` or `SamplingDefaults` are null after deserialization, initialize with defaults in `SettingsManager.Load()`
+- [x] **Step 2: Update `SettingsManager.Load()`**
+  - [x] After deserialization, null-coalesce `ServerDefaults` and `SamplingDefaults` with `new ServerDefaults()` / `new SamplingDefaults()`
+  - [x] Null-coalesce `Host` with `"127.0.0.1"` if empty
+  - [x] Null-coalesce `CacheTypeK`/`CacheTypeV` with `"q8_0"` if empty
+- [ ] **Step 3: Update `SettingsView` — general settings editor**
+  - [ ] Add `Host` input to `EditGeneralSettings()`
+  - [ ] Add `CacheTypeK` and `CacheTypeV` inputs to `EditGeneralSettings()`
+- [ ] **Step 4: Update `SettingsView` — model add/edit flows**
+  - [x] Add `Alias` input to `AddModel()` (leave empty = auto-gen from GGUF filename)
+  - [ ] Add `Alias` input to `EditModel()`
+  - [x] Auto-generate alias from GGUF filename (strip `.gguf`) when alias is empty
+- [x] **Step 5: Update `ShowCurrentSettings()`**
+  - [x] Display `Host` alongside `ServerPort`
+  - [x] Display `CacheTypeK` / `CacheTypeV`
+  - [x] Display sampling defaults section
+  - [x] Display `ServerDefaults` (readonly) section — all readonly fields shown but marked as read-only
+  - [x] Display `Alias` for each model
+- [ ] **Step 6: Build and verify**
+  - [ ] `dotnet build` passes
+  - [ ] `dotnet run` — verify settings load/save works with new fields
+  - [ ] Verify old settings file (without new fields) still loads (backward compat)
+
+**Notes:**
+- Do NOT implement `LlamaServerManager` changes in this branch — that's `feat/03_server_management`.
+- Model: KAT-Coder-V2.5-Dev-Cerebellum-14GB-v2_deucebucket.gguf
 
 ---
 
