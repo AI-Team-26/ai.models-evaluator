@@ -248,6 +248,19 @@ public sealed class SettingsView() : View("Settings")
         var jinjaInput = Helper.GetInput("Enable jinja? (y/n, empty=n)");
         bool jinja = !string.IsNullOrEmpty(jinjaInput) && jinjaInput.Trim().ToLowerInvariant().StartsWith('y');
 
+        // Auto-generate alias from GGUF filename if empty
+        string alias = string.Empty;
+        var aliasInput = Helper.GetInput("Alias (leave empty to auto-generate from GGUF filename)");
+        if (!string.IsNullOrWhiteSpace(aliasInput))
+        {
+            alias = aliasInput;
+        }
+        else
+        {
+            // Strip .gguf extension to auto-generate alias
+            alias = Path.GetFileNameWithoutExtension(gguf);
+        }
+
         // Get fresh settings from disk and add the model
         ApplicationSettings settings = SettingsManager.GetSettings(forceReload: true);
         settings.Models ??= []; // defensive — should never be null but protects against corrupt state
@@ -258,7 +271,8 @@ public sealed class SettingsView() : View("Settings")
             ContextSize = ctxSize,
             GpuLayers = gpuLayers,
             CpuMoE = cpuMoE,
-            Jinja = jinja
+            Jinja = jinja,
+            Alias = alias
         });
 
         try
