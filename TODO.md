@@ -25,71 +25,6 @@ producing several parallel PRs that should be ignored. Definitive implementation
 
 ---
 
-## feat/13_avalonia_ui_scaffolding — Avalonia UI Scaffolding
-Create a basic Avalonia UI project scaffolding with a simple home page.
-
-**Branch:** `feat/13_avalonia_ui_scaffolding`
-**Goal:** Scaffold a new Avalonia UI project that displays a simple "Hello World" home page.
-
-**Context / Mental Picture:**
-- New C# Avalonia application project under `src/AvaloniaUI/`
-- No MVVM framework yet — plain XAML with code-behind for simplicity
-- Minimal setup: just verify Avalonia runs and shows a window
-- Will reference the existing `Evaluator` project later once basics work
-- Central package management via `Directory.Packages.props`
-
-**Steps:**
-- [x] Create new Avalonia project under `src/AvaloniaUI/`
-- [x] Add Avalonia NuGet packages to `Directory.Packages.props`
-- [x] Update `AI.Evaluator.slnx` to include the new project
-- [x] Verify build: `dotnet build` ✅ (0 warnings, 0 errors)
-- [x] Replace default content with a simple "AI Models Evaluator" label/home page
-- [x] Fix: `OutputType` changed from `WinExe` to `Exe` for cross-platform CI compatibility
-- [x] Commit and test again
-
-**PR:** #19 — [feat/13: Scaffold Avalonia UI project](https://github.com/AI-Team-26/ai.models-evaluator/pull/19)
-
-**Notes:**
-- Start with Windows-only target for now (no need for multiplatform config yet)
-- Keep styling minimal — system defaults are fine
-
----
-
-# Backlog
-
----
-
-
-# Backlog
-
-## feat/13_avalonia_ui_scaffolding
-Create a basic Avalonia UI project scaffolding with a simple home page.
-
-**Branch:** `feat/13_avalonia_ui_scaffolding`
-**Goal:** Scaffold a new Avalonia UI project that displays a simple "Hello World" home page.
-
-**Context / Mental Picture:**
-- New C# Avalonia application project under `src/AvaloniaUI/`
-- No MVVM framework yet — plain XAML with code-behind for simplicity
-- Minimal setup: just verify Avalonia runs and shows a window
-- Will reference the existing `Evaluator` project later once basics work
-
-**Steps:**
-- [ ] Create new Avalonia project: `dotnet new avalonia-mvvm -o src/AvaloniaUI` (or console template if simpler)
-- [ ] Add required NuGet packages via `Directory.Packages.props` (Avalonia, Avalonia.Themes.Fluent)
-- [ ] Update `.slnx` to include the new project
-- [ ] Verify build: `dotnet build`
-- [ ] Verify run: `dotnet run --project src/AvaloniaUI/AvaloniaUI.csproj` shows a window
-- [ ] Replace default content with a simple "AI Models Evaluator" label/home page
-- [ ] Commit and test again
-
-**Notes:**
-- Template command may vary; check latest Avalonia docs if needed
-- Start with Windows-only target for now (no need for multiplatform config yet)
-- Keep styling minimal — system defaults are fine
-
----
-
 ## Phase 2: Build Evaluator Orchestration Tool
 
 ### Expand Settings for llama-server flags (`feat/12_settings_expansion`) — ✅ COMPLETED (PR #22)
@@ -144,7 +79,7 @@ Expand `ApplicationSettings` and `ModelSettings` to cover all llama-server CLI f
 | `--reasoning-preserve` | App → `ServerDefaults` | ❌ | `true` |
 | `--reasoning` | App → `ServerDefaults` | ❌ | `on` |
 | `--reasoning-budget` | App → `ServerDefaults` | ❌ | `4096` |
-| `--reasoning-budget-message` | App → `ServerDefaults` | ❌ | `"... Considering the limited time by the user, I have to give the solution based on the thinking directly now."` |
+| `--reasoning-budget-message` | App → `ServerDefaults` | ❌ | `\"... Considering the limited time by the user, I have to give the solution based on the thinking directly now.\"` |
 | `--batch-size` | App → `ServerDefaults` | ❌ | `1024` |
 | `--ubatch-size` | App → `ServerDefaults` | ❌ | `512` |
 | `--spec-type` | App → `ServerDefaults` | ❌ | `none` |
@@ -163,7 +98,7 @@ Expand `ApplicationSettings` and `ModelSettings` to cover all llama-server CLI f
   - [ ] Add `SamplingDefaults` property to `ApplicationSettings`
   - [ ] Create `ServerDefaults` record with all readonly fields (see table above)
   - [ ] Add `ServerDefaults` property to `ApplicationSettings`
-  - [ ] Add `Alias` property to `ModelSettings` (default `""`)
+  - [ ] Add `Alias` property to `ModelSettings` (default `\"\"`)
   - [ ] Ensure backward compatibility: if `ServerDefaults` or `SamplingDefaults` are null after deserialization (old settings files), initialize with defaults in `SettingsManager.Load()`
 - [ ] **Step 2: Update `SettingsManager.Load()`**
   - [ ] After deserialization, null-coalesce `ServerDefaults` and `SamplingDefaults` with `new ServerDefaults()` / `new SamplingDefaults()`
@@ -236,6 +171,33 @@ Design outcome recording format once evaluator has execution data.
 ---
 
 # Completed
+
+## feat/13_avalonia_ui_scaffolding — Avalonia UI Scaffolding ✅ MERGED (PR #19)
+Create a basic Avalonia UI project scaffolding with a simple home page.
+
+**Branch:** `feat/13_avalonia_ui_scaffolding`
+**PR:** #19 — [feat/13: Scaffold Avalonia UI project](https://github.com/AI-Team-26/ai.models-evaluator/pull/19)
+**Merged:** 2026-08-17T17:24:34Z by alex-piccione
+
+**Context / Mental Picture:**
+- New C# Avalonia application project under `src/AvaloniaUI/`
+- No MVVM framework yet — plain XAML with code-behind for simplicity
+- Minimal setup: just verify Avalonia runs and shows a window
+- Will reference the existing `Evaluator` project later once basics work
+- Central package management via `Directory.Packages.props`
+
+**Steps:**
+- [x] Create new Avalonia project under `src/AvaloniaUI/`
+- [x] Add Avalonia NuGet packages to `Directory.Packages.props`
+- [x] Update `AI.Evaluator.slnx` to include the new project
+- [x] Verify build: `dotnet build` ✅ (0 warnings, 0 errors)
+- [x] Replace default content with a simple "AI Models Evaluator" label/home page
+- [x] Fix: `OutputType` changed from `WinExe` to `Exe` for cross-platform CI compatibility
+- [x] Commit and test again
+
+**Notes:**
+- Start with Windows-only target for now (no need for multiplatform config yet)
+- Keep styling minimal — system defaults are fine
 
 ## refactor/07_settings_manager — Centralized Configuration Management ✅ MERGED
 Created SettingsManager singleton; eliminated config duplication across classes.
