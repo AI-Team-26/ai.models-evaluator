@@ -1,9 +1,6 @@
 namespace Evaluator.Settings
 {
 
-    /// <summary>
-    /// Sampling parameters shared across all models.
-    /// </summary>
     public sealed record SamplingDefaults
     {
         public double Temperature { get; set; } = 0.1;
@@ -14,10 +11,6 @@ namespace Evaluator.Settings
         public int RepeatLastN { get; set; } = 1024;
     }
 
-    /// <summary>
-    /// Readonly server defaults stored nested in ApplicationSettings.
-    /// Null-coalesced on load for old settings files.
-    /// </summary>
     public sealed record ServerDefaults
     {
         public int Parallel { get; set; } = 1;
@@ -34,42 +27,23 @@ namespace Evaluator.Settings
         public bool ReasoningPreserve { get; set; } = true;
         public string Reasoning { get; set; } = "on";
         public int ReasoningBudget { get; set; } = 4096;
-        public string ReasoningBudgetMessage { get; set; } = "Considering the limited time by the user, I have to give the solution based on the thinking directly now.";
+        public string ReasoningBudgetMessage { get; set; } = "";
         public int BatchSize { get; set; } = 1024;
         public int UbatchSize { get; set; } = 512;
         public string SpecType { get; set; } = "none";
     }
 
-    /// <summary>
-    /// App-level editable settings.
-    /// </summary>
     public sealed record ApplicationSettings
     {
-        /// <summary>
-        /// Host address for llama-server. Default: 127.0.0.1
-        /// </summary>
         public string Host { get; set; } = "127.0.0.1";
         // Folder path of llama.cpp where the llama-server.exe can be found
         public string LlamaCppPath { get; set; } = "";
         public int ServerPort { get; set; } = 0;
-        /// <summary>
-        /// Cache type K for KV caching. Default: q8_0
-        /// </summary>
         public string CacheTypeK { get; set; } = "q8_0";
-        /// <summary>
-        /// Cache type V for KV caching. Default: q8_0
-        /// </summary>
         public string CacheTypeV { get; set; } = "q8_0";
         public string ModelsFolderPath { get; set; } = "";
         public List<ModelSettings> Models { get; set; } = [];
-        /// <summary>
-        /// Shared sampling defaults applied to all models.
-        /// </summary>
         public SamplingDefaults SamplingDefaults { get; set; } = new();
-        /// <summary>
-        /// Readonly server defaults (display-only in UI).
-        /// Null-coalesced on load for old settings files.
-        /// </summary>
         public ServerDefaults ServerDefaults { get; set; } = new();
     }
 
@@ -81,9 +55,6 @@ namespace Evaluator.Settings
         public int GpuLayers { get; set; } = 0;
         public int CpuMoE { get; set; }
         public bool Jinja { get; set; }
-        /// <summary>
-        /// Per-model alias. If empty, auto-generated from GGUF filename (strip .gguf).
-        /// </summary>
         public string Alias { get; set; } = "";
     }
 }

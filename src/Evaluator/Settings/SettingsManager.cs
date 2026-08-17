@@ -67,16 +67,18 @@ public static class SettingsManager
                 ?? throw new Exception($"Settings file at {filePath} is empty or corrupt.");
 
             // Backward compatibility: initialize nullable nested objects with defaults for old settings files
-            if (settings?.ServerDefaults == null)
+            if (settings.ServerDefaults == null)
                 settings.ServerDefaults = new ServerDefaults();
-            if (settings?.SamplingDefaults == null)
+            if (settings.SamplingDefaults == null)
                 settings.SamplingDefaults = new SamplingDefaults();
-            if (string.IsNullOrEmpty(settings?.Host))
+            if (string.IsNullOrEmpty(settings.Host))
                 settings.Host = "127.0.0.1";
-            if (string.IsNullOrEmpty(settings?.CacheTypeK))
+            if (string.IsNullOrEmpty(settings.CacheTypeK))
                 settings.CacheTypeK = "q8_0";
-            if (string.IsNullOrEmpty(settings?.CacheTypeV))
+            if (string.IsNullOrEmpty(settings.CacheTypeV))
                 settings.CacheTypeV = "q8_0";
+            if (settings.Models == null)
+                settings.Models = [];
 
             return settings;
         }
