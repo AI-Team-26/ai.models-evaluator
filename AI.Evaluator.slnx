@@ -3,4 +3,5 @@
   <Project Path="src/Evaluator/Evaluator.csproj" />
   <Project Path="src/TargetCode/TargetCode.csproj" />
   <Project Path="tests/TargetCodeTests/TargetCodeTests.csproj" />
+  <Project Path="src/AvaloniaUI/AvaloniaUI.csproj" />
 </Solution>

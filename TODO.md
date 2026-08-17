@@ -1,6 +1,36 @@
 # In Progress
 
-*(Nothing in progress at the moment.)*
+## feat/13_avalonia_ui_scaffolding — Avalonia UI Scaffolding
+Create a basic Avalonia UI project scaffolding with a simple home page.
+
+**Branch:** `feat/13_avalonia_ui_scaffolding`
+**Goal:** Scaffold a new Avalonia UI project that displays a simple "Hello World" home page.
+
+**Context / Mental Picture:**
+- New C# Avalonia application project under `src/AvaloniaUI/`
+- No MVVM framework yet — plain XAML with code-behind for simplicity
+- Minimal setup: just verify Avalonia runs and shows a window
+- Will reference the existing `Evaluator` project later once basics work
+- Central package management via `Directory.Packages.props`
+
+**Steps:**
+- [x] Create new Avalonia project under `src/AvaloniaUI/`
+- [x] Add Avalonia NuGet packages to `Directory.Packages.props`
+- [x] Update `AI.Evaluator.slnx` to include the new project
+- [x] Verify build: `dotnet build` ✅ (0 warnings, 0 errors)
+- [x] Replace default content with a simple "AI Models Evaluator" label/home page
+- [x] Fix: `OutputType` changed from `WinExe` to `Exe` for cross-platform CI compatibility
+- [x] Commit and test again
+
+**PR:** #19 — [feat/13: Scaffold Avalonia UI project](https://github.com/AI-Team-26/ai.models-evaluator/pull/19)
+
+**Notes:**
+- Start with Windows-only target for now (no need for multiplatform config yet)
+- Keep styling minimal — system defaults are fine
+
+---
+
+# Backlog
 
 ---
 
