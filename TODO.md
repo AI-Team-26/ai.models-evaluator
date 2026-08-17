@@ -31,22 +31,6 @@ Expand `ApplicationSettings` and `ModelSettings` to cover all llama-server CLI f
 - Data layer only (no UI updates)
 - Model: Qwen3.5-27B-IQ3_M_(gammaception)_128k
 
-**Context / Mental Picture:**
-- The feat/12 settings expansion was used as an experimental testbed for different LLMs
-- Each LLM produced a separate PR (#16, #17, #18, #20, #22, #23)
-- PR #22 is the definitive implementation; others are redundant
-- Documentation goes in CHANGELOG, docs/, and TODO
-
-**Steps:**
-- [x] Create `docs/experimental_prs.md` with PR history table
-- [x] Add CHANGELOG entry under [Unreleased] → Documentation
-- [x] Update TODO to mark feat/12 as completed
-- [x] Verify build passes
-
-**Notes:**
-- Do NOT close the experimental PRs — just document them as ignorable
-- The goal is documentation, not code changes
-
 ---
 
 ## feat/13_avalonia_ui_scaffolding — Avalonia UI Scaffolding
@@ -79,49 +63,7 @@ Create a basic Avalonia UI project scaffolding with a simple home page.
 
 ---
 
-## docs/12_experimental_prs — Document feat/12 experimental PR history
-Document that feat/12 settings expansion was used to test multiple LLM models,
-producing several parallel PRs that should be ignored. Definitive implementation is PR #22.
-
-**Branch:** `docs/12_experimental_prs`
-**Goal:** Add documentation explaining the experimental feat/12 settings PR history so reviewers know to ignore redundant PRs.
-
----
-
 # Backlog
-
----
-
-
-# Backlog
-
-## feat/13_avalonia_ui_scaffolding
-Create a basic Avalonia UI project scaffolding with a simple home page.
-
-**Branch:** `feat/13_avalonia_ui_scaffolding`
-**Goal:** Scaffold a new Avalonia UI project that displays a simple "Hello World" home page.
-
-**Context / Mental Picture:**
-- New C# Avalonia application project under `src/AvaloniaUI/`
-- No MVVM framework yet — plain XAML with code-behind for simplicity
-- Minimal setup: just verify Avalonia runs and shows a window
-- Will reference the existing `Evaluator` project later once basics work
-
-**Steps:**
-- [ ] Create new Avalonia project: `dotnet new avalonia-mvvm -o src/AvaloniaUI` (or console template if simpler)
-- [ ] Add required NuGet packages via `Directory.Packages.props` (Avalonia, Avalonia.Themes.Fluent)
-- [ ] Update `.slnx` to include the new project
-- [ ] Verify build: `dotnet build`
-- [ ] Verify run: `dotnet run --project src/AvaloniaUI/AvaloniaUI.csproj` shows a window
-- [ ] Replace default content with a simple "AI Models Evaluator" label/home page
-- [ ] Commit and test again
-
-**Notes:**
-- Template command may vary; check latest Avalonia docs if needed
-- Start with Windows-only target for now (no need for multiplatform config yet)
-- Keep styling minimal — system defaults are fine
-
----
 
 ## Phase 2: Build Evaluator Orchestration Tool
 
