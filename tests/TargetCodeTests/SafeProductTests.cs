@@ -14,18 +14,18 @@ public sealed class SafeProductTests
     [Test]
     public void SafeProduct_large_values_no_overflow()
     {
-        // 10_000 * 10_000 * 10_000 = 1,000,000,000 — fits in int but should still work as long
+        // 10_000 * 10_000 * 10_000 = 1_000_000_000_000 — fits in long
         var result = MathUtils.SafeProduct(10_000, 10_000, 10_000);
-        Assert.That(result, Is.EqualTo(1_000_000_000L));
+        Assert.That(result, Is.EqualTo(1_000_000_000_000L));
     }
 
     [Test]
     public void SafeProduct_exceeds_int_max_still_accurate()
     {
-        // 50_000^3 = 125,000,000,000 which exceeds Int32.MaxValue (~2.1B)
+        // 50_000^3 = 125_000_000_000_000 which exceeds Int32.MaxValue (~2.1B)
         // Must use long arithmetic internally or overflow wraps around
         var result = MathUtils.SafeProduct(50_000, 50_000, 50_000);
-        Assert.That(result, Is.EqualTo(125_000_000_000L));
+        Assert.That(result, Is.EqualTo(125_000_000_000_000L));
     }
 
     [Test]
