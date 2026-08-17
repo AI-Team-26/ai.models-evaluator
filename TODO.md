@@ -219,3 +219,18 @@ Skipped — went straight to implementation with interactive UI instead of upfro
 
 ~~**Step E: Static Settings Manager**~~ ~~(Completed differently than planned)~~
 Implemented as SettingsManager singleton with interactive TUI wizard. No separate models.json created; everything lives in single Settings.json file managed through the app's menu system.
+
+## feat/121_settings_expansion — Expanded settings schema for KAT-Coder-V2.5-Dev-Cerebellum-14GB-v2_deucebucket.gguf ✅ COMPLETED
+**Goal:** Full settings expansion implemented for model KAT-Coder-V2.5-Dev-Cerebellum-14GB-v2_deucebucket.gguf.
+
+**Changes Made:**
+- Expanded `ApplicationSettings` with `Host`, `CacheTypeK`, `CacheTypeV`, `SamplingDefaults`, `ServerDefaults` properties
+- Added `Alias` property to `ModelSettings` with auto-generation from GGUF filename
+- Updated `SettingsManager.Load()` with backward-compatibility null-coalescing
+- Updated `SettingsView.EditGeneralSettings()` with Host, CacheTypeK, CacheTypeV inputs
+- Updated `SettingsView.AddModel()` and `EditModel()` with alias input + auto-gen
+- Updated `ShowCurrentSettings()` to display all new fields including readonly ServerDefaults section
+
+**Build Status:** `dotnet build` passes successfully.
+
+**PR:** Created on branch `feat/121_settings_expansion`.
