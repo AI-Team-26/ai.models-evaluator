@@ -1,5 +1,30 @@
 # In Progress
 
+## docs/12_experimental_prs — Document feat/12 experimental PR history
+Document that feat/12 settings expansion was used to test multiple LLM models,
+producing several parallel PRs that should be ignored. Definitive implementation is PR #22.
+
+**Branch:** `docs/12_experimental_prs`
+**Goal:** Add documentation explaining the experimental feat/12 settings PR history so reviewers know to ignore redundant PRs.
+
+**Context / Mental Picture:**
+- The feat/12 settings expansion was used as an experimental testbed for different LLMs
+- Each LLM produced a separate PR (#16, #17, #18, #20, #22, #23)
+- PR #22 is the definitive implementation; others are redundant
+- Documentation goes in CHANGELOG, docs/, and TODO
+
+**Steps:**
+- [x] Create `docs/experimental_prs.md` with PR history table
+- [x] Add CHANGELOG entry under [Unreleased] → Documentation
+- [x] Update TODO to mark feat/12 as completed
+- [x] Verify build passes
+
+**Notes:**
+- Do NOT close the experimental PRs — just document them as ignorable
+- The goal is documentation, not code changes
+
+---
+
 ## feat/13_avalonia_ui_scaffolding — Avalonia UI Scaffolding
 Create a basic Avalonia UI project scaffolding with a simple home page.
 
@@ -67,7 +92,11 @@ Create a basic Avalonia UI project scaffolding with a simple home page.
 
 ## Phase 2: Build Evaluator Orchestration Tool
 
-### Next Priority: Expand Settings for llama-server flags (`feat/12_settings_expansion`)
+### Expand Settings for llama-server flags (`feat/12_settings_expansion`) — ✅ COMPLETED (PR #22)
+
+> **Note:** This task was used as an experimental testbed for testing multiple LLM models.
+> See [docs/experimental_prs.md](./docs/experimental_prs.md) for the full history of experimental PRs.
+> The definitive implementation is **PR #22** — all other settings-expansion PRs (#16, #17, #18, #20, #23) are experimental and should be ignored/closed.
 Expand `ApplicationSettings` and `ModelSettings` to cover all llama-server CLI flags from the reference command. Split into editable (UI) and readonly (shown in Settings view, not editable via UI). This is a prerequisite for `feat/03_server_management`.
 
 **Branch:** `feat/12_settings_expansion`
