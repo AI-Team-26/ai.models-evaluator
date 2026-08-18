@@ -1,27 +1,4 @@
 # In Progress
-
-## feat/12_N_settings_expansion — Expand settings for Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[64k]
-Expand `ApplicationSettings` and `ModelSettings` to cover all llama-server CLI flags.
-
-**Branch:** `feat/12_N_settings_expansion`
-**Implemented by:** model `Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[64k]`
-**Goal:** Full settings expansion implemented for model Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[64k].
-
-**Context / Mental Picture:**
-- Follows the definitive spec in Backlog (`feat/12_settings_expansion`, PR #22): app-level editable fields (Host, cache types, sampling defaults), app-level readonly `ServerDefaults` record, per-model `Alias` (auto-gen from GGUF filename when empty).
-- Data layer + TUI updates only; no `LlamaServerManager` changes.
-
-**Steps:**
-- [ ] Step 1: Update Entities.cs — expand ApplicationSettings and ModelSettings records
-- [ ] Step 2: Update SettingsManager.Load() — ensure backward compatibility with null-coalescing
-- [ ] Step 3: Update SettingsView — editable Host/caches/sampling in general settings editor
-- [ ] Step 4: Update SettingsView — Alias input in add/edit model flows with auto-generation
-- [ ] Step 5: Update ShowCurrentSettings() — display all new fields incl. readonly ServerDefaults
-- [ ] Step 6: Build and verify (`dotnet build -o agent_build`, tests)
-- [ ] Open PR
-
----
-
 ## feat/12_M_settings_expansion — Expand settings for Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[64k]
 Expand `ApplicationSettings` and `ModelSettings` to cover all llama-server CLI flags.
 
@@ -307,6 +284,13 @@ Design outcome recording format once evaluator has execution data.
 ---
 
 # Completed
+
+## feat/12_N_settings_expansion — Expand settings for Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[64k] ✅ MERGED
+Full settings expansion implemented for model **Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[64k]**:
+added `SamplingDefaults` and readonly `ServerDefaults` records plus `Host`/`CacheTypeK`/`CacheTypeV`
+to `ApplicationSettings`, per-model `Alias` (auto-generated from GGUF filename when empty),
+backward-compatible loading of old settings files, and full TUI support (editable general/sampling
+settings, alias prompts in add/edit model flows, read-only server-defaults display).
 
 ## refactor/07_settings_manager — Centralized Configuration Management ✅ MERGED
 Created SettingsManager singleton; eliminated config duplication across classes.
