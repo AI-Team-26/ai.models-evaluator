@@ -1,11 +1,50 @@
 # In Progress
+## feat/12_M_settings_expansion — Expand settings for Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[64k]
+Expand `ApplicationSettings` and `ModelSettings` to cover all llama-server CLI flags.
 
-## docs/12_experimental_prs — Document feat/12 experimental PR history
-Document that feat/12 settings expansion was used to test multiple LLM models,
-producing several parallel PRs that should be ignored. Definitive implementation is PR #22.
+**Branch:** `feat/12_M_settings_expansion`
+**Implemented by:** model `Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[64k]`
+**Goal:** Full settings expansion implemented for model Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[64k].
 
-**Branch:** `docs/12_experimental_prs`
-**Goal:** Add documentation explaining the experimental feat/12 settings PR history so reviewers know to ignore redundant PRs.
+**Context / Mental Picture:**
+- Same spec as the other experimental feat/12 branches (see Backlog table): app-level editable fields (Host, cache types, sampling defaults), app-level readonly `ServerDefaults`, per-model `Alias` (auto-gen from GGUF filename when empty).
+- Data layer + TUI updates only; no `LlamaServerManager` changes.
+
+**Steps:**
+- [ ] Step 1: Update Entities.cs — expand ApplicationSettings and ModelSettings records
+- [ ] Step 2: Update SettingsManager.Load() — ensure backward compatibility with null-coalescing
+- [ ] Step 3: Update SettingsView — editable Host/caches/sampling in general settings editor
+- [ ] Step 4: Update SettingsView — Alias input in add/edit model flows with auto-generation
+- [ ] Step 5: Update ShowCurrentSettings() — display all new fields incl. readonly ServerDefaults
+- [ ] Step 6: Build and verify (`dotnet build -o agent_build`, tests)
+- [ ] Open PR
+
+---
+
+## feat/12L_settings_expansion — Expand settings for Qwen3.5-27B-IQ3_M_(gammaception)_128k
+Expand `ApplicationSettings` and `ModelSettings` to cover all llama-server CLI flags.
+
+**Branch:** `feat/12L_settings_expansion`
+**Goal:** Full settings expansion implemented for model Qwen3.5-27B-IQ3_M_(gammaception)_128k.
+
+**Context / Mental Picture:**
+- Reference llama-server command uses ~30 CLI flags. Currently only 6 are in settings (port, model, ctx-size, n-gpu-layers, n-cpu-moe, jinja).
+- Flags categorized into three groups:
+  1. **App-level editable** — shown and editable in the Settings UI.
+  2. **App-level readonly** — stored in JSON with hardcoded defaults, not editable via UI.
+  3. **Per-model editable** — shown and editable in the add/edit model flows.
+- Sampling params (temperature, top-k, top-p, min-p, repeat-penalty, repeat-last-n) are app-level editable defaults.
+- Cache-type-k/v are app-level editable, default q8_0.
+- Alias is per-model, auto-generated from GGUF filename if empty.
+- Jinja stays per-model, editable.
+- Reasoning flags are app-level readonly for now.
+- Skip: threads, mlock, no-mmap (obsolete or use llama-server defaults).
+
+**Steps:**
+- [ ] Step 1: Update Entities.cs — expand ApplicationSettings and ModelSettings records
+- [ ] Step 2: Update SettingsManager.Load() — ensure backward compatibility with null-coalescing
+- [ ] Step 3: Build and verify
+- [ ] Step 4: Open PR
 
 **Context / Mental Picture:**
 - The feat/12 settings expansion was used as an experimental testbed for different LLMs
@@ -52,6 +91,15 @@ Create a basic Avalonia UI project scaffolding with a simple home page.
 **Notes:**
 - Start with Windows-only target for now (no need for multiplatform config yet)
 - Keep styling minimal — system defaults are fine
+
+---
+
+## docs/12_experimental_prs — Document feat/12 experimental PR history
+Document that feat/12 settings expansion was used to test multiple LLM models,
+producing several parallel PRs that should be ignored. Definitive implementation is PR #22.
+
+**Branch:** `docs/12_experimental_prs`
+**Goal:** Add documentation explaining the experimental feat/12 settings PR history so reviewers know to ignore redundant PRs.
 
 ---
 
@@ -236,6 +284,13 @@ Design outcome recording format once evaluator has execution data.
 ---
 
 # Completed
+
+## feat/12_N_settings_expansion — Expand settings for Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[64k] ✅ MERGED
+Full settings expansion implemented for model **Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[64k]**:
+added `SamplingDefaults` and readonly `ServerDefaults` records plus `Host`/`CacheTypeK`/`CacheTypeV`
+to `ApplicationSettings`, per-model `Alias` (auto-generated from GGUF filename when empty),
+backward-compatible loading of old settings files, and full TUI support (editable general/sampling
+settings, alias prompts in add/edit model flows, read-only server-defaults display).
 
 ## refactor/07_settings_manager — Centralized Configuration Management ✅ MERGED
 Created SettingsManager singleton; eliminated config duplication across classes.
