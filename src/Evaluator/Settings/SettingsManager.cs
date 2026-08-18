@@ -56,6 +56,23 @@ public static class SettingsManager
     }
 
 
+    /// <summary>
+    /// Fill in defaults for fields missing from older settings files.
+    /// </summary>
+    private static void Normalize(ApplicationSettings s)
+    {
+        if (string.IsNullOrEmpty(s.Host)) s.Host = "127.0.0.1";
+        if (string.IsNullOrEmpty(s.CacheTypeK)) s.CacheTypeK = "q8_0";
+        if (string.IsNullOrEmpty(s.CacheTypeV)) s.CacheTypeV = "q8_0";
+        s.SamplingDefaults ??= new SamplingDefaults();
+        s.ServerDefaults ??= new ServerDefaults();
+        s.Models ??= [];
+        foreach (var m in s.Models)
+        {
+            m.Alias ??= "";
+        }
+    }
+
     private static ApplicationSettings Load()
     {
         var filePath = SettingsFilePath;
@@ -66,6 +83,7 @@ public static class SettingsManager
             settings = JsonSerializer.Deserialize<ApplicationSettings>(json, jsonOptions)
                 ?? throw new Exception($"Settings file at {filePath} is empty or corrupt.");
 
+            Normalize(settings);
             return settings;
         }
         catch (FileNotFoundException)
