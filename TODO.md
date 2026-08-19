@@ -308,6 +308,26 @@ Design outcome recording format once evaluator has execution data.
 
 # Completed
 
+## feat/12_J_settings_expansion — Expand settings for Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[80k] (Reasoning: medium)
+Expand `ApplicationSettings` and `ModelSettings` to cover all llama-server CLI flags.
+
+**Branch:** `feat/12_J_settings_expansion`
+**Implemented by:** model `Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[80k] (Reasoning: medium)`
+**Goal:** Full settings expansion implemented for model Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[80k] (Reasoning: medium).
+
+**Context / Mental Picture:**
+- Follows the definitive spec in Backlog (`feat/12_settings_expansion`, PR #22): app-level editable fields (Host, cache types, sampling defaults), app-level readonly `ServerDefaults` record, per-model `Alias` (auto-gen from GGUF filename when empty).
+- Data layer + TUI updates only; no `LlamaServerManager` changes.
+
+**Steps:**
+- [x] Step 1: Update Entities.cs — expand ApplicationSettings and ModelSettings records
+- [x] Step 2: Update SettingsManager.Load() — ensure backward compatibility with null-coalescing
+- [x] Step 3: Update SettingsView — editable Host/caches/sampling in general settings editor
+- [x] Step 4: Update SettingsView — Alias input in add/edit model flows with auto-generation
+- [x] Step 5: Update ShowCurrentSettings() — display all new fields incl. readonly ServerDefaults
+- [x] Step 6: Build and verify (`dotnet build -o agent_build`, tests)
+- [x] Open PR
+
 ## refactor/07_settings_manager — Centralized Configuration Management ✅ MERGED
 Created SettingsManager singleton; eliminated config duplication across classes.
 
