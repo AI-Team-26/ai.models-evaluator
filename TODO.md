@@ -1,27 +1,5 @@
 # In Progress
 
-## feat/12_O_settings_expansion — Expand settings schema (fresh implementation)
-**Branch:** `feat/12_O_settings_expansion`
-**Implemented by model:** Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[80k] (Reasoning: medium)
-
-**Goal:** Implement the feat/12 settings expansion (all llama-server CLI flags in settings, editable vs readonly) as a clean standalone branch, ignoring the experimental/duplicate 12x branches.
-
-**Context / Mental Picture:**
-- Follows the flag categorization table in the original feat/12 spec below (App editable / App readonly `ServerDefaults` / Model editable).
-- New records: `SamplingDefaults`, `ServerDefaults`; new fields `Host`, `CacheTypeK/V`, `ModelSettings.Alias`.
-- Backward compat: null-coalesce in `SettingsManager.Load()` so old Settings.json files still load.
-- No LlamaServerManager changes (that's feat/03_server_management).
-
-**Steps:**
-- [ ] Step 1: Expand `Entities.cs` (Host, CacheTypeK/V, SamplingDefaults, ServerDefaults, Alias)
-- [ ] Step 2: Update `SettingsManager.Load()` backward-compat null-coalescing
-- [ ] Step 3: `EditGeneralSettings()` — inputs for Host, cache types, sampling defaults
-- [ ] Step 4: `AddModel()`/`EditModel()` — alias input + auto-gen from GGUF filename
-- [ ] Step 5: `ShowCurrentSettings()` — display all new fields incl. readonly ServerDefaults section
-- [ ] Step 6: Build (`dotnet build -o agent_build`) and verify; move this block to Completed
-
----
-
 ## docs/12_experimental_prs — Document feat/12 experimental PR history
 Document that feat/12 settings expansion was used to test multiple LLM models,
 producing several parallel PRs that should be ignored. Definitive implementation is PR #22.
@@ -193,6 +171,10 @@ Design outcome recording format once evaluator has execution data.
 ---
 
 # Completed
+
+## feat/12_O_settings_expansion — Expand settings schema for all llama-server CLI flags ✅ PR OPEN
+Expanded `ApplicationSettings` with `Host`, `CacheTypeK/V`, editable `SamplingDefaults` record, readonly `ServerDefaults` record, and per-model `Alias` (auto-generated from GGUF filename when empty). Updated the TUI: editable inputs in general settings, alias in add/edit model flows, full read-only display of server defaults. Verified backward compatibility with old settings files (defaults filled on load) and JSON round-trip.
+Implemented by model: Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[80k] (Reasoning: medium)
 
 ## feat/13_avalonia_ui_scaffolding — Avalonia UI Scaffolding ✅ MERGED (PR #19)
 Create a basic Avalonia UI project scaffolding with a simple home page.
