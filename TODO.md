@@ -1,5 +1,21 @@
 # In Progress
 
+## feat/12_T1_settings_expansion — Expand settings schema (T1 implementation)
+**Branch:** `feat/12_T1_settings_expansion`
+**Done by model:** "(Llama.cpp) Qwen3.8-27B-Abliterated-IQ4-MIX-MTP_finex666_[64k]"
+
+**Goal:** Implement the feat/12 settings expansion (per the Phase 2 spec below) as a clean standalone T1 branch.
+
+**Steps:**
+- [x] Step 1: Expand `Entities.cs` (Host, CacheTypeK/V, SamplingDefaults, ServerDefaults, ModelSettings.Alias)
+- [x] Step 2: Update `SettingsManager.Load()` backward-compat null-coalescing
+- [x] Step 3: `EditGeneralSettings()` — inputs for Host, cache types, sampling defaults (`EditSamplingDefaults()`)
+- [x] Step 4: `AddModel()`/`EditModel()` — alias input + auto-gen from GGUF filename
+- [x] Step 5: `ShowCurrentSettings()` — display all new fields incl. readonly ServerDefaults section
+- [x] Step 6: Build (`dotnet build -o agent_build`) ✅; old-format Settings.json loads with defaults populated and saves OK
+
+---
+
 ## feat/12_O_settings_expansion — Expand settings schema (fresh implementation)
 **Branch:** `feat/12_O_settings_expansion`
 **Implemented by model:** Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[80k] (Reasoning: medium)
