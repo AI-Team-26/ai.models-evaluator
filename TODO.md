@@ -194,6 +194,11 @@ Design outcome recording format once evaluator has execution data.
 
 # Completed
 
+## feat/12_Q2_settings_expansion — Expand settings schema (all llama-server CLI flags)
+**Branch:** `feat/12_Q2_settings_expansion`
+**Done by model:** Qwen3.8-27B-UD-IQ4_XS_unsloth.gguf
+Implemented the full feat/12 spec from the backlog plan: added `Host`, `CacheTypeK/V` and editable `SamplingDefaults` record (temperature/top-k/top-p/min-p/repeat-penalty/repeat-last-n) to `ApplicationSettings`; added readonly `ServerDefaults` record with all 18 server flags; added per-model `Alias` with auto-generation from GGUF filename. Added backward-compat normalization in `SettingsManager.Load()` for old Settings.json files. Updated the TUI: general-settings editor incl. sampling defaults, add/edit model flows with alias input, current-settings view showing host, cache types, sampling defaults, readonly server-defaults section and per-model aliases. Verified via build plus a backward-compat harness against an old-format settings file.
+
 ## feat/13_avalonia_ui_scaffolding — Avalonia UI Scaffolding ✅ MERGED (PR #19)
 Create a basic Avalonia UI project scaffolding with a simple home page.
 
