@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- Settings expansion covering all llama-server CLI flags: new `Host`, `CacheTypeK/V`
+  fields, editable `SamplingDefaults`, read-only `ServerDefaults` section,
+  per-model `Alias` (auto-generated from GGUF filename when empty), TUI editing and
+display support, and backward-compatible loading of old Settings.json files.
 - Initial C# console app with intentional bugs for AI model evaluation
 - Three difficulty-level bugs:
   - **Bug #1 (Easy)**: Off-by-one error in `SumRange` method
