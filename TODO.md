@@ -1,5 +1,4 @@
 # In Progress
-
 ## feat/12_O_settings_expansion — Expand settings schema (fresh implementation)
 **Branch:** `feat/12_O_settings_expansion`
 **Implemented by model:** Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[80k] (Reasoning: medium)
@@ -193,6 +192,11 @@ Design outcome recording format once evaluator has execution data.
 ---
 
 # Completed
+
+## feat/12_P_settings_expansion — Expand settings schema (all llama-server CLI flags)
+**Branch:** `feat/12_P_settings_expansion`
+**Implemented by model:** Qwen3.8-27B-UD-IQ4_XS_unsloth.gguf
+Expanded the settings schema to cover all llama-server CLI flags per the feat/12 spec: added `Host`, `CacheTypeK/V`, editable `SamplingDefaults` record, readonly `ServerDefaults` record (18 fields), and per-model `Alias` with auto-generation from GGUF filename. Added backward-compat normalization in `SettingsManager.Load()` so old Settings.json files still load. Updated the TUI (edit general settings, add/edit model, current-settings view incl. readonly server-defaults section). Verified via build and a backward-compat harness against an old-format settings file.
 
 ## feat/13_avalonia_ui_scaffolding — Avalonia UI Scaffolding ✅ MERGED (PR #19)
 Create a basic Avalonia UI project scaffolding with a simple home page.

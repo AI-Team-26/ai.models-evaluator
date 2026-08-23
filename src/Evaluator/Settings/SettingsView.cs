@@ -72,9 +72,17 @@ public sealed class SettingsView() : View("Settings")
 
         var llamaPath = string.IsNullOrEmpty(settings.LlamaCppPath) ? "(empty)" : settings.LlamaCppPath;
         AnsiConsole.MarkupLine($"[cyan]║ llama.cpp folder:[/] {llamaPath}");
+        AnsiConsole.MarkupLine($"[cyan]║ Host:[/] {settings.Host}");
         AnsiConsole.MarkupLine($"[cyan]║ Server Port:[/] {settings.ServerPort}");
         var modelFolder = string.IsNullOrEmpty(settings.ModelsFolderPath) ? "(empty)" : settings.ModelsFolderPath;
         AnsiConsole.MarkupLine($"[cyan]║ Models Folder:[/] {modelFolder}");
+        AnsiConsole.MarkupLine($"[cyan]║ Cache Type K / V:[/] {settings.CacheTypeK} / {settings.CacheTypeV}");
+
+        var sd = settings.SamplingDefaults ?? new SamplingDefaults();
+        AnsiConsole.MarkupLine(
+            $"[cyan]║ Sampling Defaults:[/] temp={sd.Temperature}, top-k={sd.TopK}, top-p={sd.TopP}, min-p={sd.MinP}, repeat-penalty={sd.RepeatPenalty}, repeat-last-n={sd.RepeatLastN}");
+
+        ShowServerDefaultsSection(settings);
 
         if (settings.Models.Count > 0)
         {
@@ -82,7 +90,8 @@ public sealed class SettingsView() : View("Settings")
             for (int i = 0; i < settings.Models.Count; i++)
             {
                 var m = settings.Models[i];
-                AnsiConsole.MarkupLine($"[cyan]║ #{i + 1}[/] {m.Id}: {m.GgufFileName}");
+                var alias = string.IsNullOrEmpty(m.Alias) ? Path.GetFileNameWithoutExtension(m.GgufFileName) : m.Alias;
+                AnsiConsole.MarkupLine($"[cyan]║ #{i + 1}[/] {m.Id}: {m.GgufFileName} [dim](alias: {alias})[/]");
             }
         }
         else
@@ -91,6 +100,21 @@ public sealed class SettingsView() : View("Settings")
         }
 
         AnsiConsole.MarkupLine("[bold cyan]╚════════════════════════════════════════════════════════╝[/]\n");
+    }
+
+    /// <summary>
+    /// Displays the readonly ServerDefaults section (editable only by editing Settings.json directly).
+    /// </summary>
+    private static void ShowServerDefaultsSection(ApplicationSettings settings)
+    {
+        var d = settings.ServerDefaults ?? new ServerDefaults();
+        AnsiConsole.MarkupLine("\n[cyan]║ Server Defaults [/][yellow](readonly — edit Settings.json to change)[/]:");
+        AnsiConsole.MarkupLine($"[cyan]║   parallel={d.Parallel}, prio={d.Prio}, flash-attn={d.FlashAttn}, kv-unified={d.KvUnified.ToString().ToLowerInvariant()}");
+        AnsiConsole.MarkupLine($"[cyan]║   load-mode={d.LoadMode}, fit={d.Fit}, cache-reuse={d.CacheReuse}, draft-p-min={d.DraftPMIn}");
+        AnsiConsole.MarkupLine($"[cyan]║   log-verbosity={d.LogVerbosity}, samplers={d.Samplers}");
+        AnsiConsole.MarkupLine($"[cyan]║   context-shift={d.ContextShift.ToString().ToLowerInvariant()}, reasoning-preserve={d.ReasoningPreserve.ToString().ToLowerInvariant()}, reasoning={d.Reasoning}");
+        AnsiConsole.MarkupLine($"[cyan]║   reasoning-budget={d.ReasoningBudget}, batch-size={d.BatchSize}, ubatch-size={d.UBatchSize}, spec-type={d.SpecType}");
+        AnsiConsole.MarkupLine($"[cyan]║   reasoning-budget-message={d.ReasoningBudgetMessage}");
     }
 
     private void EditGeneralSettings()
@@ -140,6 +164,20 @@ public sealed class SettingsView() : View("Settings")
                 AnsiConsole.MarkupLine("[red]\u2717 Path does not exist. Keeping current value.[/]\n");
         }
 
+        var hostInput = Helper.GetInput($"host (current: {newSettings.Host})");
+        if (!string.IsNullOrWhiteSpace(hostInput))
+            newSettings.Host = hostInput.Trim();
+
+        var cacheKInput = Helper.GetInput($"cache type K (current: {newSettings.CacheTypeK})");
+        if (!string.IsNullOrWhiteSpace(cacheKInput))
+            newSettings.CacheTypeK = cacheKInput.Trim();
+
+        var cacheVInput = Helper.GetInput($"cache type V (current: {newSettings.CacheTypeV})");
+        if (!string.IsNullOrWhiteSpace(cacheVInput))
+            newSettings.CacheTypeV = cacheVInput.Trim();
+
+        EditSamplingDefaults(ref newSettings);
+
         try
         {
             SettingsManager.Save(newSettings);
@@ -154,6 +192,54 @@ public sealed class SettingsView() : View("Settings")
         {
             Error("Failed to save Settings", exc);
         }
+    }
+
+    /// <summary>
+    /// Prompts for each sampling default; empty input keeps the current value.
+    /// </summary>
+    private static void EditSamplingDefaults(ref ApplicationSettings s)
+    {
+        AnsiConsole.MarkupLine("\n[dim]--- Sampling defaults (empty = keep) ---[/]");
+        var sd = s.SamplingDefaults ??= new SamplingDefaults();
+
+        if (TryGetDouble($"temperature (current: {sd.Temperature})", out var temperature))
+            sd.Temperature = temperature;
+        if (TryGetInt($"top-k (current: {sd.TopK})", out var topK))
+            sd.TopK = topK;
+        if (TryGetDouble($"top-p (current: {sd.TopP})", out var topP))
+            sd.TopP = topP;
+        if (TryGetDouble($"min-p (current: {sd.MinP})", out var minP))
+            sd.MinP = minP;
+        if (TryGetDouble($"repeat penalty (current: {sd.RepeatPenalty})", out var repeatPenalty))
+            sd.RepeatPenalty = repeatPenalty;
+        if (TryGetInt($"repeat last-n (current: {sd.RepeatLastN})", out var repeatLastN))
+            sd.RepeatLastN = repeatLastN;
+    }
+
+    private static bool TryGetInt(string label, out int value)
+    {
+        value = 0;
+        var input = Helper.GetInput(label);
+        if (string.IsNullOrWhiteSpace(input)) return false;
+        if (!int.TryParse(input, out value))
+        {
+            AnsiConsole.MarkupLine("[red]\u2717 Invalid number. Keeping current value.[/]\n");
+            return false;
+        }
+        return true;
+    }
+
+    private static bool TryGetDouble(string label, out double value)
+    {
+        value = 0;
+        var input = Helper.GetInput(label);
+        if (string.IsNullOrWhiteSpace(input)) return false;
+        if (!double.TryParse(input, System.Globalization.CultureInfo.InvariantCulture, out value))
+        {
+            AnsiConsole.MarkupLine("[red]\u2717 Invalid number. Keeping current value.[/]\n");
+            return false;
+        }
+        return true;
     }
 
     private void AddModel()
@@ -218,6 +304,19 @@ public sealed class SettingsView() : View("Settings")
         var jinjaInput = Helper.GetInput("Enable jinja? (y/n, empty=n)");
         bool jinja = !string.IsNullOrEmpty(jinjaInput) && jinjaInput.Trim().ToLowerInvariant().StartsWith('y');
 
+        // Alias (--alias): empty = auto-generate from GGUF filename
+        var aliasInput = Helper.GetInput("Alias (empty = auto-gen from GGUF filename)").Trim();
+        string alias;
+        if (string.IsNullOrEmpty(aliasInput))
+        {
+            alias = Path.GetFileNameWithoutExtension(gguf);
+            AnsiConsole.MarkupLine($"[dim]Using auto-generated alias:[/] {alias}\n");
+        }
+        else
+        {
+            alias = aliasInput;
+        }
+
         // Get fresh settings from disk and add the model
         ApplicationSettings settings = SettingsManager.GetSettings(forceReload: true);
         settings.Models ??= []; // defensive — should never be null but protects against corrupt state
@@ -228,7 +327,8 @@ public sealed class SettingsView() : View("Settings")
             ContextSize = ctxSize,
             GpuLayers = gpuLayers,
             CpuMoE = cpuMoE,
-            Jinja = jinja
+            Jinja = jinja,
+            Alias = alias
         });
 
         try
@@ -313,6 +413,13 @@ public sealed class SettingsView() : View("Settings")
         var jinjaInput = Helper.GetInput($"Enable Jinja? (y/n, empty=n) (current: {(modelToEdit.Jinja ? "yes" : "no")})");
         bool jinja = !string.IsNullOrEmpty(jinjaInput) && jinjaInput.Trim().ToLowerInvariant().StartsWith('y');
         modelToEdit.Jinja = jinja;
+
+        var aliasInput = Helper.GetInput(
+            $"Alias (current: \"{modelToEdit.Alias}\", empty = auto-gen from GGUF filename)").Trim();
+        if (!string.IsNullOrEmpty(aliasInput))
+            modelToEdit.Alias = aliasInput;
+        else
+            modelToEdit.Alias = Path.GetFileNameWithoutExtension(modelToEdit.GgufFileName);
 
         try
         {
