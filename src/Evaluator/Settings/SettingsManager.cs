@@ -66,6 +66,8 @@ public static class SettingsManager
             settings = JsonSerializer.Deserialize<ApplicationSettings>(json, jsonOptions)
                 ?? throw new Exception($"Settings file at {filePath} is empty or corrupt.");
 
+            Normalize(settings);
+
             return settings;
         }
         catch (FileNotFoundException)
@@ -80,6 +82,24 @@ public static class SettingsManager
         catch (Exception exc)
         {
             throw new Exception($"Failed to load Settings. {exc.Message}", exc);
+        }
+    }
+
+    /// <summary>
+    /// Fills in defaults for fields missing from old settings files (backward compatibility).
+    /// </summary>
+    private static void Normalize(ApplicationSettings s)
+    {
+        if (string.IsNullOrEmpty(s.Host)) s.Host = "127.0.0.1";
+        if (string.IsNullOrEmpty(s.CacheTypeK)) s.CacheTypeK = "q8_0";
+        if (string.IsNullOrEmpty(s.CacheTypeV)) s.CacheTypeV = "q8_0";
+        s.SamplingDefaults ??= new SamplingDefaults();
+        s.ServerDefaults ??= new ServerDefaults();
+        foreach (var m in s.Models)
+        {
+            if (m == null) continue;
+            if (string.IsNullOrEmpty(m.Alias) && !string.IsNullOrEmpty(m.GgufFileName))
+                m.Alias = Path.GetFileNameWithoutExtension(m.GgufFileName);
         }
     }
 
