@@ -237,6 +237,10 @@ Design outcome recording format once evaluator has execution data.
 
 # Completed
 
+## feat/12_K_settings_expansion — Expand settings schema for all llama-server CLI flags ✅
+Expanded `ApplicationSettings` with app-level editable `Host`, `CacheTypeK/V`, an editable `SamplingDefaults` record, and a readonly `ServerDefaults` record covering the remaining llama-server CLI flags. Added per-model `Alias` (auto-generated from the GGUF filename when empty), updated the TUI (editable inputs + read-only display), and ensured backward compatibility with old settings files via null-coalescing defaults on load.
+Implemented by model: Qwen3.8-27B-Uncensored-Aggressive-IQ3_M_(HauhauCS)_[128k] (Reasoning: medium)
+
 ## refactor/07_settings_manager — Centralized Configuration Management ✅ MERGED
 Created SettingsManager singleton; eliminated config duplication across classes.
 
