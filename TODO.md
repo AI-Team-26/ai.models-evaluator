@@ -194,6 +194,13 @@ Design outcome recording format once evaluator has execution data.
 
 # Completed
 
+## feat/12_T3_settings_expansion — Expand settings schema ✅ (T3 implementation)
+Expanded the settings schema to cover all llama-server CLI flags per the Phase 2 spec:
+added `Host`, `CacheTypeK/V`, `SamplingDefaults` and read-only `ServerDefaults` records,
+per-model `Alias` with auto-generation from GGUF filename, TUI editing/display support,
+and backward-compatible loading of old Settings.json files.
+Done by model: "(Llama.cpp) Qwen3.8-27B-Abliterated-IQ4-MIX-MTP_finex666_[64k]"
+
 ## feat/13_avalonia_ui_scaffolding — Avalonia UI Scaffolding ✅ MERGED (PR #19)
 Create a basic Avalonia UI project scaffolding with a simple home page.
 
