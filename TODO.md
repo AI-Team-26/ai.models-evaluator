@@ -237,6 +237,10 @@ Design outcome recording format once evaluator has execution data.
 
 # Completed
 
+## feat/12_Q3_settings_expansion — Expand settings schema (all llama-server CLI flags)
+**Branch:** `feat/12_Q3_settings_expansion`
+**Done by model:** Qwen3.8-27B-UD-IQ4_XS_unsloth.gguf
+Implemented the full feat/12 spec: added `Host`, `CacheTypeK/V` and an editable `SamplingDefaults` record (temperature/top-k/top-p/min-p/repeat-penalty/repeat-last-n) to `ApplicationSettings`; added a readonly `ServerDefaults` record with all 18 server flags; added per-model `Alias` with auto-generation from the GGUF filename. Added backward-compat normalization in `SettingsManager.Load()` so old Settings.json files keep loading. Updated the TUI: general-settings editor with host/cache-type/sampling-default inputs, add/edit model flows with alias prompt, and current-settings view showing host, cache types, sampling defaults, the readonly server-defaults section and per-model aliases. Verified via `dotnet build -o agent_build` plus a backward-compat harness against an old-format settings file.
 ## refactor/07_settings_manager — Centralized Configuration Management ✅ MERGED
 Created SettingsManager singleton; eliminated config duplication across classes.
 
