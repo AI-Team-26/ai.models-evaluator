@@ -63,10 +63,12 @@ public static class SettingsManager
         try
         {
             var json = File.ReadAllText(filePath);
-            settings = JsonSerializer.Deserialize<ApplicationSettings>(json, jsonOptions)
+            var deserialized = JsonSerializer.Deserialize<ApplicationSettings>(json, jsonOptions)
                 ?? throw new Exception($"Settings file at {filePath} is empty or corrupt.");
 
-            return settings;
+            Normalize(deserialized);
+
+            return deserialized;
         }
         catch (FileNotFoundException)
         {
@@ -81,6 +83,25 @@ public static class SettingsManager
         {
             throw new Exception($"Failed to load Settings. {exc.Message}", exc);
         }
+    }
+
+    /// <summary>
+    /// Fill in defaults for fields that may be missing from older settings files,
+    /// so previously-saved JSON without the newer records still loads correctly.
+    /// </summary>
+    private static void Normalize(ApplicationSettings s)
+    {
+        if (string.IsNullOrEmpty(s.Host))
+            s.Host = "127.0.0.1";
+        if (string.IsNullOrWhiteSpace(s.CacheTypeK))
+            s.CacheTypeK = "q8_0";
+        if (string.IsNullOrWhiteSpace(s.CacheTypeV))
+            s.CacheTypeV = "q8_0";
+        if (s.SamplingDefaults == null)
+            s.SamplingDefaults = new SamplingDefaults();
+        if (s.ServerDefaults == null)
+            s.ServerDefaults = new ServerDefaults();
+        s.Models ??= [];
     }
 
 }
