@@ -194,6 +194,20 @@ Design outcome recording format once evaluator has execution data.
 
 # Completed
 
+## feat/12_U4_settings_expansion — Expand settings schema (llama-server CLI flags)
+**Branch:** `feat/12_U4_settings_expansion`
+**Done by model:** Qwen3.8_27B_UD-IQ4_XS_(Unsloth)_\[80k]
+
+Expanded `ApplicationSettings`/`ModelSettings` to cover all llama-server CLI flags per the feat/12 spec: app-editable `Host`, `CacheTypeK/V`, new `SamplingDefaults` record (temperature/top-k/top-p/min-p/repeat-penalty/repeat-last-n), new readonly `ServerDefaults` record (parallel, prio, flash-attn, kv-unified, load-mode, fit, cache-reuse, draft-p-min, log-verbosity, samplers, context-shift, reasoning*, batch-size, ubatch-size, spec-type), and per-model `Alias` (auto-generated from GGUF filename when empty via `ModelSettings.GetEffectiveAlias`). Backward compatibility verified against an old-format Settings.json (all defaults applied, round-trip save/load OK); TUI updated (general editor, add/edit model flows, current-settings display with read-only ServerDefaults section).
+
+**Steps:**
+- [x] Step 1: Expand `Entities.cs` (Host, CacheTypeK/V, SamplingDefaults, ServerDefaults, Alias)
+- [x] Step 2: Update `SettingsManager.Load()` backward-compat null-coalescing
+- [x] Step 3: `EditGeneralSettings()` — inputs for Host, cache types, sampling defaults
+- [x] Step 4: `AddModel()`/`EditModel()` — alias input + auto-gen from GGUF filename
+- [x] Step 5: `ShowCurrentSettings()` — display all new fields incl. readonly ServerDefaults section
+- [x] Step 6: Build (`dotnet build -o agent_build`) and verify; move this block to Completed
+
 ## feat/13_avalonia_ui_scaffolding — Avalonia UI Scaffolding ✅ MERGED (PR #19)
 Create a basic Avalonia UI project scaffolding with a simple home page.
 
