@@ -47,3 +47,4 @@ Thumbs.db
 # Evaluator Results
 results/*.json
 agent/
+agent_build/

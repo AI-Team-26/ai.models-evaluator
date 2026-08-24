@@ -237,6 +237,46 @@ Design outcome recording format once evaluator has execution data.
 
 # Completed
 
+## feat/12_Qwen3_8_a_settings_expansion — Expand settings schema (fresh implementation)
+**Branch:** `feat/12_Qwen3_8_a_settings_expansion`
+**Goal:** Implement the feat/12 settings expansion (all llama-server CLI flags in settings, editable vs readonly) as a clean standalone branch.
+**Implemented by model:** Qwen3.8-27B-Abliterated-IQ4-MIX-MTP_finex666_[64k]
+
+**Steps:**
+- [x] Step 1: Expand `Entities.cs` (Host, CacheTypeK/V, SamplingDefaults, ServerDefaults, Alias)
+- [x] Step 2: Update `SettingsManager.Load()` backward-compat null-coalescing
+- [x] Step 3: `EditGeneralSettings()` — inputs for Host, cache types, sampling defaults
+- [x] Step 4: `AddModel()`/`EditModel()` — alias input + auto-gen from GGUF filename
+- [x] Step 5: `ShowCurrentSettings()` — display all new fields incl. readonly ServerDefaults section
+- [x] Step 6: Build (`dotnet build -o agent_build`) and verify; move this block to Completed
+
+## feat/13_avalonia_ui_scaffolding — Avalonia UI Scaffolding ✅ MERGED (PR #19)
+Create a basic Avalonia UI project scaffolding with a simple home page.
+
+**Branch:** `feat/13_avalonia_ui_scaffolding`
+**PR:** #19 — [feat/13: Scaffold Avalonia UI project](https://github.com/AI-Team-26/ai.models-evaluator/pull/19)
+**Merged:** 2026-08-17T17:24:34Z by alex-piccione
+
+**Context / Mental Picture:**
+- New C# Avalonia application project under `src/AvaloniaUI/`
+- No MVVM framework yet — plain XAML with code-behind for simplicity
+- Minimal setup: just verify Avalonia runs and shows a window
+- Will reference the existing `Evaluator` project later once basics work
+- Central package management via `Directory.Packages.props`
+
+**Steps:**
+- [x] Create new Avalonia project under `src/AvaloniaUI/`
+- [x] Add Avalonia NuGet packages to `Directory.Packages.props`
+- [x] Update `AI.Evaluator.slnx` to include the new project
+- [x] Verify build: `dotnet build` ✅ (0 warnings, 0 errors)
+- [x] Replace default content with a simple "AI Models Evaluator" label/home page
+- [x] Fix: `OutputType` changed from `WinExe` to `Exe` for cross-platform CI compatibility
+- [x] Commit and test again
+
+**Notes:**
+- Start with Windows-only target for now (no need for multiplatform config yet)
+- Keep styling minimal — system defaults are fine
+
 ## refactor/07_settings_manager — Centralized Configuration Management ✅ MERGED
 Created SettingsManager singleton; eliminated config duplication across classes.
 
