@@ -1,27 +1,5 @@
 # In Progress
 
-## feat/12_O_settings_expansion — Expand settings schema (fresh implementation)
-**Branch:** `feat/12_O_settings_expansion`
-**Implemented by model:** Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[80k] (Reasoning: medium)
-
-**Goal:** Implement the feat/12 settings expansion (all llama-server CLI flags in settings, editable vs readonly) as a clean standalone branch, ignoring the experimental/duplicate 12x branches.
-
-**Context / Mental Picture:**
-- Follows the flag categorization table in the original feat/12 spec below (App editable / App readonly `ServerDefaults` / Model editable).
-- New records: `SamplingDefaults`, `ServerDefaults`; new fields `Host`, `CacheTypeK/V`, `ModelSettings.Alias`.
-- Backward compat: null-coalesce in `SettingsManager.Load()` so old Settings.json files still load.
-- No LlamaServerManager changes (that's feat/03_server_management).
-
-**Steps:**
-- [ ] Step 1: Expand `Entities.cs` (Host, CacheTypeK/V, SamplingDefaults, ServerDefaults, Alias)
-- [ ] Step 2: Update `SettingsManager.Load()` backward-compat null-coalescing
-- [ ] Step 3: `EditGeneralSettings()` — inputs for Host, cache types, sampling defaults
-- [ ] Step 4: `AddModel()`/`EditModel()` — alias input + auto-gen from GGUF filename
-- [ ] Step 5: `ShowCurrentSettings()` — display all new fields incl. readonly ServerDefaults section
-- [ ] Step 6: Build (`dotnet build -o agent_build`) and verify; move this block to Completed
-
----
-
 ## docs/12_experimental_prs — Document feat/12 experimental PR history
 Document that feat/12 settings expansion was used to test multiple LLM models,
 producing several parallel PRs that should be ignored. Definitive implementation is PR #22.
@@ -193,6 +171,20 @@ Design outcome recording format once evaluator has execution data.
 ---
 
 # Completed
+
+## feat/12_U3_settings_expansion — Expand settings schema (llama-server CLI flags)
+**Branch:** `feat/12_U3_settings_expansion`
+**Done by model:** Qwen3.8_27B_UD-IQ4_XS_(Unsloth)_\[80k]
+
+Expanded `ApplicationSettings`/`ModelSettings` to cover all llama-server CLI flags per the feat/12 spec: app-editable `Host`, `CacheTypeK/V`, new `SamplingDefaults` record (temperature/top-k/top-p/min-p/repeat-penalty/repeat-last-n), new readonly `ServerDefaults` record (parallel, prio, flash-attn, kv-unified, load-mode, fit, cache-reuse, draft-p-min, log-verbosity, samplers, context-shift, reasoning*, batch-size, ubatch-size, spec-type), and per-model `Alias` (auto-generated from GGUF filename when empty). Backward compatibility via null-coalescing in `SettingsManager.Load()` verified against an old-format Settings.json; TUI updated (general editor, add/edit model flows, current-settings display with read-only ServerDefaults section).
+
+**Steps:**
+- [x] Step 1: Expand `Entities.cs` (Host, CacheTypeK/V, SamplingDefaults, ServerDefaults, Alias)
+- [x] Step 2: Update `SettingsManager.Load()` backward-compat null-coalescing
+- [x] Step 3: `EditGeneralSettings()` — inputs for Host, cache types, sampling defaults
+- [x] Step 4: `AddModel()`/`EditModel()` — alias input + auto-gen from GGUF filename
+- [x] Step 5: `ShowCurrentSettings()` — display all new fields incl. readonly ServerDefaults section
+- [x] Step 6: Build (`dotnet build -o agent_build`) and verify; move this block to Completed
 
 ## feat/13_avalonia_ui_scaffolding — Avalonia UI Scaffolding ✅ MERGED (PR #19)
 Create a basic Avalonia UI project scaffolding with a simple home page.

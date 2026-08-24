@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- Settings schema expansion (`feat/12_U3_settings_expansion`, done by Qwen3.8_27B_UD-IQ4_XS_(Unsloth)_\[80k]):
+  new `SamplingDefaults` and readonly `ServerDefaults` records, `Host`, `CacheTypeK/V`
+  fields, per-model `Alias` (auto-generated from GGUF filename), TUI editor/display updates,
+  backward-compatible loading of old Settings.json files.
 - Initial C# console app with intentional bugs for AI model evaluation
 - Three difficulty-level bugs:
   - **Bug #1 (Easy)**: Off-by-one error in `SumRange` method
