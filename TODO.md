@@ -194,6 +194,20 @@ Design outcome recording format once evaluator has execution data.
 
 # Completed
 
+## feat/12_Qwen3_8_b_settings_expansion — Expand settings schema (fresh implementation)
+**Branch:** `feat/12_Qwen3_8_b_settings_expansion`
+**Implemented by model:** Qwen3.8-27B-Abliterated-IQ4-MIX-MTP_finex666_[64k]
+
+**Goal:** Implement the feat/12 settings expansion (all llama-server CLI flags in settings, editable vs readonly) as a clean standalone branch.
+
+**Steps:**
+- [x] Step 1: Expand `Entities.cs` (Host, CacheTypeK/V, SamplingDefaults, ServerDefaults, Alias)
+- [x] Step 2: Update `SettingsManager.Load()` backward-compat null-coalescing
+- [x] Step 3: `EditGeneralSettings()` — inputs for Host, cache types, sampling defaults
+- [x] Step 4: `AddModel()`/`EditModel()` — alias input + auto-gen from GGUF filename
+- [x] Step 5: `ShowCurrentSettings()` — display all new fields incl. readonly ServerDefaults section
+- [x] Step 6: Build (`dotnet build -o agent_build`) passes with 0 errors
+
 ## feat/13_avalonia_ui_scaffolding — Avalonia UI Scaffolding ✅ MERGED (PR #19)
 Create a basic Avalonia UI project scaffolding with a simple home page.
 
