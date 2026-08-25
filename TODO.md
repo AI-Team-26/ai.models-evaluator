@@ -49,11 +49,10 @@ Create a basic Avalonia UI project scaffolding with a simple home page.
 ---
 
 ## docs/12_experimental_prs — Document feat/12 experimental PR history
-Document that feat/12 settings expansion was used to test multiple LLM models,
-producing several parallel PRs that should be ignored. Definitive implementation is PR #22.
+Document the parallel experimental PRs and point reviewers to the comparative evaluation.
 
 **Branch:** `docs/12_experimental_prs`
-**Goal:** Add documentation explaining the experimental feat/12 settings PR history so reviewers know to ignore redundant PRs.
+**Goal:** Keep the feat/12 experiment history concise and current.
 
 ---
 
