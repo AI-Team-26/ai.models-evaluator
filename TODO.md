@@ -1,20 +1,22 @@
 # In Progress
 
-**Context / Mental Picture:**
-- The feat/12 settings expansion was used as an experimental testbed for different LLMs
-- Each LLM produced a separate PR (#16, #17, #18, #20, #22, #23)
-- PR #22 is the definitive implementation; others are redundant
-- Documentation goes in CHANGELOG, docs/, and TODO
+### feat/12_KAT_3_settings_expansion — Expand llama-server settings schema (KAT-Coder-V2.5 run)
 
+**Branch:** `feat/12_KAT_3_settings_expansion`
+**Goal:** Expand `ApplicationSettings` and `ModelSettings` to cover all llama-server CLI flags, attributed to KAT-Coder-V2.5-Dev_Q2_K-AllGPU_(offmonreal)_160k.
+**Context / Mental Picture:** Same spec as original feat/12. Implemented by the model "KAT-Coder-V2.5-Dev_Q2_K-AllGPU_(offmonreal)_160k".
 **Steps:**
-- [x] Create `docs/experimental_prs.md` with PR history table
-- [x] Add CHANGELOG entry under [Unreleased] → Documentation
-- [x] Update TODO to mark feat/12 as completed
-- [x] Verify build passes
+- [x] Create branch `feat/12_KAT_3_settings_expansion` from main
+- [x] Expand `Entities.cs` — add Host, CacheTypeK/V, SamplingDefaults, ServerDefaults, Alias
+- [x] Update `SettingsManager.Load()` — backward-compatible null-coalescing
+- [x] Update `SettingsView` — edit flows and display for all new fields
+- [x] Build passes (`dotnet build`, 0 errors)
+- [x] Commit changes
 
 **Notes:**
-- Do NOT close the experimental PRs — just document them as ignorable
-- The goal is documentation, not code changes
+- Done by the model **KAT-Coder-V2.5-Dev_Q2_K-AllGPU_(offmonreal)_160k**
+
+---
 
 ---
 
