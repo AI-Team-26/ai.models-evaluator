@@ -1,5 +1,7 @@
 # In Progress
 
+### docs/12_experimental_prs (previous) — Document feat/12 experimental PR history
+
 **Context / Mental Picture:**
 - The feat/12 settings expansion was used as an experimental testbed for different LLMs
 - Each LLM produced a separate PR (#16, #17, #18, #20, #22, #23)
@@ -237,6 +239,9 @@ Design outcome recording format once evaluator has execution data.
 ---
 
 # Completed
+
+## feat/12_Qwen38-27B_7_settings_expansion — Expand llama-server settings schema ✅
+Expanded `ApplicationSettings`/`ModelSettings` to cover all llama-server CLI flags: app-level editable `Host`, `CacheTypeK/V`, `SamplingDefaults`; readonly `ServerDefaults` record; per-model `Alias` (auto-gen from GGUF filename). Updated Settings TUI edit/display flows with backward-compatible loading of old settings files. Done by the model **Qwen3.8-27B-UD-IQ4_XS_(peculiar)_64k**.
 
 ## refactor/07_settings_manager — Centralized Configuration Management ✅ MERGED
 Created SettingsManager singleton; eliminated config duplication across classes.
