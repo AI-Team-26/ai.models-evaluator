@@ -105,67 +105,67 @@ All eleven evaluated PRs were inspected in isolated worktrees and scored against
 | [#16](https://github.com/AI-Team-26/ai.models-evaluator/pull/16) | 12/30 | 20/20 | 13/20 | 2/15 | 5/10 | 4/5 | **56/100** |  |
 | [#44](https://github.com/AI-Team-26/ai.models-evaluator/pull/44) | 22/30 | 0/20 | 16/20 | 7/15 | 4/10 | 2/5 | **51/100** |  |
 
-### PR #16 — 56/100
+### PR #16 — 56/100 (`Qwen3-Coder-Next-REAP-40B-A3B.i1-IQ3_M_mradermacher.gguf`)
 
 PR #16 is a partial implementation. It adds the expanded entities and some load-time defaults, but does not update `SettingsView`. Consequently, the new settings are not editable or fully displayed through the UI, and aliases are not supported in the add/edit flows. It also uses nullable strings with non-null defaults, inconsistent JSON attributes, string types for boolean-like server flags, and does not handle a missing `Models` list. It has unresolved review threads.
 
 **Conclusion:** incomplete and not recommended without further work.
 
-### PR #17 — 93/100
+### PR #17 — 93/100 (`Qwen3.5-27B-IQ4_XS_unsloth.gguf`)
 
 PR #17 is a strong, nearly complete implementation. It provides the expanded data model, complete settings UI coverage, alias editing and generation, read-only server-default display, and backward-compatible handling of missing settings sections and model lists. Review corrections improved its markup output, boolean types, neutral reasoning-message default, and TODO accuracy. Its main limitation is the lack of dedicated automated settings tests.
 
 **Conclusion:** excellent candidate.
 
-### PR #18 — 94/100
+### PR #18 — 94/100 (`KAT-Coder-V2.5-Dev-Cerebellum-14GB-v2_deucebucket.gguf`)
 
 PR #18 is the strongest implementation in this comparison. It combines complete data and UI changes with a dedicated `EvaluatorSettingsTests` project. The three added settings tests passed, and review corrections ensured the test project is included in the solution and exercises `SettingsManager` rather than merely duplicating its logic. The test setup uses reflection/path overriding because of the static manager design, which adds some complexity, but it provides the best verification evidence among the six PRs.
 
 **Conclusion:** best overall candidate.
 
-### PR #20 — 73/100
+### PR #20 — 73/100 (`Nemotron-3.5-Lightning`)
 
 PR #20 is functional but has several design and completeness problems. `ServerDefaults` duplicates editable application fields, creating multiple possible sources of truth. The general settings flow does not expose all required host/cache editing, and the model edit flow lacks alias editing. It also removes the llama.cpp path from the settings display, contains a load-error typo, produces nullable-analysis warnings, and has unresolved review threads.
 
 **Conclusion:** usable as an experiment, but weaker than the complete implementations.
 
-### PR #22 — 92/100
+### PR #22 — 92/100 (`mindai/macaron-v1-venti`)
 
 PR #22 is a complete and well-reviewed implementation. It covers the required entities, backward compatibility, settings UI, aliases, and read-only server defaults. It has no unresolved review threads and builds successfully. Its limitations are the lack of dedicated settings tests, nullable nested records normalized later by the manager, and an opinionated hardcoded reasoning-budget message. The PR's status as the definitive implementation is not independently confirmed by this comparison.
 
 **Conclusion:** strong candidate, but not uniquely superior.
 
-### PR #23 — 92/100
+### PR #23 — 92/100 (`KAT-Coder-V2.5-Dev-Cerebellum-14GB-v2_deucebucket.gguf`)
 
 PR #23 is another complete implementation with a focused diff. It covers the data model, compatibility handling, UI flows, alias generation, and read-only display. It uses a neutral empty reasoning-budget message and has no unresolved review threads. It lacks dedicated settings tests and does not normalize null aliases inside existing model entries.
 
 **Conclusion:** strong candidate, effectively tied with PR #22.
 
-### PR #34 — 94/100
+### PR #34 — 94/100 (`Qwen3.8-27B-UD-IQ4_XS_unsloth.gguf`)
 
 PR #34 is the strongest of the five requested PRs. It provides the complete settings model, load-time defaults, editable settings prompts, alias generation, alias editing, and a read-only server-defaults display. It builds cleanly with zero warnings, and its test result matches the repository baseline. The main compatibility gap is that `Normalize()` iterates over `s.Models ?? []` without assigning an empty list back to `s.Models`; an old file without a `models` array can still leave the list null for later callers. It also keeps the specification's `DraftPMin` field under the name `DraftPMIn`, which is a minor naming-quality issue.
 
 **Conclusion:** best candidate among the five requested PRs, subject to fixing the `Models` normalization edge case.
 
-### PR #45 — 93/100
+### PR #45 — 93/100 (`KAT-Coder-V2.5-Dev-Cerebellum-14GB-v2_deucebucket_160k`)
 
 PR #45 is a complete and well-structured implementation. It covers the required entities, backward-compatible defaults, UI editing and display, alias generation, and read-only server defaults. It builds cleanly with zero warnings and has only the documented baseline test failures. Its compatibility handling correctly initializes a missing `Models` collection, but it does not normalize aliases on existing legacy model entries. In the edit flow, submitting an empty alias leaves the previous alias unchanged rather than applying the documented auto-generation behavior. The `DraftPMIn` property name is also inconsistent with the specification.
 
 **Conclusion:** excellent candidate, narrowly behind PR #34.
 
-### PR #46 — 93/100
+### PR #46 — 93/100 (`KAT-Coder-V2.5-Dev-Cerebellum-14GB-v2_deucebucket_160k`)
 
 PR #46 has the same settings implementation and verification profile as PR #45. It builds cleanly with zero warnings and produces the same 4-pass/9-fail baseline test result. It covers the required model, compatibility, UI, alias, and read-only-default functionality. The same limitations apply: legacy aliases are not normalized, empty alias input during model editing does not regenerate the alias, and `DraftPMIn` is a minor naming mismatch.
 
 **Conclusion:** effectively tied with PR #45; the implementation is strong but should address the alias and naming details.
 
-### PR #48 — 83/100
+### PR #48 — 83/100 (`Qwen3.8-27B-Abliterated-IQ4-MIX-MTP_finex666_[64k]`)
 
 PR #48 implements the main feature and builds cleanly, with the same baseline test result. It includes the required settings UI and alias flows, and it adds the useful `agent_build/` ignore rule. However, its compatibility normalization does not initialize a missing `Models` list or legacy model aliases. Its boolean-like `ServerDefaults` values (`KvUnified`, `ContextShift`, and `ReasoningPreserve`) are represented as strings, making invalid values possible and weakening type safety. The edit flow does not auto-generate an alias when an existing alias is cleared, and its implementation has less explanatory structure than PRs #34, #45, and #46.
 
 **Conclusion:** functional and buildable, but materially weaker in compatibility and type correctness.
 
-### PR #44 — 51/100
+### PR #44 — 51/100 (`Gemma-4-26B-Q4_0_(Google)_128k`)
 
 PR #44 covers much of the requested feature surface and includes settings normalization, UI display/editing, alias support, and read-only defaults. However, it does not compile: `SettingsView.cs` declares `public.const string EditModel`, producing compiler error `CS1519`. Because the application cannot build, no meaningful regression-safety credit is awarded. The diff also removes or compresses substantial existing UI logic, increasing regression risk. Its server-default representation retains string types for boolean-like flags and its normalization does not safely handle a null deserialized `Models` list.
 
