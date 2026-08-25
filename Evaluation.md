@@ -144,3 +144,53 @@ PR #23 is another complete implementation with a focused diff. It covers the dat
 6. **PR #16 — 56/100**: incomplete because the UI portion is missing.
 
 The evaluation does not support choosing PR #22 merely because it was the last or historically designated implementation. Based on the available evidence, PR #18 is the best candidate among these six.
+
+## 4. Evaluation of PRs #34, #44, #45, #46, and #48
+
+These five PRs were evaluated against the same `feat/12_settings_expansion` specification using isolated worktrees. The implementation projects were restored and built independently, and the existing `TargetCodeTests` were run separately for each PR. Each test run produced the documented baseline result of 4 passing and 9 intentionally failing tests. No unresolved review threads were present on the five requested PRs at evaluation time.
+
+| PR | Specification | Build / regression | Compatibility | UI / behavior | Code quality | Scope | **Total** |
+|---:|---:|---:|---:|---:|---:|---:|---:|
+| [#34](https://github.com/AI-Team-26/ai.models-evaluator/pull/34) | 29/30 | 20/20 | 18/20 | 14/15 | 9/10 | 4/5 | **94/100** |
+| [#45](https://github.com/AI-Team-26/ai.models-evaluator/pull/45) | 29/30 | 20/20 | 17/20 | 14/15 | 9/10 | 4/5 | **93/100** |
+| [#46](https://github.com/AI-Team-26/ai.models-evaluator/pull/46) | 29/30 | 20/20 | 17/20 | 14/15 | 9/10 | 4/5 | **93/100** |
+| [#48](https://github.com/AI-Team-26/ai.models-evaluator/pull/48) | 27/30 | 20/20 | 14/20 | 12/15 | 7/10 | 3/5 | **83/100** |
+| [#44](https://github.com/AI-Team-26/ai.models-evaluator/pull/44) | 22/30 | 0/20 | 16/20 | 7/15 | 4/10 | 2/5 | **51/100** |
+
+### PR #34 — 94/100
+
+PR #34 is the strongest of the five requested PRs. It provides the complete settings model, load-time defaults, editable settings prompts, alias generation, alias editing, and a read-only server-defaults display. It builds cleanly with zero warnings, and its test result matches the repository baseline. The main compatibility gap is that `Normalize()` iterates over `s.Models ?? []` without assigning an empty list back to `s.Models`; an old file without a `models` array can still leave the list null for later callers. It also keeps the specification's `DraftPMin` field under the name `DraftPMIn`, which is a minor naming-quality issue.
+
+**Conclusion:** best candidate among the five requested PRs, subject to fixing the `Models` normalization edge case.
+
+### PR #45 — 93/100
+
+PR #45 is a complete and well-structured implementation. It covers the required entities, backward-compatible defaults, UI editing and display, alias generation, and read-only server defaults. It builds cleanly with zero warnings and has only the documented baseline test failures. Its compatibility handling correctly initializes a missing `Models` collection, but it does not normalize aliases on existing legacy model entries. In the edit flow, submitting an empty alias leaves the previous alias unchanged rather than applying the documented auto-generation behavior. The `DraftPMIn` property name is also inconsistent with the specification.
+
+**Conclusion:** excellent candidate, narrowly behind PR #34.
+
+### PR #46 — 93/100
+
+PR #46 has the same settings implementation and verification profile as PR #45. It builds cleanly with zero warnings and produces the same 4-pass/9-fail baseline test result. It covers the required model, compatibility, UI, alias, and read-only-default functionality. The same limitations apply: legacy aliases are not normalized, empty alias input during model editing does not regenerate the alias, and `DraftPMIn` is a minor naming mismatch.
+
+**Conclusion:** effectively tied with PR #45; the implementation is strong but should address the alias and naming details.
+
+### PR #48 — 83/100
+
+PR #48 implements the main feature and builds cleanly, with the same baseline test result. It includes the required settings UI and alias flows, and it adds the useful `agent_build/` ignore rule. However, its compatibility normalization does not initialize a missing `Models` list or legacy model aliases. Its boolean-like `ServerDefaults` values (`KvUnified`, `ContextShift`, and `ReasoningPreserve`) are represented as strings, making invalid values possible and weakening type safety. The edit flow does not auto-generate an alias when an existing alias is cleared, and its implementation has less explanatory structure than PRs #34, #45, and #46.
+
+**Conclusion:** functional and buildable, but materially weaker in compatibility and type correctness.
+
+### PR #44 — 51/100
+
+PR #44 covers much of the requested feature surface and includes settings normalization, UI display/editing, alias support, and read-only defaults. However, it does not compile: `SettingsView.cs` declares `public.const string EditModel`, producing compiler error `CS1519`. Because the application cannot build, no meaningful regression-safety credit is awarded. The diff also removes or compresses substantial existing UI logic, increasing regression risk. Its server-default representation retains string types for boolean-like flags and its normalization does not safely handle a null deserialized `Models` list.
+
+**Conclusion:** not mergeable without correcting the compile error and revalidating the compressed UI changes.
+
+## Ranking for the requested PRs
+
+1. **PR #34 — 94/100**: strongest complete implementation and clean build; fix `Models` normalization before merge.
+2. **PR #45 — 93/100**: complete, clean, and well-structured; minor alias and naming issues remain.
+3. **PR #46 — 93/100**: effectively tied with PR #45 because the settings implementation is identical.
+4. **PR #48 — 83/100**: buildable but weaker in type safety and backward compatibility.
+5. **PR #44 — 51/100**: currently uncompilable and therefore not mergeable.
