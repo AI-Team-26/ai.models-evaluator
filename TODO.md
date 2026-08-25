@@ -20,8 +20,6 @@
 
 ---
 
----
-
 ## feat/13_avalonia_ui_scaffolding — Avalonia UI Scaffolding
 Create a basic Avalonia UI project scaffolding with a simple home page.
 
