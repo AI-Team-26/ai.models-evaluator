@@ -91,19 +91,19 @@ The scores are comparative engineering judgments based on the implementation and
 
 All eleven evaluated PRs were inspected in isolated worktrees and scored against the same `feat/12_settings_expansion` specification. Each test run produced the documented baseline result of 4 passing and 9 intentionally failing tests. PR #18 additionally introduced three settings tests, all of which passed. No unresolved review threads were present on the five PRs in the second batch (#34, #44, #45, #46, #48) at evaluation time.
 
-| PR | Specification | Build / regression | Compatibility | UI / behavior | Code quality | Scope | **Total** | **Stars** |
-|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| [#18](https://github.com/AI-Team-26/ai.models-evaluator/pull/18) | 29/30 | 20/20 | 18/20 | 14/15 | 9/10 | 4/5 | **94/100** | ★★★★ |
-| [#34](https://github.com/AI-Team-26/ai.models-evaluator/pull/34) | 29/30 | 20/20 | 18/20 | 14/15 | 9/10 | 4/5 | **94/100** | ★★★★ |
-| [#17](https://github.com/AI-Team-26/ai.models-evaluator/pull/17) | 29/30 | 20/20 | 17/20 | 14/15 | 9/10 | 4/5 | **93/100** | ★★★★ |
-| [#45](https://github.com/AI-Team-26/ai.models-evaluator/pull/45) | 29/30 | 20/20 | 17/20 | 14/15 | 9/10 | 4/5 | **93/100** | ★★★★ |
-| [#46](https://github.com/AI-Team-26/ai.models-evaluator/pull/46) | 29/30 | 20/20 | 17/20 | 14/15 | 9/10 | 4/5 | **93/100** | ★★★★ |
-| [#22](https://github.com/AI-Team-26/ai.models-evaluator/pull/22) | 29/30 | 20/20 | 17/20 | 14/15 | 8/10 | 4/5 | **92/100** | ★★★★ |
-| [#23](https://github.com/AI-Team-26/ai.models-evaluator/pull/23) | 29/30 | 20/20 | 17/20 | 14/15 | 8/10 | 4/5 | **92/100** | ★★★★ |
-| [#48](https://github.com/AI-Team-26/ai.models-evaluator/pull/48) | 27/30 | 20/20 | 14/20 | 12/15 | 7/10 | 3/5 | **83/100** |  |
-| [#20](https://github.com/AI-Team-26/ai.models-evaluator/pull/20) | 22/30 | 20/20 | 15/20 | 8/15 | 5/10 | 3/5 | **73/100** |  |
-| [#16](https://github.com/AI-Team-26/ai.models-evaluator/pull/16) | 12/30 | 20/20 | 13/20 | 2/15 | 5/10 | 4/5 | **56/100** |  |
-| [#44](https://github.com/AI-Team-26/ai.models-evaluator/pull/44) | 22/30 | 0/20 | 16/20 | 7/15 | 4/10 | 2/5 | **51/100** |  |
+| PR | Model | Specification | Build / regression | Compatibility | UI / behavior | Code quality | Scope | **Total** | **Stars** |
+|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| [#18](https://github.com/AI-Team-26/ai.models-evaluator/pull/18) | `KAT-Coder-V2.5-Dev-Cerebellum-14GB-v2_deucebucket.gguf` | 29/30 | 20/20 | 18/20 | 14/15 | 9/10 | 4/5 | **94/100** | ★★★★ |
+| [#34](https://github.com/AI-Team-26/ai.models-evaluator/pull/34) | `Qwen3.8-27B-UD-IQ4_XS_unsloth.gguf` | 29/30 | 20/20 | 18/20 | 14/15 | 9/10 | 4/5 | **94/100** | ★★★★ |
+| [#17](https://github.com/AI-Team-26/ai.models-evaluator/pull/17) | `Qwen3.5-27B-IQ4_XS_unsloth.gguf` | 29/30 | 20/20 | 17/20 | 14/15 | 9/10 | 4/5 | **93/100** | ★★★★ |
+| [#45](https://github.com/AI-Team-26/ai.models-evaluator/pull/45) | `KAT-Coder-V2.5-Dev-Cerebellum-14GB-v2_deucebucket_160k` | 29/30 | 20/20 | 17/20 | 14/15 | 9/10 | 4/5 | **93/100** | ★★★★ |
+| [#46](https://github.com/AI-Team-26/ai.models-evaluator/pull/46) | `KAT-Coder-V2.5-Dev-Cerebellum-14GB-v2_deucebucket_160k` | 29/30 | 20/20 | 17/20 | 14/15 | 9/10 | 4/5 | **93/100** | ★★★★ |
+| [#22](https://github.com/AI-Team-26/ai.models-evaluator/pull/22) | `mindai/macaron-v1-venti` | 29/30 | 20/20 | 17/20 | 14/15 | 8/10 | 4/5 | **92/100** | ★★★★ |
+| [#23](https://github.com/AI-Team-26/ai.models-evaluator/pull/23) | `KAT-Coder-V2.5-Dev-Cerebellum-14GB-v2_deucebucket.gguf` | 29/30 | 20/20 | 17/20 | 14/15 | 8/10 | 4/5 | **92/100** | ★★★★ |
+| [#48](https://github.com/AI-Team-26/ai.models-evaluator/pull/48) | `Qwen3.8-27B-Abliterated-IQ4-MIX-MTP_finex666_[64k]` | 27/30 | 20/20 | 14/20 | 12/15 | 7/10 | 3/5 | **83/100** |  |
+| [#20](https://github.com/AI-Team-26/ai.models-evaluator/pull/20) | `Nemotron-3.5-Lightning` | 22/30 | 20/20 | 15/20 | 8/15 | 5/10 | 3/5 | **73/100** |  |
+| [#16](https://github.com/AI-Team-26/ai.models-evaluator/pull/16) | `Qwen3-Coder-Next-REAP-40B-A3B.i1-IQ3_M_mradermacher.gguf` | 12/30 | 20/20 | 13/20 | 2/15 | 5/10 | 4/5 | **56/100** |  |
+| [#44](https://github.com/AI-Team-26/ai.models-evaluator/pull/44) | `Gemma-4-26B-Q4_0_(Google)_128k` | 22/30 | 0/20 | 16/20 | 7/15 | 4/10 | 2/5 | **51/100** |  |
 
 ### PR #16 — 56/100 (`Qwen3-Coder-Next-REAP-40B-A3B.i1-IQ3_M_mradermacher.gguf`)
 
