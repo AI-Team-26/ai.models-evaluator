@@ -38,6 +38,8 @@ The following list contains all known `feat/12_settings_expansion` implementatio
 | [#49](https://github.com/AI-Team-26/ai.models-evaluator/pull/49) | `Qwen3.8-27B-Abliterated-IQ4-MIX-MTP_finex666_[64k]` |
 | [#52](https://github.com/AI-Team-26/ai.models-evaluator/pull/52) | `openai/gpt-5.6-luna` |
 | [#57](https://github.com/AI-Team-26/ai.models-evaluator/pull/57) | `Tiel-Coder-35B-A3B-UD-IQ4_XS_(peculiar)_64k` |
+| [#59](https://github.com/AI-Team-26/ai.models-evaluator/pull/59) | `Qwen3.8-27B-UD-IQ4_XS_(peculiar)_64k` |
+| [#60](https://github.com/AI-Team-26/ai.models-evaluator/pull/60) | `Qwen3.8-27B-UD-IQ4_XS_(peculiar)_64k` |
 
 PR #28 documents the experimental history but does not implement `feat/12`, so it is intentionally excluded. PR #25 is similarly documentation-only. PR #19 implements Avalonia UI scaffolding and is also excluded.
 
@@ -173,10 +175,16 @@ Check:
 
 ## 4. Evaluation results
 
-Twelve models in this evaluation were inspected in isolated worktrees and scored against the same `feat/12_settings_expansion` specification; the remaining eighteen implementations are listed at the bottom of this section as unevaluated placeholders. Each evaluated test run produced the documented baseline result of 4 passing and 9 intentionally failing tests. PR #18 additionally introduced three settings tests, all of which passed. No unresolved review threads were present on the five implementations in the second batch (#34, #44, #45, #46, #48) at evaluation time.
+Eighteen models in this evaluation were inspected in isolated worktrees and scored against the same `feat/12_settings_expansion` specification; the remaining fourteen implementations are listed at the bottom of this section as unevaluated placeholders. Each newly evaluated test run produced the documented baseline result of 4 passing and 9 intentionally failing tests. PR #18 additionally introduced three settings tests, all of which passed. No unresolved review threads were present on the six newly evaluated implementations (#27, #29, #30, #57, #59, #60) at evaluation time.
 
 | PR | Model | Spec | Build/Reg | Compat | UI/Beh | Code | Scope | **Total** | **Stars** |
 |---:|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| [#60](https://github.com/AI-Team-26/ai.models-evaluator/pull/60) | `Qwen3.8-27B-UD-IQ4_XS_(peculiar)_64k` | 29/30 | 20/20 | 17/20 | 14/15 | 9/10 | 4/5 | **93/100** | ★★★★ |
+| [#59](https://github.com/AI-Team-26/ai.models-evaluator/pull/59) | `Qwen3.8-27B-UD-IQ4_XS_(peculiar)_64k` | 29/30 | 20/20 | 18/20 | 14/15 | 8/10 | 4/5 | **93/100** | ★★★★ |
+| [#30](https://github.com/AI-Team-26/ai.models-evaluator/pull/30) | `Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[64k]` | 29/30 | 20/20 | 17/20 | 14/15 | 9/10 | 4/5 | **93/100** | ★★★★ |
+| [#29](https://github.com/AI-Team-26/ai.models-evaluator/pull/29) | `Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[64k]` | 29/30 | 20/20 | 17/20 | 14/15 | 8/10 | 4/5 | **92/100** | ★★★★ |
+| [#57](https://github.com/AI-Team-26/ai.models-evaluator/pull/57) | `Tiel-Coder-35B-A3B-UD-IQ4_XS_(peculiar)_64k` | 29/30 | 20/20 | 16/20 | 14/15 | 8/10 | 3/5 | **90/100** | ★★★★ |
+| [#27](https://github.com/AI-Team-26/ai.models-evaluator/pull/27) | `Qwen3.5-27B-IQ3_M_(gammaception)_128k` | 12/30 | 20/20 | 13/20 | 2/15 | 7/10 | 4/5 | **58/100** |  |
 | [#52](https://github.com/AI-Team-26/ai.models-evaluator/pull/52) | `openai/gpt-5.6-luna` | 30/30 | 20/20 | 18/20 | 14/15 | 9/10 | 5/5 | **96/100** | ★★★★★ |
 | [#18](https://github.com/AI-Team-26/ai.models-evaluator/pull/18) | `KAT-Coder-V2.5-Dev-Cerebellum-14GB-v2_deucebucket.gguf` | 29/30 | 20/20 | 18/20 | 14/15 | 9/10 | 4/5 | **94/100** | ★★★★ |
 | [#34](https://github.com/AI-Team-26/ai.models-evaluator/pull/34) | `Qwen3.8-27B-UD-IQ4_XS_unsloth.gguf` | 29/30 | 20/20 | 18/20 | 14/15 | 9/10 | 4/5 | **94/100** | ★★★★ |
@@ -196,9 +204,9 @@ The following implementations correspond to open PRs that implement `feat/12_set
 
 | PR | Model | Spec | Build/Reg | Compat | UI/Beh | Code | Scope | **Total** | **Stars** |
 |---:|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| [#27](https://github.com/AI-Team-26/ai.models-evaluator/pull/27) | `Qwen3.5-27B-IQ3_M_(gammaception)_128k` | — | — | — | — | — | — | — | — |
-| [#29](https://github.com/AI-Team-26/ai.models-evaluator/pull/29) | `Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[64k]` | — | — | — | — | — | — | — | — |
-| [#30](https://github.com/AI-Team-26/ai.models-evaluator/pull/30) | `Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[64k]` | — | — | — | — | — | — | — | — |
+| [#27](https://github.com/AI-Team-26/ai.models-evaluator/pull/27) | `Qwen3.5-27B-IQ3_M_(gammaception)_128k` | 12/30 | 20/20 | 13/20 | 2/15 | 7/10 | 4/5 | **58/100** |  |
+| [#29](https://github.com/AI-Team-26/ai.models-evaluator/pull/29) | `Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[64k]` | 29/30 | 20/20 | 17/20 | 14/15 | 8/10 | 4/5 | **92/100** | ★★★★ |
+| [#30](https://github.com/AI-Team-26/ai.models-evaluator/pull/30) | `Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[64k]` | 29/30 | 20/20 | 17/20 | 14/15 | 9/10 | 4/5 | **93/100** | ★★★★ |
 | [#31](https://github.com/AI-Team-26/ai.models-evaluator/pull/31) | `Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[80k] (Reasoning: medium)` | — | — | — | — | — | — | — | — |
 | [#32](https://github.com/AI-Team-26/ai.models-evaluator/pull/32) | `Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[80k] (Reasoning: medium)` | — | — | — | — | — | — | — | — |
 | [#33](https://github.com/AI-Team-26/ai.models-evaluator/pull/33) | `Qwen3.8-27B-Uncensored-Aggressive-IQ3_M_(HauhauCS)_[128k] (Reasoning: medium)` | — | — | — | — | — | — | — | — |
@@ -213,7 +221,7 @@ The following implementations correspond to open PRs that implement `feat/12_set
 | [#43](https://github.com/AI-Team-26/ai.models-evaluator/pull/43) | `Qwen3.8_27B_UD-IQ4_XS_(Unsloth)_[80k]` | — | — | — | — | — | — | — | — |
 | [#47](https://github.com/AI-Team-26/ai.models-evaluator/pull/47) | `Gemma-4-26B-A4B-it-MXFP4_MOE_noctrex.gguf` | — | — | — | — | — | — | — | — |
 | [#49](https://github.com/AI-Team-26/ai.models-evaluator/pull/49) | `Qwen3.8-27B-Abliterated-IQ4-MIX-MTP_finex666_[64k]` | — | — | — | — | — | — | — | — |
-| [#57](https://github.com/AI-Team-26/ai.models-evaluator/pull/57) | `Tiel-Coder-35B-A3B-UD-IQ4_XS_(peculiar)_64k` | — | — | — | — | — | — | — | — | — |
+| [#57](https://github.com/AI-Team-26/ai.models-evaluator/pull/57) | `Tiel-Coder-35B-A3B-UD-IQ4_XS_(peculiar)_64k` | 29/30 | 20/20 | 16/20 | 14/15 | 8/10 | 3/5 | **90/100** | ★★★★ |
 
 ### Model used for PR #52 — 96/100 (`openai/gpt-5.6-luna`)
 
@@ -286,6 +294,40 @@ The model used for PR #44 produced an implementation that covers much of the req
 
 **Conclusion:** not mergeable without correcting the compile error and revalidating the compressed UI changes.
 
+## 5. Deterministic evidence for PRs #27, #29, #30, #57, #59, and #60
+
+The six targets were evaluated from their submitted commits in isolated worktrees, without rebasing. The recorded PR metadata is:
+
+| PR | Base SHA | Head SHA | Feature checklist (entities / manager / UI / compatibility) |
+|---:|---|---|---|
+| #27 | `96f1b41b9d1a597404e2c23d69f1c6b4d79b1c3d` | `f12a5dc61cd3bdfef7d09170715039b13adaf199` | ✓ / ✓ / ✗ / partial |
+| #29 | `96f1b41b9d1a597404e2c23d69f1c6b4d79b1c3d` | `634e9964aca39bfecc8da71c6bdd544c34d102c5` | ✓ / ✓ / ✓ / ✓ |
+| #30 | `96f1b41b9d1a597404e2c23d69f1c6b4d79b1c3d` | `9e3a74c42e517a175008467084821360f720b692` | ✓ / ✓ / ✓ / partial |
+| #57 | `208e140d527aa341ebda7e81ac9bc32df547d2e4` | `5deda4e2bd407df677906e8f3f475dff2ad8808f` | ✓ / ✓ / ✓ / ✓ |
+| #59 | `208e140d527aa341ebda7e81ac9bc32df547d2e4` | `bf04025fc82a12837fc34039deec6309da4f288b` | ✓ / ✓ / ✓ / ✓ |
+| #60 | `7ce179c050f34a8822e86f981bf230d51bf0360a` | `cddf6b4f74add9e161bcaf6a63553a457891e108` | ✓ / ✓ / ✓ / partial |
+
+The implementation diffs were limited to the settings entities/manager and, except for #27, `SettingsView.cs`. Each PR also changed `TODO.md`; #57 additionally changed `Evaluation.md`, which is scope-unauthorized for the implementation task and was not treated as feature credit. No unresolved review threads were found.
+
+### Fixed verification outcomes
+
+| PRs | Restore/build command | Test command | Result |
+|---|---|---|---|
+| #27, #29, #30, #57, #59, #60 | `dotnet restore AI.Evaluator.slnx` then `dotnet build src/Evaluator/Evaluator.csproj -o agent_build --no-restore` | `dotnet test tests/TargetCodeTests/TargetCodeTests.csproj --no-restore` | Every build: 0 warnings, 0 errors. Every test run: 4 passed, 9 baseline failures. |
+
+The baseline failures are in pre-existing `TargetCodeTests` coverage (`SumRange`, `SafeProduct`, and `SplitCsv`); no settings-specific tests were supplied by these PRs. UI scenarios were assessed statically from `SettingsView.cs`: #27 fails the required edit/display scenario because it contains no UI implementation; #29, #30, #57, #59, and #60 expose host/cache/sampling/model-alias flows and display read-only server defaults. Compatibility fixtures used: a legacy JSON object with omitted new sections, a legacy model with omitted alias, and explicit `null` sections/lists. All five UI implementations normalize the new sections; #29, #57, and #59 also normalize model aliases or lists, while #30 and #60 leave some null collection/alias edges to callers.
+
+Comparative scores above preserve the existing Process #1 scoring system. The deterministic checklist confirms the same ordering factors: complete feature coverage, buildability, legacy-load behavior, observable UI flows, focused diffs, and unauthorized planning-document edits.
+
+| PR | Compatibility/UI/code-quality notes |
+|---:|---|
+| #27 | Correct entity additions and manager normalization, but no settings UI; comments and naming are serviceable. |
+| #29 | Complete CLI UI and strongest normalization among the Q3 pair; minor property-name inconsistencies (`DraftPMIn`, `UbatchSize`) reduce maintainability. |
+| #30 | Complete UI and readable structure; boolean/string representation and missing model-list normalization reduce compatibility confidence. |
+| #57 | Complete read-only display and editable flows; its extra `Evaluation.md` edit and alias update semantics are scope-quality deductions. |
+| #59 | Complete UI, explicit boolean server flags, and broad normalization; inconsistent acronym casing (`DraftPMIN`, `UBatchSize`) is a small quality issue. |
+| #60 | Complete, focused UI and clean types; omitted model-list/alias normalization and less defensive legacy handling reduce compatibility confidence. |
+
 ## Ranking and conclusion
 
 1. **Model used for PR #52 — 96/100** (★★★★★): best overall. Complete data and UI changes, correct types, comprehensive backward compatibility, clean build, zero scope creep.
@@ -297,6 +339,6 @@ The model used for PR #44 produced an implementation that covers much of the req
 7. **Model used for PR #16 — 56/100**: incomplete because the UI portion is missing.
 8. **Model used for PR #44 — 51/100**: currently uncompilable and therefore not mergeable.
 
-Based on the available evidence across all twelve evaluated models, the model used for PR #52 is the strongest candidate, followed by the models used for PR #18 and PR #34 tied for second.
+Based on the available evidence across all eighteen evaluated models, the model used for PR #52 is the strongest candidate, followed by the models used for PR #18 and PR #34 tied for second.
 
 
