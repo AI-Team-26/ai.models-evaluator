@@ -1,8 +1,8 @@
-# Evaluation of Experimental Settings PRs
+# Evaluation of Experimental Settings Models
 
-This document compares the six open experimental PRs that implement the `feat/12_settings_expansion` task.
+This document evaluates the models used to implement the `feat/12_settings_expansion` task. PR links identify the corresponding implementation, but the evaluation and scores apply to the models, not to the PRs.
 
-## 1. All `feat/12` PRs and executor models
+## 1. All `feat/12` implementations and executor models
 
 The following list contains all PRs in this repository that implement the `feat/12_settings_expansion` task. Documentation, planning, Avalonia, and unrelated bug-fix PRs are excluded.
 
@@ -36,6 +36,7 @@ The following list contains all PRs in this repository that implement the `feat/
 | [#47](https://github.com/AI-Team-26/ai.models-evaluator/pull/47) | `Gemma-4-26B-A4B-it-MXFP4_MOE_noctrex.gguf` |
 | [#48](https://github.com/AI-Team-26/ai.models-evaluator/pull/48) | `Qwen3.8-27B-Abliterated-IQ4-MIX-MTP_finex666_[64k]` |
 | [#49](https://github.com/AI-Team-26/ai.models-evaluator/pull/49) | `Qwen3.8-27B-Abliterated-IQ4-MIX-MTP_finex666_[64k]` |
+| [#52](https://github.com/AI-Team-26/ai.models-evaluator/pull/52) | `openai/gpt-5.6-luna` |
 
 PR #28 documents the experimental history but does not implement `feat/12`, so it is intentionally excluded. PR #25 is similarly documentation-only. PR #19 implements Avalonia UI scaffolding and is also excluded.
 
@@ -43,7 +44,7 @@ The executor model names above are taken from each PR description. For PR #20, t
 
 ## 2. Evaluation rules
 
-Each PR is evaluated against the `feat/12_settings_expansion` specification in `TODO.md` and against the existing repository baseline.
+Each model is evaluated against the `feat/12_settings_expansion` specification in `TODO.md` and against the existing repository baseline.
 
 ### Required functionality
 
@@ -62,7 +63,7 @@ The implementation should:
 
 ### Verification procedure
 
-Each PR was inspected in an isolated worktree and evaluated using:
+Each implementation was inspected in an isolated worktree and evaluated using:
 
 1. A diff review against `main`.
 2. `dotnet build AI.Evaluator.slnx` with isolated output.
@@ -71,7 +72,7 @@ Each PR was inspected in an isolated worktree and evaluated using:
 5. Inspection of `SettingsView` add/edit/display flows.
 6. Review-thread status from GitHub.
 
-The repository's existing `TargetCodeTests` contain intentional failing tests. The relevant comparison is whether a PR introduces new failures. All six PRs produced the same existing result: 4 passing and 9 failing target-code tests. PR #18 additionally introduced three settings tests, all of which passed.
+The repository's existing `TargetCodeTests` contain intentional failing tests. The relevant comparison is whether an implementation introduces new failures. All six evaluated models produced the same existing result: 4 passing and 9 failing target-code tests. PR #18 additionally introduced three settings tests, all of which passed.
 
 ### Scoring
 
@@ -162,8 +163,7 @@ PR #20 is functional but has several design and completeness problems. `ServerDe
 
 ### PR #22 — 92/100 (`mindai/macaron-v1-venti`)
 
-PR #22 is a complete and well-reviewed implementation. It covers the required entities, backward compatibility, settings UI, aliases, and read-only server defaults. It has no unresolved review threads and builds successfully. Its limitations are the lack of dedicated settings tests, nullable nested records normalized later by the manager, and an opinionated hardcoded reasoning-budget message. The PR's status as the definitive implementation is not independently confirmed by this comparison.
-
+PR #22 is a complete and well-reviewed implementation. It covers the required entities, backward compatibility, settings UI, aliases, and read-only server defaults. It has no unresolved review threads and builds successfully. Its limitations are the lack of dedicated settings tests, nullable nested records normalized later by the manager, and an opinionated hardcoded reasoning-budget message.
 **Conclusion:** strong candidate, but not uniquely superior.
 
 ### PR #23 — 92/100 (`KAT-Coder-V2.5-Dev-Cerebellum-14GB-v2_deucebucket.gguf`)
@@ -213,6 +213,6 @@ PR #44 covers much of the requested feature surface and includes settings normal
 7. **PR #16 — 56/100**: incomplete because the UI portion is missing.
 8. **PR #44 — 51/100**: currently uncompilable and therefore not mergeable.
 
-The evaluation does not support choosing PR #22 merely because it was the last or historically designated implementation. Based on the available evidence across all twelve evaluated PRs, PR #52 is the strongest candidate, followed by PR #18 and PR #34 tied for second.
+Based on the available evidence across all twelve evaluated models, the model used for PR #52 is the strongest candidate, followed by the models used for PR #18 and PR #34 tied for second.
 
 
