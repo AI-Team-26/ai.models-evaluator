@@ -1,5 +1,21 @@
 # In Progress
 
+## feat/12_GPT5_6_Luna_settings_expansion — Settings expansion
+
+**Branch:** `feat/12_GPT5_6_Luna_settings_expansion`
+**Goal:** Expand application and model settings for llama-server flags with editable and read-only fields.
+**Completed by model:** `openai/gpt-5.6-luna`
+
+**Steps:**
+- [x] Expand settings entities with sampling, server defaults, host, cache types, and model alias
+- [x] Add backward-compatible defaults during settings loading
+- [x] Update settings UI for editable and read-only values
+- [x] Add alias handling and GGUF filename fallback
+- [x] Build successfully with `dotnet build AI.Evaluator.slnx -o agent_build`
+- [x] Run available tests; 9 existing `TargetCodeTests` failures are unrelated to settings expansion
+
+---
+
 **Context / Mental Picture:**
 - The feat/12 settings expansion was used as an experimental testbed for different LLMs
 - Each LLM produced a separate PR (#16, #17, #18, #20, #22, #23)
