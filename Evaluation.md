@@ -89,7 +89,7 @@ The scores are comparative engineering judgments based on the implementation and
 
 ## 3. Evaluation results
 
-All twelve evaluated PRs were inspected in isolated worktrees and scored against the same `feat/12_settings_expansion` specification. Each test run produced the documented baseline result of 4 passing and 9 intentionally failing tests. PR #18 additionally introduced three settings tests, all of which passed. No unresolved review threads were present on the five PRs in the second batch (#34, #44, #45, #46, #48) at evaluation time.
+Twelve PRs in this evaluation were inspected in isolated worktrees and scored against the same `feat/12_settings_expansion` specification; the remaining seventeen open PRs are listed at the bottom of this section as unevaluated placeholders. Each evaluated test run produced the documented baseline result of 4 passing and 9 intentionally failing tests. PR #18 additionally introduced three settings tests, all of which passed. No unresolved review threads were present on the five PRs in the second batch (#34, #44, #45, #46, #48) at evaluation time.
 
 | PR | Model | Spec | Build/Reg | Compat | UI/Beh | Code | Scope | **Total** | **Stars** |
 |---:|---|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -105,6 +105,30 @@ All twelve evaluated PRs were inspected in isolated worktrees and scored against
 | [#20](https://github.com/AI-Team-26/ai.models-evaluator/pull/20) | `Nemotron-3.5-Lightning` | 22/30 | 20/20 | 15/20 | 8/15 | 5/10 | 3/5 | **73/100** |  |
 | [#16](https://github.com/AI-Team-26/ai.models-evaluator/pull/16) | `Qwen3-Coder-Next-REAP-40B-A3B.i1-IQ3_M_mradermacher.gguf` | 12/30 | 20/20 | 13/20 | 2/15 | 5/10 | 4/5 | **56/100** |  |
 | [#44](https://github.com/AI-Team-26/ai.models-evaluator/pull/44) | `Gemma-4-26B-Q4_0_(Google)_128k` | 22/30 | 0/20 | 16/20 | 7/15 | 4/10 | 2/5 | **51/100** |  |
+
+### Not yet evaluated
+
+The following open PRs implement `feat/12_settings_expansion` and are listed in section 1, but have not been inspected in this evaluation. They are listed here as placeholders so the unevaluated set is visible; per-PR descriptions are intentionally omitted.
+
+| PR | Model | Spec | Build/Reg | Compat | UI/Beh | Code | Scope | **Total** | **Stars** |
+|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| [#27](https://github.com/AI-Team-26/ai.models-evaluator/pull/27) | `Qwen3.5-27B-IQ3_M_(gammaception)_128k` | — | — | — | — | — | — | — | — |
+| [#29](https://github.com/AI-Team-26/ai.models-evaluator/pull/29) | `Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[64k]` | — | — | — | — | — | — | — | — |
+| [#30](https://github.com/AI-Team-26/ai.models-evaluator/pull/30) | `Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[64k]` | — | — | — | — | — | — | — | — |
+| [#31](https://github.com/AI-Team-26/ai.models-evaluator/pull/31) | `Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[80k] (Reasoning: medium)` | — | — | — | — | — | — | — | — |
+| [#32](https://github.com/AI-Team-26/ai.models-evaluator/pull/32) | `Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[80k] (Reasoning: medium)` | — | — | — | — | — | — | — | — |
+| [#33](https://github.com/AI-Team-26/ai.models-evaluator/pull/33) | `Qwen3.8-27B-Uncensored-Aggressive-IQ3_M_(HauhauCS)_[128k] (Reasoning: medium)` | — | — | — | — | — | — | — | — |
+| [#35](https://github.com/AI-Team-26/ai.models-evaluator/pull/35) | `Qwen3.8-27B-UD-IQ4_XS_unsloth.gguf` | — | — | — | — | — | — | — | — |
+| [#36](https://github.com/AI-Team-26/ai.models-evaluator/pull/36) | `Qwen3.8-27B-UD-IQ4_XS_unsloth.gguf` | — | — | — | — | — | — | — | — |
+| [#37](https://github.com/AI-Team-26/ai.models-evaluator/pull/37) | `Qwen3.8-27B-UD-IQ4_XS_unsloth.gguf` | — | — | — | — | — | — | — | — |
+| [#38](https://github.com/AI-Team-26/ai.models-evaluator/pull/38) | `Qwen3.8-27B-UD-IQ4_XS_unsloth.gguf` | — | — | — | — | — | — | — | — |
+| [#39](https://github.com/AI-Team-26/ai.models-evaluator/pull/39) | `Qwen3.8-27B-Cold-Fusion-GAIN-V1.1-MTP-IQ3_M_(davidau)_64k` | — | — | — | — | — | — | — | — |
+| [#40](https://github.com/AI-Team-26/ai.models-evaluator/pull/40) | `Qwen3.8-27B-Abliterated-IQ4-MIX-MTP_finex666_[64k]` | — | — | — | — | — | — | — | — |
+| [#41](https://github.com/AI-Team-26/ai.models-evaluator/pull/41) | `Qwen3.8-27B-Abliterated-IQ4-MIX-MTP_finex666_[64k]` | — | — | — | — | — | — | — | — |
+| [#42](https://github.com/AI-Team-26/ai.models-evaluator/pull/42) | `Qwen3.8_27B_UD-IQ4_XS_(Unsloth)_[80k]` | — | — | — | — | — | — | — | — |
+| [#43](https://github.com/AI-Team-26/ai.models-evaluator/pull/43) | `Qwen3.8_27B_UD-IQ4_XS_(Unsloth)_[80k]` | — | — | — | — | — | — | — | — |
+| [#47](https://github.com/AI-Team-26/ai.models-evaluator/pull/47) | `Gemma-4-26B-A4B-it-MXFP4_MOE_noctrex.gguf` | — | — | — | — | — | — | — | — |
+| [#49](https://github.com/AI-Team-26/ai.models-evaluator/pull/49) | `Qwen3.8-27B-Abliterated-IQ4-MIX-MTP_finex666_[64k]` | — | — | — | — | — | — | — | — |
 
 ### PR #52 — 96/100 (`openai/gpt-5.6-luna`)
 
