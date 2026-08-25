@@ -72,9 +72,42 @@ public sealed class SettingsView() : View("Settings")
 
         var llamaPath = string.IsNullOrEmpty(settings.LlamaCppPath) ? "(empty)" : settings.LlamaCppPath;
         AnsiConsole.MarkupLine($"[cyan]║ llama.cpp folder:[/] {llamaPath}");
+        AnsiConsole.MarkupLine($"[cyan]║ Host:[/] {settings.Host}");
         AnsiConsole.MarkupLine($"[cyan]║ Server Port:[/] {settings.ServerPort}");
+        AnsiConsole.MarkupLine($"[cyan]║ Cache Type K:[/] {settings.CacheTypeK}");
+        AnsiConsole.MarkupLine($"[cyan]║ Cache Type V:[/] {settings.CacheTypeV}");
+
+        var sd = settings.SamplingDefaults ?? new SamplingDefaults();
+        AnsiConsole.MarkupLine($"\n[cyan]║ Sampling Defaults:[/]");
+        AnsiConsole.MarkupLine($"[cyan]║   Temperature:[/] {sd.Temperature}");
+        AnsiConsole.MarkupLine($"[cyan]║   Top-K:[/] {sd.TopK}");
+        AnsiConsole.MarkupLine($"[cyan]║   Top-P:[/] {sd.TopP}");
+        AnsiConsole.MarkupLine($"[cyan]║   Min-P:[/] {sd.MinP}");
+        AnsiConsole.MarkupLine($"[cyan]║   Repeat Penalty:[/] {sd.RepeatPenalty}");
+        AnsiConsole.MarkupLine($"[cyan]║   Repeat Last N:[/] {sd.RepeatLastN}");
+
+        var rd = settings.ServerDefaults ?? new ServerDefaults();
+        AnsiConsole.MarkupLine($"\n[cyan]║ Server Defaults (read-only):[/]");
+        AnsiConsole.MarkupLine($"[cyan]║   Parallel:[/] {rd.Parallel}");
+        AnsiConsole.MarkupLine($"[cyan]║   Prio:[/] {rd.Prio}");
+        AnsiConsole.MarkupLine($"[cyan]║   Flash Attention:[/] {rd.FlashAttn}");
+        AnsiConsole.MarkupLine($"[cyan]║   KV Unified:[/] {rd.KvUnified}");
+        AnsiConsole.MarkupLine($"[cyan]║   Load Mode:[/] {rd.LoadMode}");
+        AnsiConsole.MarkupLine($"[cyan]║   Fit:[/] {rd.Fit}");
+        AnsiConsole.MarkupLine($"[cyan]║   Cache Reuse:[/] {rd.CacheReuse}");
+        AnsiConsole.MarkupLine($"[cyan]║   Draft P Min:[/] {rd.DraftPMin}");
+        AnsiConsole.MarkupLine($"[cyan]║   Log Verbosity:[/] {rd.LogVerbosity}");
+        AnsiConsole.MarkupLine($"[cyan]║   Samplers:[/] {rd.Samplers}");
+        AnsiConsole.MarkupLine($"[cyan]║   Context Shift:[/] {rd.ContextShift}");
+        AnsiConsole.MarkupLine($"[cyan]║   Reasoning:[/] {rd.Reasoning}");
+        AnsiConsole.MarkupLine($"[cyan]║   Reasoning Preserve:[/] {rd.ReasoningPreserve}");
+        AnsiConsole.MarkupLine($"[cyan]║   Reasoning Budget:[/] {rd.ReasoningBudget}");
+        AnsiConsole.MarkupLine($"[cyan]║   Batch Size:[/] {rd.BatchSize}");
+        AnsiConsole.MarkupLine($"[cyan]║   Ubatch Size:[/] {rd.UbatchSize}");
+        AnsiConsole.MarkupLine($"[cyan]║   Spec Type:[/] {rd.SpecType}");
+
         var modelFolder = string.IsNullOrEmpty(settings.ModelsFolderPath) ? "(empty)" : settings.ModelsFolderPath;
-        AnsiConsole.MarkupLine($"[cyan]║ Models Folder:[/] {modelFolder}");
+        AnsiConsole.MarkupLine($"\n[cyan]║ Models Folder:[/] {modelFolder}");
 
         if (settings.Models.Count > 0)
         {
@@ -82,7 +115,8 @@ public sealed class SettingsView() : View("Settings")
             for (int i = 0; i < settings.Models.Count; i++)
             {
                 var m = settings.Models[i];
-                AnsiConsole.MarkupLine($"[cyan]║ #{i + 1}[/] {m.Id}: {m.GgufFileName}");
+                var aliasDisplay = string.IsNullOrEmpty(m.Alias) ? "(auto)" : m.Alias;
+                AnsiConsole.MarkupLine($"[cyan]║ #{i + 1}[/] {m.Id}: {m.GgufFileName} [dim]alias={aliasDisplay}[/]");
             }
         }
         else
@@ -112,6 +146,10 @@ public sealed class SettingsView() : View("Settings")
                 AnsiConsole.MarkupLine("[red]✗ Path does not exist. Keeping current value.[/]\n");
         }
 
+        var hostStr = Helper.GetInput($"host (current: {newSettings.Host})");
+        if (!string.IsNullOrWhiteSpace(hostStr))
+            newSettings.Host = hostStr.Trim();
+
         var portStr = Helper.GetInput($"server port (current: {newSettings.ServerPort})");
 
         if (!string.IsNullOrWhiteSpace(portStr))
@@ -130,6 +168,42 @@ public sealed class SettingsView() : View("Settings")
             }
         }
 
+        var cacheTypeK = Helper.GetInput($"cache type K (current: {newSettings.CacheTypeK})");
+        if (!string.IsNullOrWhiteSpace(cacheTypeK))
+            newSettings.CacheTypeK = cacheTypeK.Trim();
+
+        var cacheTypeV = Helper.GetInput($"cache type V (current: {newSettings.CacheTypeV})");
+        if (!string.IsNullOrWhiteSpace(cacheTypeV))
+            newSettings.CacheTypeV = cacheTypeV.Trim();
+
+        // Sampling defaults
+        var sd = newSettings.SamplingDefaults ?? new SamplingDefaults();
+        var tempStr = Helper.GetInput($"temperature (current: {sd.Temperature})");
+        if (!string.IsNullOrWhiteSpace(tempStr) && double.TryParse(tempStr, out var parsedTemp))
+            sd.Temperature = parsedTemp;
+
+        var topKStr = Helper.GetInput($"top-k (current: {sd.TopK})");
+        if (!string.IsNullOrWhiteSpace(topKStr) && int.TryParse(topKStr, out var parsedTopK))
+            sd.TopK = parsedTopK;
+
+        var topPStr = Helper.GetInput($"top-p (current: {sd.TopP})");
+        if (!string.IsNullOrWhiteSpace(topPStr) && double.TryParse(topPStr, out var parsedTopP))
+            sd.TopP = parsedTopP;
+
+        var minPStr = Helper.GetInput($"min-p (current: {sd.MinP})");
+        if (!string.IsNullOrWhiteSpace(minPStr) && double.TryParse(minPStr, out var parsedMinP))
+            sd.MinP = parsedMinP;
+
+        var repPenStr = Helper.GetInput($"repeat penalty (current: {sd.RepeatPenalty})");
+        if (!string.IsNullOrWhiteSpace(repPenStr) && double.TryParse(repPenStr, out var parsedRepPen))
+            sd.RepeatPenalty = parsedRepPen;
+
+        var repLastNStr = Helper.GetInput($"repeat last n (current: {sd.RepeatLastN})");
+        if (!string.IsNullOrWhiteSpace(repLastNStr) && int.TryParse(repLastNStr, out var parsedRepLastN))
+            sd.RepeatLastN = parsedRepLastN;
+
+        newSettings.SamplingDefaults = sd;
+
         var modelFolderInput = Helper.GetInput($"models folder path (current: \"{newSettings.ModelsFolderPath}\")");
 
         if (!string.IsNullOrEmpty(modelFolderInput))
@@ -147,7 +221,7 @@ public sealed class SettingsView() : View("Settings")
             Clear();
             ShowCurrentSettings();
 
-            Success("Settings saved");
+            Success("Settings saved"); 
             
         }
         catch (Exception exc)
@@ -218,6 +292,9 @@ public sealed class SettingsView() : View("Settings")
         var jinjaInput = Helper.GetInput("Enable jinja? (y/n, empty=n)");
         bool jinja = !string.IsNullOrEmpty(jinjaInput) && jinjaInput.Trim().ToLowerInvariant().StartsWith('y');
 
+        // Auto-generate alias from GGUF filename if empty
+        string alias = string.IsNullOrEmpty(id) ? Path.GetFileNameWithoutExtension(gguf) : id;
+
         // Get fresh settings from disk and add the model
         ApplicationSettings settings = SettingsManager.GetSettings(forceReload: true);
         settings.Models ??= []; // defensive — should never be null but protects against corrupt state
@@ -228,7 +305,8 @@ public sealed class SettingsView() : View("Settings")
             ContextSize = ctxSize,
             GpuLayers = gpuLayers,
             CpuMoE = cpuMoE,
-            Jinja = jinja
+            Jinja = jinja,
+            Alias = alias
         });
 
         try
@@ -313,6 +391,12 @@ public sealed class SettingsView() : View("Settings")
         var jinjaInput = Helper.GetInput($"Enable Jinja? (y/n, empty=n) (current: {(modelToEdit.Jinja ? "yes" : "no")})");
         bool jinja = !string.IsNullOrEmpty(jinjaInput) && jinjaInput.Trim().ToLowerInvariant().StartsWith('y');
         modelToEdit.Jinja = jinja;
+
+        var aliasInput = Helper.GetInput($"Alias (empty to auto-gen from GGUF name) (current: {(string.IsNullOrEmpty(modelToEdit.Alias) ? "(auto)" : modelToEdit.Alias)})");
+        if (!string.IsNullOrWhiteSpace(aliasInput))
+            modelToEdit.Alias = aliasInput.Trim();
+        else if (string.IsNullOrEmpty(modelToEdit.Alias))
+            modelToEdit.Alias = Path.GetFileNameWithoutExtension(modelToEdit.GgufFileName);
 
         try
         {
