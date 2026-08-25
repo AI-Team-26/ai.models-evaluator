@@ -238,6 +238,15 @@ Design outcome recording format once evaluator has execution data.
 
 # Completed
 
+## feat/12_Qwen38-27B_6_settings_expansion — Expand llama-server settings (Qwen run)
+Implemented by model: `Qwen3.8-27B-UD-IQ4_XS_(peculiar)_64k`
+Expanded `ApplicationSettings`/`ModelSettings` to cover all llama-server CLI flags from the reference command, with an editable vs. readonly distinction:
+- App-level editable: `Host`, `CacheTypeK/V`, nested `SamplingDefaults` (temperature, top-k, top-p, min-p, repeat-penalty, repeat-last-n) — all editable via the general settings editor.
+- App-level readonly: nested `ServerDefaults` record (parallel, prio, flash-attn, kv-unified, load-mode, fit, cache-reuse, draft-p-min, log-verbosity, samplers, context-shift, reasoning*, batch-size, ubatch-size, spec-type) — displayed read-only in the Settings view.
+- Per-model editable: `Alias` (`--alias`), auto-generated from the GGUF filename when left empty.
+- Backward compatibility: old settings files without the new fields are null-coalesced to defaults in `SettingsManager.Load()`; verified with a smoke test against a pre-existing legacy `Settings.json` (load + save/reload round-trip).
+- Build passes; `LlamaServerManager` intentionally untouched (that's `feat/03_server_management`).
+
 ## refactor/07_settings_manager — Centralized Configuration Management ✅ MERGED
 Created SettingsManager singleton; eliminated config duplication across classes.
 
