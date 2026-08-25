@@ -43,7 +43,7 @@ PR #28 documents the experimental history but does not implement `feat/12`, so i
 
 The executor model names above are taken from each PR description. For PR #20, the model is identified by the PR title/description as `Nemotron-3.5-Lightning` rather than by an explicit `Implemented by` line.
 
-## 2. Evaluation rules
+## 2. Evaluation Process #1 — Comparative Evaluation
 
 Each model is evaluated against the `feat/12_settings_expansion` specification in `TODO.md` and against the existing repository baseline.
 
@@ -89,7 +89,89 @@ The repository's existing `TargetCodeTests` contain intentional failing tests. T
 
 The scores are comparative engineering judgments based on the implementation and verification above. They do not measure the capability of the underlying model in general.
 
-## 3. Evaluation results
+## 3. Evaluation Process #2 — Deterministic Evaluation
+
+This process is intended to make future model comparisons reproducible. It does not replace the existing scores in this document.
+
+### 3.1 Freeze the evaluation target
+
+For each model run, record:
+
+- PR number and model name;
+- implementation commit SHA and base commit SHA;
+- evaluation date;
+- build and test commands.
+
+The PR provides traceability, the implementation is the artifact being evaluated, and the model is the subject being compared.
+
+### 3.2 Use a binary feature checklist
+
+Evaluate each required feature as Pass or Fail:
+
+- `ApplicationSettings.Host`;
+- editable `CacheTypeK` and `CacheTypeV`;
+- `SamplingDefaults` fields and defaults;
+- `ServerDefaults` fields, types, and defaults;
+- `ModelSettings.Alias`;
+- compatibility with old settings files;
+- alias auto-generation;
+- editable settings UI fields;
+- read-only settings UI display;
+- absence of unrelated changes.
+
+Derive the specification score from this checklist rather than assigning it by general judgment.
+
+### 3.3 Use fixed build and test outcomes
+
+Record separately:
+
+- existing baseline test failures;
+- newly introduced failures;
+- feature-specific tests;
+- tests that were not run.
+
+Use fixed outcomes for build and regression scoring:
+
+- **20/20** — builds with zero warnings and introduces no new test failures;
+- **15/20** — builds, but has warnings or incomplete test evidence;
+- **10/20** — builds only partially or has uncertain regression status;
+- **0/20** — does not compile.
+
+### 3.4 Use fixed compatibility fixtures
+
+Run the same fixtures for every implementation:
+
+1. complete current settings;
+2. old settings with all new fields missing;
+3. missing `Models`;
+4. missing nested defaults;
+5. empty alias;
+6. null alias in an existing model.
+
+Record Pass or Fail for each fixture.
+
+### 3.5 Use fixed UI scenarios
+
+Verify the same scenarios for every implementation:
+
+- edit host, cache types, and each sampling value;
+- add a model with an empty alias;
+- add a model with an explicit alias;
+- edit and clear an existing alias;
+- display all read-only values.
+
+### 3.6 Evaluate code quality with a fixed checklist
+
+Check:
+
+- correct types;
+- no nullable warnings;
+- consistent serialization attributes;
+- no duplicated sources of truth;
+- focused diff;
+- no unrelated behavior changes.
+
+## 4. Evaluation results
 
 Twelve models in this evaluation were inspected in isolated worktrees and scored against the same `feat/12_settings_expansion` specification; the remaining eighteen implementations are listed at the bottom of this section as unevaluated placeholders. Each evaluated test run produced the documented baseline result of 4 passing and 9 intentionally failing tests. PR #18 additionally introduced three settings tests, all of which passed. No unresolved review threads were present on the five implementations in the second batch (#34, #44, #45, #46, #48) at evaluation time.
 
