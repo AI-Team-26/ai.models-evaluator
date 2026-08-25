@@ -2,16 +2,42 @@
 
 This document compares the six open experimental PRs that implement the `feat/12_settings_expansion` task.
 
-## 1. PR list and executor models
+## 1. All `feat/12` PRs and executor models
 
-| PR | Title | Executor model |
-|---:|---|---|
-| [#16](https://github.com/AI-Team-26/ai.models-evaluator/pull/16) | feat/12c: settings expansion | `Qwen3-Coder-Next-REAP-40B-A3B.i1-IQ3_M_mradermacher.gguf` |
-| [#17](https://github.com/AI-Team-26/ai.models-evaluator/pull/17) | feat/12e: Settings expansion | `Qwen3.5-27B-IQ4_XS_unsloth.gguf` |
-| [#18](https://github.com/AI-Team-26/ai.models-evaluator/pull/18) | feat/12f: Expand settings schema | `KAT-Coder-V2.5-Dev-Cerebellum-14GB-v2_deucebucket.gguf` |
-| [#20](https://github.com/AI-Team-26/ai.models-evaluator/pull/20) | feat/12g: Expand settings schema for Nemotron | `Nemotron-3.5-Lightning` |
-| [#22](https://github.com/AI-Team-26/ai.models-evaluator/pull/22) | feat/12h: Expand settings schema | `mindai/macaron-v1-venti` |
-| [#23](https://github.com/AI-Team-26/ai.models-evaluator/pull/23) | feat/121: Expand settings schema | `KAT-Coder-V2.5-Dev-Cerebellum-14GB-v2_deucebucket.gguf` |
+The following list contains all PRs in this repository that implement the `feat/12_settings_expansion` task. Documentation, planning, Avalonia, and unrelated bug-fix PRs are excluded.
+
+| PR | Status | Title | Executor model |
+|---:|---|---|---|
+| [#16](https://github.com/AI-Team-26/ai.models-evaluator/pull/16) | Open | feat/12c: settings expansion | `Qwen3-Coder-Next-REAP-40B-A3B.i1-IQ3_M_mradermacher.gguf` |
+| [#17](https://github.com/AI-Team-26/ai.models-evaluator/pull/17) | Open | feat/12e: Settings expansion | `Qwen3.5-27B-IQ4_XS_unsloth.gguf` |
+| [#18](https://github.com/AI-Team-26/ai.models-evaluator/pull/18) | Open | feat/12f: Expand settings schema | `KAT-Coder-V2.5-Dev-Cerebellum-14GB-v2_deucebucket.gguf` |
+| [#20](https://github.com/AI-Team-26/ai.models-evaluator/pull/20) | Open | feat/12g: Expand settings schema for Nemotron-3.5-Lightning | `Nemotron-3.5-Lightning` |
+| [#22](https://github.com/AI-Team-26/ai.models-evaluator/pull/22) | Open | feat/12h: Expand settings schema | `mindai/macaron-v1-venti` |
+| [#23](https://github.com/AI-Team-26/ai.models-evaluator/pull/23) | Open | feat/121: Expand settings schema | `KAT-Coder-V2.5-Dev-Cerebellum-14GB-v2_deucebucket.gguf` |
+| [#27](https://github.com/AI-Team-26/ai.models-evaluator/pull/27) | Open | feat/12L: Expand settings schema | `Qwen3.5-27B-IQ3_M_(gammaception)_128k` |
+| [#29](https://github.com/AI-Team-26/ai.models-evaluator/pull/29) | Open | feat/12M: Expand settings schema | `Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[64k]` |
+| [#30](https://github.com/AI-Team-26/ai.models-evaluator/pull/30) | Open | feat/12N: Expand settings schema | `Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[64k]` |
+| [#31](https://github.com/AI-Team-26/ai.models-evaluator/pull/31) | Open | feat/12O: Expand settings schema | `Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[80k] (Reasoning: medium)` |
+| [#32](https://github.com/AI-Team-26/ai.models-evaluator/pull/32) | Open | feat/12J: Expand settings schema | `Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[80k] (Reasoning: medium)` |
+| [#33](https://github.com/AI-Team-26/ai.models-evaluator/pull/33) | Open | feat/12K: Expand settings schema | `Qwen3.8-27B-Uncensored-Aggressive-IQ3_M_(HauhauCS)_[128k] (Reasoning: medium)` |
+| [#34](https://github.com/AI-Team-26/ai.models-evaluator/pull/34) | Open | feat/12P: Expand settings schema | `Qwen3.8-27B-UD-IQ4_XS_unsloth.gguf` |
+| [#35](https://github.com/AI-Team-26/ai.models-evaluator/pull/35) | Open | feat/12Q: Expand settings schema | `Qwen3.8-27B-UD-IQ4_XS_unsloth.gguf` |
+| [#36](https://github.com/AI-Team-26/ai.models-evaluator/pull/36) | Open | feat/12Q2: Expand settings schema | `Qwen3.8-27B-UD-IQ4_XS_unsloth.gguf` |
+| [#37](https://github.com/AI-Team-26/ai.models-evaluator/pull/37) | Open | feat/12Q3: Expand settings schema | `Qwen3.8-27B-UD-IQ4_XS_unsloth.gguf` |
+| [#38](https://github.com/AI-Team-26/ai.models-evaluator/pull/38) | Open | feat/12Q4: Expand settings schema | `Qwen3.8-27B-UD-IQ4_XS_unsloth.gguf` |
+| [#39](https://github.com/AI-Team-26/ai.models-evaluator/pull/39) | Open | feat/12S: Expand settings schema | `Qwen3.8-27B-Cold-Fusion-GAIN-V1.1-MTP-IQ3_M_(davidau)_64k` |
+| [#40](https://github.com/AI-Team-26/ai.models-evaluator/pull/40) | Open | feat/12 T1: settings expansion | `(Llama.cpp) Qwen3.8-27B-Abliterated-IQ4-MIX-MTP_finex666_[64k]` |
+| [#41](https://github.com/AI-Team-26/ai.models-evaluator/pull/41) | Open | feat/12T3: Expand settings schema | `(Llama.cpp) Qwen3.8-27B-Abliterated-IQ4-MIX-MTP_finex666_[64k]` |
+| [#42](https://github.com/AI-Team-26/ai.models-evaluator/pull/42) | Open | feat/12: Expand settings schema | `Qwen3.8_27B_UD-IQ4_XS_(Unsloth)_[80k]` |
+| [#43](https://github.com/AI-Team-26/ai.models-evaluator/pull/43) | Open | feat/12/U4: Expand settings schema | `Qwen3.8_27B_UD-IQ4_XS_(Unsloth)_[80k]` |
+| [#44](https://github.com/AI-Team-26/ai.models-evaluator/pull/44) | Open | feat/12: Expand settings schema | `Gemma-4-26B-Q4_0_(Google)_128k` |
+| [#45](https://github.com/AI-Team-26/ai.models-evaluator/pull/45) | Open | feat/12/KAT-a: Expand settings schema | `KAT-Coder-V2.5-Dev-Cerebellum-14GB-v2_deucebucket_160k` |
+| [#46](https://github.com/AI-Team-26/ai.models-evaluator/pull/46) | Open | feat/12/KAT-b: Expand settings schema | `KAT-Coder-V2.5-Dev-Cerebellum-14GB-v2_deucebucket_160k` |
+| [#47](https://github.com/AI-Team-26/ai.models-evaluator/pull/47) | Open | feat/12: Expand settings schema | `Gemma-4-26B-A4B-it-MXFP4_MOE_noctrex.gguf` |
+| [#48](https://github.com/AI-Team-26/ai.models-evaluator/pull/48) | Open | feat/12: Expand settings schema | `Qwen3.8-27B-Abliterated-IQ4-MIX-MTP_finex666_[64k]` |
+| [#49](https://github.com/AI-Team-26/ai.models-evaluator/pull/49) | Open | feat/12/b: Expand settings schema | `Qwen3.8-27B-Abliterated-IQ4-MIX-MTP_finex666_[64k]` |
+
+PR #28 documents the experimental history but does not implement `feat/12`, so it is intentionally excluded. PR #25 is similarly documentation-only. PR #19 implements Avalonia UI scaffolding and is also excluded.
 
 The executor model names above are taken from each PR description. For PR #20, the model is identified by the PR title/description as `Nemotron-3.5-Lightning` rather than by an explicit `Implemented by` line.
 
