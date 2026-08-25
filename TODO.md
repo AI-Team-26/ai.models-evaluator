@@ -1,5 +1,27 @@
 # In Progress
 
+## feat/12_Tiel_1_Luna_settings_expansion — Expand llama-server settings (Luna run)
+
+**Branch:** `feat/12_Tiel_1_Luna_settings_expansion`
+**Implemented by model:** `Tiel-Coder-35B-A3B-UD-IQ4_XS_(peculiar)_64k`
+**Goal:** Expand `ApplicationSettings`/`ModelSettings` to cover all llama-server CLI flags, with an editable vs. readonly distinction, and update the `SettingsView` UI accordingly.
+
+**Context / Mental Picture:**
+- Reference command uses ~30 flags; previously only port/model/ctx-size/n-gpu-layers/n-cpu-moe/jinja existed.
+- Flags split into: app-level editable (host, cache K/V, sampling defaults), app-level readonly (`ServerDefaults` record shown read-only), per-model editable (alias).
+- Readonly `ServerDefaults` + `SamplingDefaults` nested records stored in JSON; null-coalesced on load for backward compatibility with old settings files.
+- Alias auto-generated from the GGUF filename when left empty.
+
+**Steps:**
+- [x] Add `Host`, `CacheTypeK/V`, `SamplingDefaults`, `ServerDefaults` to `Entities.cs`; add `Alias` to `ModelSettings`
+- [x] Null-coalesce new fields in `SettingsManager.Load()` for backward compat
+- [x] Update `SettingsView`: display host/cache/sampling/server-defaults/reasoning/batch; edit host+cache+sampling in general settings; alias handling in add/edit flows
+- [x] Build passes (`dotnet build`, 0 warnings / 0 errors)
+
+**Notes:**
+- Independent Luna implementation attributed to `Tiel-Coder-35B-A3B-UD-IQ4_XS_(peculiar)_64k`.
+- Pre-existing `TargetCodeTests` failures are unrelated (that project does not reference `Evaluator`).
+
 **Context / Mental Picture:**
 - The feat/12 settings expansion was used as an experimental testbed for different LLMs
 - Each LLM produced a separate PR (#16, #17, #18, #20, #22, #23)
