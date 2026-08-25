@@ -89,10 +89,11 @@ The scores are comparative engineering judgments based on the implementation and
 
 ## 3. Evaluation results
 
-All eleven evaluated PRs were inspected in isolated worktrees and scored against the same `feat/12_settings_expansion` specification. Each test run produced the documented baseline result of 4 passing and 9 intentionally failing tests. PR #18 additionally introduced three settings tests, all of which passed. No unresolved review threads were present on the five PRs in the second batch (#34, #44, #45, #46, #48) at evaluation time.
+All twelve evaluated PRs were inspected in isolated worktrees and scored against the same `feat/12_settings_expansion` specification. Each test run produced the documented baseline result of 4 passing and 9 intentionally failing tests. PR #18 additionally introduced three settings tests, all of which passed. No unresolved review threads were present on the five PRs in the second batch (#34, #44, #45, #46, #48) at evaluation time.
 
 | PR | Model | Spec | Build/Reg | Compat | UI/Beh | Code | Scope | **Total** | **Stars** |
 |---:|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| [#52](https://github.com/AI-Team-26/ai.models-evaluator/pull/52) | `openai/gpt-5.6-luna` | 30/30 | 20/20 | 18/20 | 14/15 | 9/10 | 5/5 | **96/100** | ★★★★★ |
 | [#18](https://github.com/AI-Team-26/ai.models-evaluator/pull/18) | `KAT-Coder-V2.5-Dev-Cerebellum-14GB-v2_deucebucket.gguf` | 29/30 | 20/20 | 18/20 | 14/15 | 9/10 | 4/5 | **94/100** | ★★★★ |
 | [#34](https://github.com/AI-Team-26/ai.models-evaluator/pull/34) | `Qwen3.8-27B-UD-IQ4_XS_unsloth.gguf` | 29/30 | 20/20 | 18/20 | 14/15 | 9/10 | 4/5 | **94/100** | ★★★★ |
 | [#17](https://github.com/AI-Team-26/ai.models-evaluator/pull/17) | `Qwen3.5-27B-IQ4_XS_unsloth.gguf` | 29/30 | 20/20 | 17/20 | 14/15 | 9/10 | 4/5 | **93/100** | ★★★★ |
@@ -104,6 +105,12 @@ All eleven evaluated PRs were inspected in isolated worktrees and scored against
 | [#20](https://github.com/AI-Team-26/ai.models-evaluator/pull/20) | `Nemotron-3.5-Lightning` | 22/30 | 20/20 | 15/20 | 8/15 | 5/10 | 3/5 | **73/100** |  |
 | [#16](https://github.com/AI-Team-26/ai.models-evaluator/pull/16) | `Qwen3-Coder-Next-REAP-40B-A3B.i1-IQ3_M_mradermacher.gguf` | 12/30 | 20/20 | 13/20 | 2/15 | 5/10 | 4/5 | **56/100** |  |
 | [#44](https://github.com/AI-Team-26/ai.models-evaluator/pull/44) | `Gemma-4-26B-Q4_0_(Google)_128k` | 22/30 | 0/20 | 16/20 | 7/15 | 4/10 | 2/5 | **51/100** |  |
+
+### PR #52 — 96/100 (`openai/gpt-5.6-luna`)
+
+PR #52 is the strongest of all evaluated PRs. It provides the complete expanded entity model — `Host`, `CacheTypeK/V`, `SamplingDefaults`, `ServerDefaults`, and `ModelSettings.Alias` — with correct types (`bool` for `KvUnified`, `ContextShift`, `ReasoningPreserve`) and accurate defaults matching the specification. The backward-compatibility handling in `SettingsManager.Load()` is comprehensive: `Host`, `CacheTypeK`, `CacheTypeV`, `SamplingDefaults`, `ServerDefaults`, and `Models` are all null-coalesced. The settings UI is fully wired: `EditGeneralSettings` accepts `Host`, the cache types, and delegates to a clean `EditSamplingDefaults` helper; `AddModel`/`EditModel` accept and auto-generate the alias from the GGUF filename; `ShowCurrentSettings` displays the new fields across multiple lines and shows the alias in the model list. The diff is small and focused on the four expected files (`Entities.cs`, `SettingsManager.cs`, `SettingsView.cs`, `TODO.md`), builds cleanly with zero warnings in the project code, and produces the same 4-pass/9-fail baseline test result. Minor deductions: legacy model entries with a null `Alias` are not normalized during load (alias regeneration happens only in display/add/edit flows), and `ShowCurrentSettings` repeats the `Server defaults (read-only):` prefix across multiple lines.
+
+**Conclusion:** best candidate among all evaluated PRs.
 
 ### PR #16 — 56/100 (`Qwen3-Coder-Next-REAP-40B-A3B.i1-IQ3_M_mradermacher.gguf`)
 
@@ -173,14 +180,15 @@ PR #44 covers much of the requested feature surface and includes settings normal
 
 ## Ranking and conclusion
 
-1. **PR #18 — 94/100** and **PR #34 — 94/100** (tie): best overall because they are complete and clean. PR #18 also includes passing dedicated settings tests; PR #34 should fix the `Models` normalization edge case before merge.
-2. **PR #17 — 93/100**, **PR #45 — 93/100**, and **PR #46 — 93/100** (tie): excellent complete implementations, narrowly behind the top pair. PR #45 and PR #46 share the same settings implementation; both should address alias and naming details.
-3. **PR #22 — 92/100** and **PR #23 — 92/100** (tie): complete and well-reviewed, but not proven to be the best solely because #22 was selected as definitive.
-4. **PR #48 — 83/100**: buildable but materially weaker in type safety and backward compatibility.
-5. **PR #20 — 73/100**: partial design and UI issues, plus unresolved review comments.
-6. **PR #16 — 56/100**: incomplete because the UI portion is missing.
-7. **PR #44 — 51/100**: currently uncompilable and therefore not mergeable.
+1. **PR #52 — 96/100** (★★★★★): best overall. Complete data and UI changes, correct types, comprehensive backward compatibility, clean build, zero scope creep.
+2. **PR #18 — 94/100** and **PR #34 — 94/100** (★★★★, tie): strong complete implementations. PR #18 also includes passing dedicated settings tests; PR #34 should fix the `Models` normalization edge case before merge.
+3. **PR #17 — 93/100**, **PR #45 — 93/100**, and **PR #46 — 93/100** (★★★★, tie): excellent complete implementations, narrowly behind the top pair. PR #45 and PR #46 share the same settings implementation; both should address alias and naming details.
+4. **PR #22 — 92/100** and **PR #23 — 92/100** (★★★★, tie): complete and well-reviewed, but not proven to be the best solely because #22 was selected as definitive.
+5. **PR #48 — 83/100**: buildable but materially weaker in type safety and backward compatibility.
+6. **PR #20 — 73/100**: partial design and UI issues, plus unresolved review comments.
+7. **PR #16 — 56/100**: incomplete because the UI portion is missing.
+8. **PR #44 — 51/100**: currently uncompilable and therefore not mergeable.
 
-The evaluation does not support choosing PR #22 merely because it was the last or historically designated implementation. Based on the available evidence across all eleven PRs, PR #18 and PR #34 are the best candidates, tied on score.
+The evaluation does not support choosing PR #22 merely because it was the last or historically designated implementation. Based on the available evidence across all twelve evaluated PRs, PR #52 is the strongest candidate, followed by PR #18 and PR #34 tied for second.
 
 
