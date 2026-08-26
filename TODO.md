@@ -98,9 +98,11 @@ Create a basic Avalonia UI project scaffolding with a simple home page.
 > **Note:** This task was used as an experimental testbed for testing multiple LLM models.
 > See [docs/experimental_prs.md](./docs/experimental_prs.md) for the full history of experimental PRs.
 > The definitive implementation is **PR #22** — all other settings-expansion PRs (#16, #17, #18, #20, #23) are experimental and should be ignored/closed.
+
+> ✅ **Done on branch `feat/12_Qwen_8_settings_expansion`** — implemented by model **Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[80k]**.
 Expand `ApplicationSettings` and `ModelSettings` to cover all llama-server CLI flags from the reference command. Split into editable (UI) and readonly (shown in Settings view, not editable via UI). This is a prerequisite for `feat/03_server_management`.
 
-**Branch:** `feat/12_settings_expansion`
+**Branch:** `feat/12_Qwen_8_settings_expansion`  *(implemented by model Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[80k])*
 **Goal:** Expand the settings schema to cover all llama-server CLI flags, with editable/readonly distinction, and update the SettingsView UI accordingly.
 
 **Context / Mental Picture:**
@@ -157,7 +159,7 @@ Expand `ApplicationSettings` and `ModelSettings` to cover all llama-server CLI f
 | `--n-cpu-moe` | Model (existing) | ✅ | — |
 
 **Steps:**
-- [ ] **Step 1: Expand `Entities.cs`**
+- [x] **Step 1: Expand `Entities.cs`**
   - [ ] Add `Host` property to `ApplicationSettings` (default `127.0.0.1`)
   - [ ] Add `CacheTypeK` and `CacheTypeV` to `ApplicationSettings` (default `q8_0`)
   - [ ] Create `SamplingDefaults` record with: `Temperature` (double, `0.1`), `TopK` (int, `20`), `TopP` (double, `0.80`), `MinP` (double, `0.05`), `RepeatPenalty` (double, `1.15`), `RepeatLastN` (int, `1024`)
@@ -166,25 +168,25 @@ Expand `ApplicationSettings` and `ModelSettings` to cover all llama-server CLI f
   - [ ] Add `ServerDefaults` property to `ApplicationSettings`
   - [ ] Add `Alias` property to `ModelSettings` (default `""`)
   - [ ] Ensure backward compatibility: if `ServerDefaults` or `SamplingDefaults` are null after deserialization (old settings files), initialize with defaults in `SettingsManager.Load()`
-- [ ] **Step 2: Update `SettingsManager.Load()`**
+- [x] **Step 2: Update `SettingsManager.Load()`**
   - [ ] After deserialization, null-coalesce `ServerDefaults` and `SamplingDefaults` with `new ServerDefaults()` / `new SamplingDefaults()`
   - [ ] Null-coalesce `Host` with `"127.0.0.1"` if empty
   - [ ] Null-coalesce `CacheTypeK`/`CacheTypeV` with `"q8_0"` if empty
-- [ ] **Step 3: Update `SettingsView` — general settings editor**
+- [x] **Step 3: Update `SettingsView` — general settings editor**
   - [ ] Add `Host` input to `EditGeneralSettings()`
   - [ ] Add `CacheTypeK` and `CacheTypeV` inputs to `EditGeneralSettings()`
   - [ ] Add sampling defaults editing (Temperature, TopK, TopP, MinP, RepeatPenalty, RepeatLastN) to `EditGeneralSettings()` or a new `EditSamplingDefaults()` method
-- [ ] **Step 4: Update `SettingsView` — model add/edit flows**
+- [x] **Step 4: Update `SettingsView` — model add/edit flows**
   - [ ] Add `Alias` input to `AddModel()` (leave empty = auto-gen from GGUF filename)
   - [ ] Add `Alias` input to `EditModel()`
   - [ ] Auto-generate alias from GGUF filename (strip `.gguf`) when alias is empty
-- [ ] **Step 5: Update `ShowCurrentSettings()`**
+- [x] **Step 5: Update `ShowCurrentSettings()`**
   - [ ] Display `Host` alongside `ServerPort`
   - [ ] Display `CacheTypeK` / `CacheTypeV`
   - [ ] Display sampling defaults section
   - [ ] Display `ServerDefaults` (readonly) section — all readonly fields shown but marked as read-only
   - [ ] Display `Alias` for each model
-- [ ] **Step 6: Build and verify**
+- [x] **Step 6: Build and verify**
   - [ ] `dotnet build` passes
   - [ ] `dotnet run` — verify settings load/save works with new fields
   - [ ] Verify old settings file (without new fields) still loads (backward compat)

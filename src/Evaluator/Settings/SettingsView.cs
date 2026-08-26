@@ -72,9 +72,26 @@ public sealed class SettingsView() : View("Settings")
 
         var llamaPath = string.IsNullOrEmpty(settings.LlamaCppPath) ? "(empty)" : settings.LlamaCppPath;
         AnsiConsole.MarkupLine($"[cyan]║ llama.cpp folder:[/] {llamaPath}");
-        AnsiConsole.MarkupLine($"[cyan]║ Server Port:[/] {settings.ServerPort}");
+        AnsiConsole.MarkupLine($"[cyan]║ Host:[/] {settings.Host}   [cyan]Server Port:[/] {settings.ServerPort}");
         var modelFolder = string.IsNullOrEmpty(settings.ModelsFolderPath) ? "(empty)" : settings.ModelsFolderPath;
         AnsiConsole.MarkupLine($"[cyan]║ Models Folder:[/] {modelFolder}");
+        AnsiConsole.MarkupLine($"[cyan]║ Cache Type K/V:[/] {settings.CacheTypeK} / {settings.CacheTypeV}");
+
+        // Sampling defaults (app-level editable)
+        var smp = settings.SamplingDefaults;
+        AnsiConsole.MarkupLine("\n[cyan bold]║ Sampling Defaults:[/]");
+        AnsiConsole.MarkupLine($"[cyan]║   temperature:[/] {smp.Temperature}   [cyan]top-k:[/] {smp.TopK}   [cyan]top-p:[/] {smp.TopP}");
+        AnsiConsole.MarkupLine($"[cyan]║   min-p:[/] {smp.MinP}   [cyan]repeat-penalty:[/] {smp.RepeatPenalty}   [cyan]repeat-last-n:[/] {smp.RepeatLastN}");
+
+        // Read-only server defaults
+        var srv = settings.ServerDefaults;
+        AnsiConsole.MarkupLine("\n[cyan dim]║ Server Defaults (read-only):[/]");
+        AnsiConsole.MarkupLine($"[dim]║   parallel={srv.Parallel}  prio={srv.Prio}  flash-attn={(srv.FlashAttn ? "on" : "off")}  kv-unified={srv.KvUnified.ToString().ToLowerInvariant()}[/]");
+        AnsiConsole.MarkupLine($"[dim]║   load-mode={srv.LoadMode}  fit={(srv.Fit ? "on" : "off")}  cache-reuse={srv.CacheReuse}  draft-p-min={srv.DraftPMIn}[/]");
+        AnsiConsole.MarkupLine($"[dim]║   log-verbosity={srv.LogVerbosity}  context-shift={srv.ContextShift.ToString().ToLowerInvariant()}  reasoning-preserve={srv.ReasoningPreserve.ToString().ToLowerInvariant()}[/]");
+        AnsiConsole.MarkupLine($"[dim]║   samplers={srv.Samplers}[/]");
+        AnsiConsole.MarkupLine($"[dim]║   reasoning={srv.Reasoning}  reasoning-budget={srv.ReasoningBudget}  batch-size={srv.BatchSize}  ubatch-size={srv.UbatchSize}  spec-type={srv.SpecType}[/]");
+        AnsiConsole.MarkupLine($"[dim]║   reasoning-budget-message=\"{srv.ReasoningBudgetMessage}\"[/]");
 
         if (settings.Models.Count > 0)
         {
@@ -82,7 +99,9 @@ public sealed class SettingsView() : View("Settings")
             for (int i = 0; i < settings.Models.Count; i++)
             {
                 var m = settings.Models[i];
+                var alias = string.IsNullOrEmpty(m.Alias) ? "(auto)" : m.Alias;
                 AnsiConsole.MarkupLine($"[cyan]║ #{i + 1}[/] {m.Id}: {m.GgufFileName}");
+                AnsiConsole.MarkupLine($"[dim]║       alias={alias}  ctx={m.ContextSize}  gpu-layers={m.GpuLayers}  cpu-moe={m.CpuMoE}  jinja={m.Jinja.ToString().ToLowerInvariant()}[/]");
             }
         }
         else
@@ -140,6 +159,28 @@ public sealed class SettingsView() : View("Settings")
                 AnsiConsole.MarkupLine("[red]\u2717 Path does not exist. Keeping current value.[/]\n");
         }
 
+        // --- App-level editable llama-server flags ---
+        var hostInput = Helper.GetInput($"host (current: \"{newSettings.Host}\")");
+        if (!string.IsNullOrWhiteSpace(hostInput))
+            newSettings.Host = hostInput.Trim();
+
+        var cacheKInput = Helper.GetInput($"cache type K (current: \"{newSettings.CacheTypeK}\")");
+        if (!string.IsNullOrWhiteSpace(cacheKInput))
+            newSettings.CacheTypeK = cacheKInput.Trim();
+
+        var cacheVInput = Helper.GetInput($"cache type V (current: \"{newSettings.CacheTypeV}\")");
+        if (!string.IsNullOrWhiteSpace(cacheVInput))
+            newSettings.CacheTypeV = cacheVInput.Trim();
+
+        // Sampling defaults shared across all models
+        var smp = newSettings.SamplingDefaults;
+        if (PromptDouble("temperature", smp.Temperature) is { } t) smp.Temperature = t;
+        if (PromptInt("top-k", smp.TopK) is { } k) smp.TopK = k;
+        if (PromptDouble("top-p", smp.TopP) is { } p) smp.TopP = p;
+        if (PromptDouble("min-p", smp.MinP) is { } mp) smp.MinP = mp;
+        if (PromptDouble("repeat-penalty", smp.RepeatPenalty) is { } rp) smp.RepeatPenalty = rp;
+        if (PromptInt("repeat-last-n", smp.RepeatLastN) is { } rln) smp.RepeatLastN = rln;
+
         try
         {
             SettingsManager.Save(newSettings);
@@ -176,6 +217,12 @@ public sealed class SettingsView() : View("Settings")
         }
 
         }
+
+        // Alias (empty = auto-generate from GGUF filename)
+        var aliasInput = Helper.GetInput("Alias (leave empty to use GGUF name)");
+        string alias = string.IsNullOrWhiteSpace(aliasInput)
+            ? Path.GetFileNameWithoutExtension(gguf)
+            : aliasInput.Trim();
 
         // Parse context size
         var ctxSizeStr = Helper.GetInput("Context size in kilobytes (default: 64)");
@@ -228,7 +275,8 @@ public sealed class SettingsView() : View("Settings")
             ContextSize = ctxSize,
             GpuLayers = gpuLayers,
             CpuMoE = cpuMoE,
-            Jinja = jinja
+            Jinja = jinja,
+            Alias = alias
         });
 
         try
@@ -310,6 +358,10 @@ public sealed class SettingsView() : View("Settings")
             AnsiConsole.MarkupLine("[red]Invalid number format. Keeping current value.[/]");
         }
 
+        var aliasInput = Helper.GetInput($"Alias (current: \"{(modelToEdit.Alias == "" ? "(auto)" : modelToEdit.Alias)}\")");
+        if (!string.IsNullOrWhiteSpace(aliasInput))
+            modelToEdit.Alias = aliasInput.Trim();
+
         var jinjaInput = Helper.GetInput($"Enable Jinja? (y/n, empty=n) (current: {(modelToEdit.Jinja ? "yes" : "no")})");
         bool jinja = !string.IsNullOrEmpty(jinjaInput) && jinjaInput.Trim().ToLowerInvariant().StartsWith('y');
         modelToEdit.Jinja = jinja;
@@ -356,5 +408,32 @@ public sealed class SettingsView() : View("Settings")
         ShowCurrentSettings();
 
         Success($"Removed model '{selectedId}'.");
+    }
+
+    /// <summary>
+    /// Prompts for a double; returns null when the user leaves it empty or enters an invalid value.
+    /// </summary>
+    private static double? PromptDouble(string label, double current)
+    {
+        var input = Helper.GetInput($"{label} (current: {current})");
+        if (string.IsNullOrWhiteSpace(input)) return null;
+        if (double.TryParse(input, System.Globalization.NumberStyles.Float,
+                System.Globalization.CultureInfo.InvariantCulture, out var v))
+            return v;
+        AnsiConsole.MarkupLine("[red]Invalid number. Keeping current value.[/]\n");
+        return null;
+    }
+
+    /// <summary>
+    /// Prompts for an int; returns null when the user leaves it empty or enters an invalid value.
+    /// </summary>
+    private static int? PromptInt(string label, int current)
+    {
+        var input = Helper.GetInput($"{label} (current: {current})");
+        if (string.IsNullOrWhiteSpace(input)) return null;
+        if (int.TryParse(input, out var v))
+            return v;
+        AnsiConsole.MarkupLine("[red]Invalid number. Keeping current value.[/]\n");
+        return null;
     }
 }
