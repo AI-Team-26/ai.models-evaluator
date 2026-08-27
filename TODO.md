@@ -1,5 +1,20 @@
 # In Progress
 
+## feat/12_KAT_8_settings_expansion — Expand llama-server settings schema (KAT-Coder-V2.5-Dev_Q3_K_M_imatrix_MTP)
+Implement feat/12 settings expansion, implemented by model **KAT-Coder-V2.5-Dev_Q3_K_M_imatrix_MTP_(offmonreal)_64k**.
+
+**Branch:** `feat/12_KAT_8_settings_expansion`
+**Goal:** Expand the settings schema to cover all llama-server CLI flags, with editable/readonly distinction, and update the SettingsView UI accordingly.
+**Implemented by:** KAT-Coder-V2.5-Dev_Q3_K_M_imatrix_MTP_(offmonreal)_64k
+
+**Steps:**
+- [x] Expand `Entities.cs` — Host, CacheTypeK/V, SamplingDefaults, ServerDefaults, Alias
+- [x] Update `SettingsManager.Load()` — backward-compatible null-coalescing
+- [x] Update `SettingsView.cs` — EditGeneralSettings(), AddModel(), EditModel(), ShowCurrentSettings()
+- [x] Build passes (`dotnet build`, 0 warnings, 0 errors)
+
+---
+
 **Context / Mental Picture:**
 - The feat/12 settings expansion was used as an experimental testbed for different LLMs
 - Each LLM produced a separate PR (#16, #17, #18, #20, #22, #23)
