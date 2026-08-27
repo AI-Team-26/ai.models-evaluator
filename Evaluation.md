@@ -179,12 +179,16 @@ Check:
 
 ## 4. Evaluation results
 
-Twenty-one models in this evaluation were inspected in isolated worktrees and scored against the same `feat/12_settings_expansion` specification; the remaining eleven implementations are listed at the bottom of this section as unevaluated placeholders. Each newly evaluated test run produced the documented baseline result of 4 passing and 9 intentionally failing tests. PR #18 additionally introduced three settings tests, all of which passed. No unresolved review threads were found for the implementations checked in this re-evaluation.
+Twenty-five models in this evaluation were inspected in isolated worktrees and scored against the same `feat/12_settings_expansion` specification; the remaining ten implementations are listed at the bottom of this section as unevaluated placeholders. Each newly evaluated test run produced the documented baseline result of 4 passing and 9 intentionally failing tests. PR #18 additionally introduced three settings tests, all of which passed. No unresolved review threads were found for the implementations checked in this re-evaluation.
 
 | PR | Model | Spec | Build/Reg | Compat | UI/Beh | Code | Scope | **Total** | **Stars** |
 |---:|---|---:|---:|---:|---:|---:|---:|---:|---:|
 | [#67](https://github.com/AI-Team-26/ai.models-evaluator/pull/67) | `Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[80k]` | 29/30 | 20/20 | 17/20 | 14/15 | 9/10 | 3/5 | **92/100** | ★★★★ |
 | [#68](https://github.com/AI-Team-26/ai.models-evaluator/pull/68) | `KAT-Coder-V2.5-Dev_Q3_K_M_imatrix_MTP_(offmonreal)_64k` | 30/30 | 20/20 | 17/20 | 14/15 | 7/10 | 4/5 | **92/100** | ★★★★ |
+| [#33](https://github.com/AI-Team-26/ai.models-evaluator/pull/33) | `Qwen3.8-27B-Uncensored-Aggressive-IQ3_M_(HauhauCS)_[128k] (Reasoning: medium)` | 29/30 | 20/20 | 17/20 | 14/15 | 7/10 | 4/5 | **91/100** | ★★★★ |
+| [#39](https://github.com/AI-Team-26/ai.models-evaluator/pull/39) | `Qwen3.8-27B-Cold-Fusion-GAIN-V1.1-MTP-IQ3_M_(davidau)_64k` | 30/30 | 20/20 | 17/20 | 14/15 | 7/10 | 3/5 | **91/100** | ★★★★ |
+| [#42](https://github.com/AI-Team-26/ai.models-evaluator/pull/42) | `Qwen3.8_27B_UD-IQ4_XS_(Unsloth)_[80k]` | 29/30 | 20/20 | 17/20 | 14/15 | 8/10 | 2/5 | **90/100** | ★★★★ |
+| [#47](https://github.com/AI-Team-26/ai.models-evaluator/pull/47) | `Gemma-4-26B-A4B-it-MXFP4_MOE_noctrex.gguf` | 29/30 | 20/20 | 16/20 | 13/15 | 5/10 | 1/5 | **84/100** |  |
 | [#65](https://github.com/AI-Team-26/ai.models-evaluator/pull/65) | `KAT-Coder-V2.5-Dev_Q2_K-AllGPU_(offmonreal)_160k` | 29/30 | 20/20 | 17/20 | 14/15 | 9/10 | 3/5 | **92/100** | ★★★★ |
 | [#63](https://github.com/AI-Team-26/ai.models-evaluator/pull/63) | `KAT-Coder-V2.5-Dev_Q2_K-AllGPU_(offmonreal)_160k` | 29/30 | 20/20 | 17/20 | 14/15 | 9/10 | 3/5 | **92/100** | ★★★★ |
 | [#60](https://github.com/AI-Team-26/ai.models-evaluator/pull/60) | `Qwen3.8-27B-UD-IQ4_XS_(peculiar)_64k` | 29/30 | 20/20 | 17/20 | 14/15 | 9/10 | 4/5 | **93/100** | ★★★★ |
@@ -214,18 +218,38 @@ The following implementations correspond to open PRs that implement `feat/12_set
 |---:|---|---:|---:|---:|---:|---:|---:|---:|---:|
 | [#31](https://github.com/AI-Team-26/ai.models-evaluator/pull/31) | `Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[80k] (Reasoning: medium)` | — | — | — | — | — | — | — | — |
 | [#32](https://github.com/AI-Team-26/ai.models-evaluator/pull/32) | `Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[80k] (Reasoning: medium)` | — | — | — | — | — | — | — | — |
-| [#33](https://github.com/AI-Team-26/ai.models-evaluator/pull/33) | `Qwen3.8-27B-Uncensored-Aggressive-IQ3_M_(HauhauCS)_[128k] (Reasoning: medium)` | — | — | — | — | — | — | — | — |
 | [#35](https://github.com/AI-Team-26/ai.models-evaluator/pull/35) | `Qwen3.8-27B-UD-IQ4_XS_unsloth.gguf` | — | — | — | — | — | — | — | — |
 | [#36](https://github.com/AI-Team-26/ai.models-evaluator/pull/36) | `Qwen3.8-27B-UD-IQ4_XS_unsloth.gguf` | — | — | — | — | — | — | — | — |
 | [#37](https://github.com/AI-Team-26/ai.models-evaluator/pull/37) | `Qwen3.8-27B-UD-IQ4_XS_unsloth.gguf` | — | — | — | — | — | — | — | — |
 | [#38](https://github.com/AI-Team-26/ai.models-evaluator/pull/38) | `Qwen3.8-27B-UD-IQ4_XS_unsloth.gguf` | — | — | — | — | — | — | — | — |
-| [#39](https://github.com/AI-Team-26/ai.models-evaluator/pull/39) | `Qwen3.8-27B-Cold-Fusion-GAIN-V1.1-MTP-IQ3_M_(davidau)_64k` | — | — | — | — | — | — | — | — |
 | [#40](https://github.com/AI-Team-26/ai.models-evaluator/pull/40) | `Qwen3.8-27B-Abliterated-IQ4-MIX-MTP_finex666_[64k]` | — | — | — | — | — | — | — | — |
 | [#41](https://github.com/AI-Team-26/ai.models-evaluator/pull/41) | `Qwen3.8-27B-Abliterated-IQ4-MIX-MTP_finex666_[64k]` | — | — | — | — | — | — | — | — |
-| [#42](https://github.com/AI-Team-26/ai.models-evaluator/pull/42) | `Qwen3.8_27B_UD-IQ4_XS_(Unsloth)_[80k]` | — | — | — | — | — | — | — | — |
 | [#43](https://github.com/AI-Team-26/ai.models-evaluator/pull/43) | `Qwen3.8_27B_UD-IQ4_XS_(Unsloth)_[80k]` | — | — | — | — | — | — | — | — |
-| [#47](https://github.com/AI-Team-26/ai.models-evaluator/pull/47) | `Gemma-4-26B-A4B-it-MXFP4_MOE_noctrex.gguf` | — | — | — | — | — | — | — | — |
 | [#49](https://github.com/AI-Team-26/ai.models-evaluator/pull/49) | `Qwen3.8-27B-Abliterated-IQ4-MIX-MTP_finex666_[64k]` | — | — | — | — | — | — | — | — |
+
+### Model used for PR #33 — 91/100 (`Qwen3.8-27B-Uncensored-Aggressive-IQ3_M_(HauhauCS)_[128k] (Reasoning: medium)`)
+
+The model used for PR #33 produced a complete, buildable implementation with a well-normalized `SettingsManager.Load()` — one of the few runs that also initializes a missing `Models` list. It provides all required entities, host/cache/sampling editing via reusable `PromptDouble`/`PromptInt` helpers, an `AutoGenerateAlias` helper used consistently in add, edit, and display flows, and a full read-only server-defaults display. Its weaknesses are the string-typed `FlashAttn` and `Fit` flags, a whole-file rewrite of `Entities.cs`, and a misleading edit prompt: it advertises "empty=auto-gen" but the code keeps the current alias when input is empty. Legacy model aliases are not normalized on load. Its TODO lifecycle is correct (moved to `Completed`), so its score is **91/100**.
+
+**Conclusion:** strong candidate and the best of this batch on compatibility, held back by type and naming details.
+
+### Model used for PR #39 — 91/100 (`Qwen3.8-27B-Cold-Fusion-GAIN-V1.1-MTP-IQ3_M_(davidau)_64k`)
+
+The model used for PR #39 produced a complete implementation with full specification coverage: alias auto-generation on both add and edit (empty input in the edit flow correctly regenerates from the GGUF filename), a dedicated `ShowServerDefaults` read-only section, and clean `GetDoubleInput`/`GetIntInput` helpers. Its compatibility handling covers the new sections but not a missing `Models` list or legacy aliases. Type-quality issues remain: `FlashAttn` and `Fit` are strings, `DraftPMIN` is a naming mismatch, the `ReasoningBudgetMessage` default embeds escaped quotes, and `Entities.cs` was rewritten wholesale. Its TODO task was left in `In Progress` with Step 6 unchecked, so the scope deduction applies and its score is **91/100**.
+
+**Conclusion:** functionally complete with the best alias-edit semantics of this batch; should fix the string-typed flags and TODO lifecycle.
+
+### Model used for PR #42 — 90/100 (`Qwen3.8_27B_UD-IQ4_XS_(Unsloth)_[80k]`)
+
+The model used for PR #42 produced a complete, buildable implementation with correctly typed boolean server flags, correct property naming (`DraftPMin`, `UbatchSize`), host/cache/sampling editing in a dedicated `EditSamplingDefaults` method, alias auto-generation on add, and a compact read-only display. Legacy `Models`/alias normalization is missing from `Load()`. Its main defect is scope: besides the expected TODO/CHANGELOG updates, the branch deleted the feat/13 Avalonia scaffolding blocks and the entire Backlog section (feat/03, feat/05, future enhancements, Target Content) from `TODO.md` — unrelated and destructive documentation changes. It also corrupted the flag table by escaping quotes in two default values. Its score is **90/100** with a heavy scope deduction.
+
+**Conclusion:** solid code, but the unrelated `TODO.md` deletions are a process failure that a code review should have caught.
+
+### Model used for PR #47 — 84/100 (`Gemma-4-26B-A4B-it-MXFP4_MOE_noctrex.gguf`)
+
+The model used for PR #47 produced a buildable implementation covering the main feature surface: entities, load-time defaults, host/cache/sampling editing, alias input with auto-generation on add, and read-only server-defaults display. However, it is the weakest of this batch on type safety — `KvUnified`, `ContextShift`, and `ReasoningPreserve` are strings (`"true"`) in addition to string-typed `FlashAttn`/`Fit` — and on UI polish: invalid numeric input is silently ignored with no feedback, and the alias of a legacy model is displayed raw instead of falling back to an auto-generated value. Neither `Models` nor legacy aliases are normalized on load. Most seriously, its `TODO.md` change deletes the entire Backlog section (feat/03 server management, feat/05 results logging, future enhancements, Target Content) and replaces it with a two-line stub — an unrelated and destructive change. Its score is **84/100**.
+
+**Conclusion:** functional core implementation, but weak typing and destructive `TODO.md` changes make it materially below the strong candidates.
 
 ### Model used for PR #52 — 95/100 (`openai/gpt-5.6-luna`)
 
@@ -316,8 +340,8 @@ This re-evaluation applies the repository TODO workflow consistently. Updating `
 
 | PR | TODO lifecycle finding |
 |---:|---|
-| #16, #17, #27, #29, #30, #34, #44, #45, #46, #52, #57, #63, #65, #67 | The submitted implementation task/checklist remains in `In Progress`; the scope deduction reflects that lifecycle defect, not the presence of `TODO.md`. |
-| #18, #20, #22, #23, #48, #59, #60, #68 | The submitted implementation task is represented as completed, so no deduction is made for the normal `TODO.md` update. |
+| #16, #17, #27, #29, #30, #34, #39, #44, #45, #46, #52, #57, #63, #65, #67 | The submitted implementation task/checklist remains in `In Progress`; the scope deduction reflects that lifecycle defect, not the presence of `TODO.md`. |
+| #18, #20, #22, #23, #33, #42, #47, #48, #59, #60, #68 | The submitted implementation task is represented as completed, so no deduction is made for the normal `TODO.md` update. For #42 and #47 the lifecycle itself is fine, but their unrelated/destructive `TODO.md` edits are penalized in the scope column. |
 
 PR #65 is a complete, buildable implementation with correctly typed boolean server flags, host/cache/sampling settings, alias support, UI display/editing, and numeric input validation. Its compatibility gaps are that `Models` and existing aliases are not normalized during load, and clearing an existing alias on a model that already has one leaves the old alias instead of regenerating it from the GGUF filename. Its task remains in `In Progress`, so its score is **92/100**; the `TODO.md` update itself is not penalized.
 
@@ -336,6 +360,10 @@ The targets were evaluated from their submitted commits in isolated worktrees, w
 | #59 | `208e140d527aa341ebda7e81ac9bc32df547d2e4` | `bf04025fc82a12837fc34039deec6309da4f288b` | ✓ / ✓ / ✓ / ✓ |
 | #60 | `7ce179c050f34a8822e86f981bf230d51bf0360a` | `cddf6b4f74add9e161bcaf6a63553a457891e108` | ✓ / ✓ / ✓ / partial |
 | #65 | `f4f3ed36c92b610575f929d5d7c118025814a6e4` | `fecdae37aadcb64c2f3d89e743f780aa57c0630f` | ✓ / ✓ / ✓ / partial |
+| #33 | `96f1b41b9d1a597404e2c23d69f1c6b4d79b1c3d` | `2fd89b6e732b30d7abcf11637f4ac8189f87cf50` | ✓ / ✓ / ✓ / partial |
+| #39 | `96f1b41b9d1a597404e2c23d69f1c6b4d79b1c3d` | `74de32e23e92f29c89bf5851f7962261a439314c` | ✓ / ✓ / ✓ / partial |
+| #42 | `96f1b41b9d1a597404e2c23d69f1c6b4d79b1c3d` | `a1ac7cc754dcd5d9fb569cb9182c5f1ffb7460ca` | ✓ / ✓ / ✓ / partial |
+| #47 | `96f1b41b9d1a597404e2c23d69f1c6b4d79b1c3d` | `3d9bde5813284324ebc521aebf038317789b2e52` | ✓ / ✓ / ✓ / partial |
 | #67 | `85e6dd055d580167c9eaa66643902efb55a600cd` | `0c2748f5f003f8902e755bf72b0e228f717cb244` | ✓ / ✓ / ✓ / partial |
 | #68 | `85e6dd055d580167c9eaa66643902efb55a600cd` | `5e765a061d744c651dfee03f630b265d5d85c166` | ✓ / ✓ / ✓ / partial |
 
@@ -345,7 +373,7 @@ The implementation diffs were limited to the settings entities/manager and, exce
 
 | PRs | Restore/build command | Test command | Result |
 |---|---|---|---|
-| #27, #29, #30, #57, #59, #60, #65, #67, #68 | `dotnet restore AI.Evaluator.slnx` then `dotnet build src/Evaluator/Evaluator.csproj -o agent_build --no-restore` | `dotnet test tests/TargetCodeTests/TargetCodeTests.csproj --no-restore` | Every build: 0 warnings, 0 errors. Every test run: 4 passed, 9 baseline failures. |
+| #27, #29, #30, #33, #39, #42, #47, #57, #59, #60, #65, #67, #68 | `dotnet restore AI.Evaluator.slnx` then `dotnet build src/Evaluator/Evaluator.csproj -o agent_build --no-restore` | `dotnet test tests/TargetCodeTests/TargetCodeTests.csproj --no-restore` | Every build: 0 warnings, 0 errors. Every test run: 4 passed, 9 baseline failures. |
 
 The baseline failures are in pre-existing `TargetCodeTests` coverage (`SumRange`, `SafeProduct`, and `SplitCsv`); no settings-specific tests were supplied by these PRs. UI scenarios were assessed statically from `SettingsView.cs`: #27 fails the required edit/display scenario because it contains no UI implementation; #29, #30, #57, #59, and #60 expose host/cache/sampling/model-alias flows and display read-only server defaults. Compatibility fixtures used: a legacy JSON object with omitted new sections, a legacy model with omitted alias, and explicit `null` sections/lists. All five UI implementations normalize the new sections; #29, #57, and #59 also normalize model aliases or lists, while #30 and #60 leave some null collection/alias edges to callers.
 
@@ -362,6 +390,10 @@ Comparative scores above preserve the existing Process #1 scoring system. The de
 | #65 | Complete UI with host/cache/sampling editing and read-only server defaults display; same compatibility gaps as PR #63 — `Models` list and existing aliases not normalized during load; task lifecycle remains in `In Progress`. |
 | #67 | Complete UI with correctly typed boolean flags and the cleanest numeric-input handling (`PromptDouble`/`PromptInt` helpers); `Models` list and legacy aliases not normalized during load, clearing an existing alias does not regenerate it, and `DraftPMIn` is a naming mismatch. |
 | #68 | Complete UI with alias regeneration on edit and legacy alias normalization; `FlashAttn`/`Fit` are string-typed instead of boolean, missing `Models` normalization in `Load()`, and a whole-file rewrite of `Entities.cs` inflates the diff. |
+| #33 | Best `Load()` normalization of this batch (`Models` list initialized); misleading "empty=auto-gen" edit prompt that keeps the old alias, string-typed `FlashAttn`/`Fit`, and a whole-file `Entities.cs` rewrite. |
+| #39 | Full spec coverage with alias regeneration on edit and a clean read-only section; missing `Models`/alias normalization, string-typed `FlashAttn`/`Fit`, `DraftPMIN` naming, task left in `In Progress`. |
+| #42 | Correctly typed flags and naming; missing legacy normalization, and destructive unrelated `TODO.md` changes (deleted feat/13 blocks and the whole Backlog section) plus quote-escaping corruption of the flag table. |
+| #47 | String-typed `KvUnified`/`ContextShift`/`ReasoningPreserve`, silent numeric-input failures, raw legacy alias display, and destructive `TODO.md` change deleting the entire Backlog section. |
 
 ## Ranking and conclusion
 
