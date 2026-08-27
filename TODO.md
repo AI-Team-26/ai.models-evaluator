@@ -236,6 +236,22 @@ Design outcome recording format once evaluator has execution data.
 
 ---
 
+# In Progress
+
+## feat/12_KAT_10_settings_expansion — Expand llama-server settings schema ✅
+Expand `ApplicationSettings` and `ModelSettings` to cover all llama-server CLI flags from the reference command. Split into editable (UI) and readonly (shown in Settings view, not editable via UI). This is a prerequisite for `feat/03_server_management`.
+
+**Branch:** `feat/12_KAT_10_settings_expansion`
+**Implemented by:** KAT-Coder-V2.5-Dev_Q3_K_M_imatrix_MTP_(offmonreal)_64k
+
+**Steps:**
+- [x] Expand `Entities.cs` — Host, CacheTypeK/V, SamplingDefaults, ServerDefaults, Alias
+- [x] Update `SettingsManager.Load()` — backward-compatible null-coalescing
+- [x] Update `SettingsView.cs` — EditGeneralSettings(), AddModel(), EditModel(), ShowCurrentSettings()
+- [x] Build passes (`dotnet build`, 0 warnings, 0 errors)
+
+---
+
 # Completed
 
 ## refactor/07_settings_manager — Centralized Configuration Management ✅ MERGED
