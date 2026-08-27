@@ -42,6 +42,8 @@ The following list contains all known `feat/12_settings_expansion` implementatio
 | [#60](https://github.com/AI-Team-26/ai.models-evaluator/pull/60) | `Qwen3.8-27B-UD-IQ4_XS_(peculiar)_64k` |
 | [#63](https://github.com/AI-Team-26/ai.models-evaluator/pull/63) | `KAT-Coder-V2.5-Dev_Q2_K-AllGPU_(offmonreal)_160k` |
 | [#65](https://github.com/AI-Team-26/ai.models-evaluator/pull/65) | `KAT-Coder-V2.5-Dev_Q2_K-AllGPU_(offmonreal)_160k` |
+| [#67](https://github.com/AI-Team-26/ai.models-evaluator/pull/67) | `Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[80k]` |
+| [#68](https://github.com/AI-Team-26/ai.models-evaluator/pull/68) | `KAT-Coder-V2.5-Dev_Q3_K_M_imatrix_MTP_(offmonreal)_64k` |
 
 PR #28 documents the experimental history but does not implement `feat/12`, so it is intentionally excluded. PR #25 is similarly documentation-only. PR #19 implements Avalonia UI scaffolding and is also excluded.
 
@@ -177,10 +179,12 @@ Check:
 
 ## 4. Evaluation results
 
-Nineteen models in this evaluation were inspected in isolated worktrees and scored against the same `feat/12_settings_expansion` specification; the remaining thirteen implementations are listed at the bottom of this section as unevaluated placeholders. Each newly evaluated test run produced the documented baseline result of 4 passing and 9 intentionally failing tests. PR #18 additionally introduced three settings tests, all of which passed. No unresolved review threads were found for the implementations checked in this re-evaluation.
+Twenty-one models in this evaluation were inspected in isolated worktrees and scored against the same `feat/12_settings_expansion` specification; the remaining eleven implementations are listed at the bottom of this section as unevaluated placeholders. Each newly evaluated test run produced the documented baseline result of 4 passing and 9 intentionally failing tests. PR #18 additionally introduced three settings tests, all of which passed. No unresolved review threads were found for the implementations checked in this re-evaluation.
 
 | PR | Model | Spec | Build/Reg | Compat | UI/Beh | Code | Scope | **Total** | **Stars** |
 |---:|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| [#67](https://github.com/AI-Team-26/ai.models-evaluator/pull/67) | `Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[80k]` | 29/30 | 20/20 | 17/20 | 14/15 | 9/10 | 3/5 | **92/100** | ★★★★ |
+| [#68](https://github.com/AI-Team-26/ai.models-evaluator/pull/68) | `KAT-Coder-V2.5-Dev_Q3_K_M_imatrix_MTP_(offmonreal)_64k` | 30/30 | 20/20 | 17/20 | 14/15 | 7/10 | 4/5 | **92/100** | ★★★★ |
 | [#65](https://github.com/AI-Team-26/ai.models-evaluator/pull/65) | `KAT-Coder-V2.5-Dev_Q2_K-AllGPU_(offmonreal)_160k` | 29/30 | 20/20 | 17/20 | 14/15 | 9/10 | 3/5 | **92/100** | ★★★★ |
 | [#63](https://github.com/AI-Team-26/ai.models-evaluator/pull/63) | `KAT-Coder-V2.5-Dev_Q2_K-AllGPU_(offmonreal)_160k` | 29/30 | 20/20 | 17/20 | 14/15 | 9/10 | 3/5 | **92/100** | ★★★★ |
 | [#60](https://github.com/AI-Team-26/ai.models-evaluator/pull/60) | `Qwen3.8-27B-UD-IQ4_XS_(peculiar)_64k` | 29/30 | 20/20 | 17/20 | 14/15 | 9/10 | 4/5 | **93/100** | ★★★★ |
@@ -282,6 +286,18 @@ The model used for PR #46 produced an implementation that has the same settings 
 
 **Conclusion:** effectively tied with the model used for PR #45; the implementation is strong but should address the alias and naming details.
 
+### Model used for PR #67 — 92/100 (`Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[80k]`)
+
+The model used for PR #67 produced a complete, buildable implementation with correctly typed boolean server flags (`FlashAttn`, `KvUnified`, `Fit`, `ContextShift`, `ReasoningPreserve`), host/cache/sampling settings, alias support in add and edit flows, and read-only server-defaults display. Its `EditGeneralSettings` delegates numeric input to reusable `PromptDouble`/`PromptInt` helpers with invariant-culture parsing, which is the cleanest numeric-input handling in the evaluated set. Its compatibility gaps match PRs #63 and #65: `Normalize()` does not initialize a missing `Models` list and does not normalize aliases on legacy model entries, and clearing an existing alias in the edit flow keeps the old value instead of regenerating it from the GGUF filename. The `DraftPMIn` property name is inconsistent with the specification. Its task remains in `In Progress` with sub-items unchecked, so its score is **92/100**.
+
+**Conclusion:** strong candidate on par with PRs #63 and #65; should address the `Models`/alias normalization edge cases.
+
+### Model used for PR #68 — 92/100 (`KAT-Coder-V2.5-Dev_Q3_K_M_imatrix_MTP_(offmonreal)_64k`)
+
+The model used for PR #68 produced a complete implementation covering all specification features: entities, load-time defaults, host/cache/sampling editing, alias auto-generation on both add and edit (empty alias in the edit flow correctly regenerates from the GGUF filename), and a full read-only server-defaults display. It also correctly normalizes legacy model aliases during load. Its weaknesses are type and diff quality: `FlashAttn` and `Fit` are represented as strings (`"on"`/`"off"`) instead of booleans, and `Entities.cs` was rewritten wholesale (BOM/whitespace churn), inflating the diff and adding regression risk. Compatibility of a missing `Models` list is handled only defensively in `AddModel`, not normalized in `Load()`. Its TODO lifecycle is correct (own `In Progress` block with all items checked), so its score is **92/100** with the deduction landing in code quality.
+
+**Conclusion:** functionally the most complete of the KAT runs, but the string-typed flags and whole-file rewrite keep it out of the top tier.
+
 ### Model used for PR #48 — 84/100 (`Qwen3.8-27B-Abliterated-IQ4-MIX-MTP_finex666_[64k]`)
 
 The model used for PR #48 implemented the main feature and builds cleanly, with the same baseline test result. Its TODO update is valid bookkeeping and is not deducted. It includes the required settings UI and alias flows, and it adds the useful `agent_build/` ignore rule. However, its compatibility normalization does not initialize a missing `Models` list or legacy model aliases. Its boolean-like `ServerDefaults` values (`KvUnified`, `ContextShift`, and `ReasoningPreserve`) are represented as strings, making invalid values possible and weakening type safety. The edit flow does not auto-generate an alias when an existing alias is cleared, and its implementation has less explanatory structure than PRs #34, #45, and #46.
@@ -300,8 +316,8 @@ This re-evaluation applies the repository TODO workflow consistently. Updating `
 
 | PR | TODO lifecycle finding |
 |---:|---|
-| #16, #17, #27, #29, #30, #34, #44, #45, #46, #52, #57, #63, #65 | The submitted implementation task/checklist remains in `In Progress`; the scope deduction reflects that lifecycle defect, not the presence of `TODO.md`. |
-| #18, #20, #22, #23, #48, #59, #60 | The submitted implementation task is represented as completed, so no deduction is made for the normal `TODO.md` update. |
+| #16, #17, #27, #29, #30, #34, #44, #45, #46, #52, #57, #63, #65, #67 | The submitted implementation task/checklist remains in `In Progress`; the scope deduction reflects that lifecycle defect, not the presence of `TODO.md`. |
+| #18, #20, #22, #23, #48, #59, #60, #68 | The submitted implementation task is represented as completed, so no deduction is made for the normal `TODO.md` update. |
 
 PR #65 is a complete, buildable implementation with correctly typed boolean server flags, host/cache/sampling settings, alias support, UI display/editing, and numeric input validation. Its compatibility gaps are that `Models` and existing aliases are not normalized during load, and clearing an existing alias on a model that already has one leaves the old alias instead of regenerating it from the GGUF filename. Its task remains in `In Progress`, so its score is **92/100**; the `TODO.md` update itself is not penalized.
 
@@ -320,6 +336,8 @@ The targets were evaluated from their submitted commits in isolated worktrees, w
 | #59 | `208e140d527aa341ebda7e81ac9bc32df547d2e4` | `bf04025fc82a12837fc34039deec6309da4f288b` | ✓ / ✓ / ✓ / ✓ |
 | #60 | `7ce179c050f34a8822e86f981bf230d51bf0360a` | `cddf6b4f74add9e161bcaf6a63553a457891e108` | ✓ / ✓ / ✓ / partial |
 | #65 | `f4f3ed36c92b610575f929d5d7c118025814a6e4` | `fecdae37aadcb64c2f3d89e743f780aa57c0630f` | ✓ / ✓ / ✓ / partial |
+| #67 | `85e6dd055d580167c9eaa66643902efb55a600cd` | `0c2748f5f003f8902e755bf72b0e228f717cb244` | ✓ / ✓ / ✓ / partial |
+| #68 | `85e6dd055d580167c9eaa66643902efb55a600cd` | `5e765a061d744c651dfee03f630b265d5d85c166` | ✓ / ✓ / ✓ / partial |
 
 The implementation diffs were limited to the settings entities/manager and, except for #27, `SettingsView.cs`. The `TODO.md` changes were audited against the required branch lifecycle and are not penalized merely for existing. PR #57 additionally changed `Evaluation.md`, which is unrelated to its implementation task and remains a scope-quality deduction. No unresolved review threads were found.
 
@@ -327,7 +345,7 @@ The implementation diffs were limited to the settings entities/manager and, exce
 
 | PRs | Restore/build command | Test command | Result |
 |---|---|---|---|
-| #27, #29, #30, #57, #59, #60, #65 | `dotnet restore AI.Evaluator.slnx` then `dotnet build src/Evaluator/Evaluator.csproj -o agent_build --no-restore` | `dotnet test tests/TargetCodeTests/TargetCodeTests.csproj --no-restore` | Every build: 0 warnings, 0 errors. Every test run: 4 passed, 9 baseline failures. |
+| #27, #29, #30, #57, #59, #60, #65, #67, #68 | `dotnet restore AI.Evaluator.slnx` then `dotnet build src/Evaluator/Evaluator.csproj -o agent_build --no-restore` | `dotnet test tests/TargetCodeTests/TargetCodeTests.csproj --no-restore` | Every build: 0 warnings, 0 errors. Every test run: 4 passed, 9 baseline failures. |
 
 The baseline failures are in pre-existing `TargetCodeTests` coverage (`SumRange`, `SafeProduct`, and `SplitCsv`); no settings-specific tests were supplied by these PRs. UI scenarios were assessed statically from `SettingsView.cs`: #27 fails the required edit/display scenario because it contains no UI implementation; #29, #30, #57, #59, and #60 expose host/cache/sampling/model-alias flows and display read-only server defaults. Compatibility fixtures used: a legacy JSON object with omitted new sections, a legacy model with omitted alias, and explicit `null` sections/lists. All five UI implementations normalize the new sections; #29, #57, and #59 also normalize model aliases or lists, while #30 and #60 leave some null collection/alias edges to callers.
 
@@ -342,6 +360,8 @@ Comparative scores above preserve the existing Process #1 scoring system. The de
 | #59 | Complete UI, explicit boolean server flags, and broad normalization; inconsistent acronym casing (`DraftPMIN`, `UBatchSize`) is a small quality issue. |
 | #60 | Complete, focused UI and clean types; omitted model-list/alias normalization and less defensive legacy handling reduce compatibility confidence. |
 | #65 | Complete UI with host/cache/sampling editing and read-only server defaults display; same compatibility gaps as PR #63 — `Models` list and existing aliases not normalized during load; task lifecycle remains in `In Progress`. |
+| #67 | Complete UI with correctly typed boolean flags and the cleanest numeric-input handling (`PromptDouble`/`PromptInt` helpers); `Models` list and legacy aliases not normalized during load, clearing an existing alias does not regenerate it, and `DraftPMIn` is a naming mismatch. |
+| #68 | Complete UI with alias regeneration on edit and legacy alias normalization; `FlashAttn`/`Fit` are string-typed instead of boolean, missing `Models` normalization in `Load()`, and a whole-file rewrite of `Entities.cs` inflates the diff. |
 
 ## Ranking and conclusion
 
@@ -354,6 +374,6 @@ Comparative scores above preserve the existing Process #1 scoring system. The de
 7. **Model used for PR #16 — 56/100**: incomplete because the UI portion is missing.
 8. **Model used for PR #44 — 51/100**: currently uncompilable and therefore not mergeable.
 
-Based on the available evidence across all nineteen evaluated models, the model used for PR #52 is the strongest candidate, followed by the models used for PR #18 and PR #34 tied for second.
+Based on the available evidence across all twenty-one evaluated models, the model used for PR #52 is the strongest candidate, followed by the models used for PR #18 and PR #34 tied for second.
 
 
