@@ -183,6 +183,7 @@ Twenty-one models in this evaluation were inspected in isolated worktrees and sc
 
 | PR | Model | Spec | Build/Reg | Compat | UI/Beh | Code | Scope | **Total** | **Stars** |
 |---:|---|---:|---:|---:|---:|---:|---:|---:|---:|
+
 | [#67](https://github.com/AI-Team-26/ai.models-evaluator/pull/67) | `Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[80k]` | 29/30 | 20/20 | 17/20 | 14/15 | 9/10 | 3/5 | **92/100** | ★★★★ |
 | [#68](https://github.com/AI-Team-26/ai.models-evaluator/pull/68) | `KAT-Coder-V2.5-Dev_Q3_K_M_imatrix_MTP_(offmonreal)_64k` | 30/30 | 20/20 | 17/20 | 14/15 | 7/10 | 4/5 | **92/100** | ★★★★ |
 | [#65](https://github.com/AI-Team-26/ai.models-evaluator/pull/65) | `KAT-Coder-V2.5-Dev_Q2_K-AllGPU_(offmonreal)_160k` | 29/30 | 20/20 | 17/20 | 14/15 | 9/10 | 3/5 | **92/100** | ★★★★ |
@@ -316,6 +317,7 @@ This re-evaluation applies the repository TODO workflow consistently. Updating `
 
 | PR | TODO lifecycle finding |
 |---:|---|
+
 | #16, #17, #27, #29, #30, #34, #44, #45, #46, #52, #57, #63, #65, #67 | The submitted implementation task/checklist remains in `In Progress`; the scope deduction reflects that lifecycle defect, not the presence of `TODO.md`. |
 | #18, #20, #22, #23, #48, #59, #60, #68 | The submitted implementation task is represented as completed, so no deduction is made for the normal `TODO.md` update. |
 
