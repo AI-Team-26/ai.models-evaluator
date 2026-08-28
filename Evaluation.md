@@ -182,10 +182,10 @@ Check:
 
 Twenty-six models in this evaluation were inspected in isolated worktrees and scored against the same `feat/12_settings_expansion` specification; the remaining nine implementations are listed at the bottom of this section as unevaluated placeholders. Each newly evaluated test run produced the documented baseline result of 4 passing and 9 intentionally failing tests. PR #18 additionally introduced three settings tests, all of which passed. No unresolved review threads were found for the implementations checked in this re-evaluation.
 
-| PR | Model | Spec | Build/Reg | Compat | UI/Beh | Code | Scope | **Total** | **Stars** |
-|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| [#67](https://github.com/AI-Team-26/ai.models-evaluator/pull/67) | `Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[80k]` | 29/30 | 20/20 | 17/20 | 14/15 | 9/10 | 3/5 | **92/100** | ★★★★ |
-| [#68](https://github.com/AI-Team-26/ai.models-evaluator/pull/68) | `KAT-Coder-V2.5-Dev_Q3_K_M_imatrix_MTP_(offmonreal)_64k` | 30/30 | 20/20 | 17/20 | 14/15 | 7/10 | 4/5 | **92/100** | ★★★★ |
+| PR | Model | Time | Spec | Build/Reg | Compat | UI/Beh | Code | Scope | **Total** | **Stars** |
+|---:|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| [#67](https://github.com/AI-Team-26/ai.models-evaluator/pull/67) | `Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[80k]` | 00:00 |  29/30 | 20/20 | 17/20 | 14/15 | 9/10 | 3/5 | **92/100** | ★★★★ |
+| [#68](https://github.com/AI-Team-26/ai.models-evaluator/pull/68) | `KAT-Coder-V2.5-Dev_Q3_K_M_imatrix_MTP_(offmonreal)_64k` | 00:00 | 30/30 | 20/20 | 17/20 | 14/15 | 7/10 | 4/5 | **92/100** | ★★★★ |
 | [#71](https://github.com/AI-Team-26/ai.models-evaluator/pull/71) | `KAT-Coder-V2.5-Dev-APEX-dynamic-v2_(myric)_192k` | 30/30 | 20/20 | 19/20 | 15/15 | 8/10 | 2/5 | **94/100** | ★★★★ |
 | [#33](https://github.com/AI-Team-26/ai.models-evaluator/pull/33) | `Qwen3.8-27B-Uncensored-Aggressive-IQ3_M_(HauhauCS)_[128k] (Reasoning: medium)` | 29/30 | 20/20 | 17/20 | 14/15 | 7/10 | 4/5 | **91/100** | ★★★★ |
 | [#39](https://github.com/AI-Team-26/ai.models-evaluator/pull/39) | `Qwen3.8-27B-Cold-Fusion-GAIN-V1.1-MTP-IQ3_M_(davidau)_64k` | 30/30 | 20/20 | 17/20 | 14/15 | 7/10 | 3/5 | **91/100** | ★★★★ |
