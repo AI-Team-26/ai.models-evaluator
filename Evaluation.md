@@ -180,7 +180,7 @@ Check:
 
 ## 4. Evaluation results
 
-Twenty-six models in this evaluation were inspected in isolated worktrees and scored against the same `feat/12_settings_expansion` specification; the remaining nine implementations are listed at the bottom of this section as unevaluated placeholders. Each newly evaluated test run produced the documented baseline result of 4 passing and 9 intentionally failing tests. PR #18 additionally introduced three settings tests, all of which passed. No unresolved review threads were found for the implementations checked in this re-evaluation.
+Thirty-one models in this evaluation were inspected in isolated worktrees and scored against the same `feat/12_settings_expansion` specification; the remaining four implementations are listed at the bottom of this section as unevaluated placeholders. Each newly evaluated test run produced the documented baseline result of 4 passing and 9 intentionally failing tests. PR #18 additionally introduced three settings tests, all of which passed. No unresolved review threads were found for the implementations checked in this re-evaluation.
 
 | PR | Model | Time | Spec | Build/Reg | Compat | UI/Beh | Code | Scope | **Total** | **Stars** |
 |---:|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -211,6 +211,11 @@ Twenty-six models in this evaluation were inspected in isolated worktrees and sc
 | [#20](https://github.com/AI-Team-26/ai.models-evaluator/pull/20) | `Nemotron-3.5-Lightning` | 22/30 | 20/20 | 15/20 | 8/15 | 5/10 | 3/5 | **73/100** |  |
 | [#16](https://github.com/AI-Team-26/ai.models-evaluator/pull/16) | `Qwen3-Coder-Next-REAP-40B-A3B.i1-IQ3_M_mradermacher.gguf` | 12/30 | 20/20 | 13/20 | 2/15 | 5/10 | 3/5 | **55/100** |  |
 | [#44](https://github.com/AI-Team-26/ai.models-evaluator/pull/44) | `Gemma-4-26B-Q4_0_(Google)_128k` | 22/30 | 20/20 | 16/20 | 7/15 | 4/10 | 1/5 | **50/100** |  |
+| [#35](https://github.com/AI-Team-26/ai.models-evaluator/pull/35) | `Qwen3.8-27B-UD-IQ4_XS_unsloth.gguf` | 00:00 | 29/30 | 20/20 | 19/20 | 14/15 | 9/10 | 1/5 | **92/100** | ★★★★ |
+| [#31](https://github.com/AI-Team-26/ai.models-evaluator/pull/31) | `Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[80k] (Reasoning: medium)` | 00:00 | 29/30 | 20/20 | 14/20 | 14/15 | 9/10 | 1/5 | **87/100** | ★★★ |
+| [#32](https://github.com/AI-Team-26/ai.models-evaluator/pull/32) | `Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[80k] (Reasoning: medium)` | 00:00 | 27/30 | 20/20 | 17/20 | 14/15 | 8/10 | 1/5 | **87/100** | ★★★ |
+| [#36](https://github.com/AI-Team-26/ai.models-evaluator/pull/36) | `Qwen3.8-27B-UD-IQ4_XS_unsloth.gguf` | 00:00 | 28/30 | 20/20 | 16/20 | 14/15 | 8/10 | 1/5 | **87/100** | ★★★ |
+| [#37](https://github.com/AI-Team-26/ai.models-evaluator/pull/37) | `Qwen3.8-27B-UD-IQ4_XS_unsloth.gguf` | 00:00 | 28/30 | 20/20 | 13/20 | 13/15 | 8/10 | 1/5 | **83/100** |  |
 
 ### Not yet evaluated
 
@@ -218,11 +223,6 @@ The following implementations correspond to open PRs that implement `feat/12_set
 
 | PR | Model | Spec | Build/Reg | Compat | UI/Beh | Code | Scope | **Total** | **Stars** |
 |---:|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| [#31](https://github.com/AI-Team-26/ai.models-evaluator/pull/31) | `Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[80k] (Reasoning: medium)` | — | — | — | — | — | — | — | — |
-| [#32](https://github.com/AI-Team-26/ai.models-evaluator/pull/32) | `Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[80k] (Reasoning: medium)` | — | — | — | — | — | — | — | — |
-| [#35](https://github.com/AI-Team-26/ai.models-evaluator/pull/35) | `Qwen3.8-27B-UD-IQ4_XS_unsloth.gguf` | — | — | — | — | — | — | — | — |
-| [#36](https://github.com/AI-Team-26/ai.models-evaluator/pull/36) | `Qwen3.8-27B-UD-IQ4_XS_unsloth.gguf` | — | — | — | — | — | — | — | — |
-| [#37](https://github.com/AI-Team-26/ai.models-evaluator/pull/37) | `Qwen3.8-27B-UD-IQ4_XS_unsloth.gguf` | — | — | — | — | — | — | — | — |
 | [#38](https://github.com/AI-Team-26/ai.models-evaluator/pull/38) | `Qwen3.8-27B-UD-IQ4_XS_unsloth.gguf` | — | — | — | — | — | — | — | — |
 | [#40](https://github.com/AI-Team-26/ai.models-evaluator/pull/40) | `Qwen3.8-27B-Abliterated-IQ4-MIX-MTP_finex666_[64k]` | — | — | — | — | — | — | — | — |
 | [#41](https://github.com/AI-Team-26/ai.models-evaluator/pull/41) | `Qwen3.8-27B-Abliterated-IQ4-MIX-MTP_finex666_[64k]` | — | — | — | — | — | — | — | — |
@@ -233,7 +233,29 @@ The following implementations correspond to open PRs that implement `feat/12_set
 
 The model used for PR #71 produced a complete implementation with the strongest backward-compatibility handling of all evaluated runs: `Normalize()` null-coalesces the new sections, initializes a missing `Models` list, and additionally normalizes legacy model aliases, eagerly regenerating empty aliases from the GGUF filename on load — closing the compatibility gap that affected nearly every other implementation. It covers the full specification with correctly typed boolean server flags, correct property naming (`DraftPMin`, `UbatchSize`), alias auto-generation on add, and alias regeneration with user feedback in the edit flow. Minor quality deductions: `Entities.cs` was rewritten wholesale (BOM/whitespace churn), `EditSamplingDefaults` repeats six near-identical prompt blocks instead of using a helper, and alias input is not trimmed. Its branch made no `TODO.md` change at all, leaving the task lifecycle unrecorded, so it receives the largest scope deduction of the top-scoring group; its score is **94/100**.
 
-**Conclusion:** the strongest KAT run evaluated and, on compatibility handling, the best implementation overall — fixing the TODO lifecycle would have made it the top candidate.
+### Model used for PR #35 — 92/100 (`Qwen3.8-27B-UD-IQ4_XS_unsloth.gguf`)
+
+The model used for PR #35 produced a complete, buildable implementation with the best backward-compatibility handling among this batch. It has a dedicated `Normalize()` method that null-coalesces `SamplingDefaults`, `ServerDefaults`, `Host`, `CacheTypeK/V`, and `Models`, and additionally auto-generates aliases from GGUF filenames for legacy model entries on load. All spec fields are present with correct types and naming (`DraftPMin`, `UbatchSize`). The `EditSamplingDefaults` helper method keeps the settings editor clean. `ShowCurrentSettings()` displays all fields including the readonly ServerDefaults section with proper alias display (showing the GGUF filename when alias is empty). Build passes with 0 warnings and the baseline 4-pass/9-fail test result. Its TODO task has a docs block but the implementation checklist is not tracked in TODO.md, so it receives the scope deduction; its score is **92/100**.
+
+**Conclusion:** the strongest candidate in this batch and the best compatibility implementation among the five evaluated PRs.
+
+### Model used for PR #31 — 87/100 (`Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[80k] (Reasoning: medium)`)
+
+The model used for PR #31 produced a complete, buildable implementation covering all specification features. It has correct types for most fields, proper alias auto-generation in add/edit flows, and a full read-only ServerDefaults display in `ShowCurrentSettings()`. Its weaknesses are backward-compatibility gaps: `SettingsManager.Load()` does not null-coalesce `Models` (missing `Models ??= []`), does not auto-generate aliases from GGUF filenames on load, and uses inline normalization instead of a dedicated `Normalize()` method. The `DraftPMIN` property name is a naming mismatch with the spec (`DraftPMin`). The `EditGeneralSettings` method uses inline `AskDouble`/`AskInt` local functions which is acceptable but less organized than a dedicated helper. Its TODO task remains in `In Progress` with all steps unchecked, and the branch deletes `Evaluation.md` and the `Backlog` section from `TODO.md` (unrelated destructive changes). Its score is **87/100**.
+
+### Model used for PR #32 — 87/100 (`Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[80k] (Reasoning: medium)`)
+
+The model used for PR #32 produced a complete, buildable implementation with the same overall structure as PR #31. Its key differences from PR #31 are type choices: `Fit` is `bool` (default `false`) instead of string `"off"`, `Reasoning` is `bool` (default `true`) instead of string `"on"`, and `ReasoningBudgetMessage` lacks the surrounding quotes that the spec includes. These type mismatches with the spec are the primary quality concern. On the positive side, `SettingsManager.Load()` null-coalesces `Models ??= []` (better than PR #31), and the `ShowCurrentSettings()` display handles the bool-typed fields with `(d.Fit ? "on" : "off")` conversions. The `DraftPMIN` naming mismatch is also present. Its TODO task remains in `In Progress` with all steps unchecked, and the branch deletes `Evaluation.md` (unrelated). Its score is **87/100**.
+
+### Model used for PR #36 — 87/100 (`Qwen3.8-27B-UD-IQ4_XS_unsloth.gguf`)
+
+The model used for PR #36 produced a complete, buildable implementation with a dedicated `Normalize()` method and alias auto-generation on load. It null-coalesces `SamplingDefaults`, `ServerDefaults`, `Host`, `CacheTypeK/V`, and auto-generates aliases for legacy models. However, it is missing `Models ??= []` in `Normalize()`, which is a backward-compatibility gap for old settings files without a `Models` array. The `DraftPMIn` property name is a naming mismatch (should be `DraftPMin`). `ReasoningBudgetMessage` lacks the surrounding quotes from the spec. The `ShowCurrentSettings()` display uses a `GetAutoAlias` helper method for clean alias display. Its TODO task has a docs block but the implementation checklist is not tracked in TODO.md, and the branch deletes `Evaluation.md` and the `Backlog` section from `TODO.md`. Its score is **87/100**.
+
+### Model used for PR #37 — 83/100 (`Qwen3.8-27B-UD-IQ4_XS_unsloth.gguf`)
+
+The model used for PR #37 produced a buildable implementation covering the main feature surface. It has a `Normalize()` method and correct type choices for most fields (`Fit` as string `"off"`, `DraftPMIn` naming mismatch). However, it has the weakest backward-compatibility handling in this batch: `Normalize()` does not null-coalesce `Models` (missing `Models ??= []`), and it does not auto-generate aliases from GGUF filenames on load — it only does `m.Alias ??= ""`, leaving legacy models with empty aliases. The `ShowCurrentSettings()` display uses placeholder text `"(auto: GGUF filename)"` instead of showing the actual auto-generated alias, and it does not null-coalesce `SamplingDefaults` before accessing its properties (potential `NullReferenceException` if `Normalize()` is bypassed). Its TODO task has a docs block but the implementation checklist is not tracked in TODO.md, and the branch deletes `Evaluation.md`. Its score is **83/100**.
+
+**Conclusion:** PR #35 is the clear winner in this batch with the best compatibility handling; PRs #31, #32, and #36 are tied at 87/100 with different trade-offs; PR #37 lags on compatibility.
 
 ### Model used for PR #33 — 91/100 (`Qwen3.8-27B-Uncensored-Aggressive-IQ3_M_(HauhauCS)_[128k] (Reasoning: medium)`)
 
@@ -416,6 +438,6 @@ Comparative scores above preserve the existing Process #1 scoring system. The de
 7. **Model used for PR #16 — 56/100**: incomplete because the UI portion is missing.
 8. **Model used for PR #44 — 51/100**: currently uncompilable and therefore not mergeable.
 
-Based on the available evidence across all twenty-one evaluated models, the model used for PR #52 is the strongest candidate, followed by the models used for PR #18 and PR #34 tied for second.
+Based on the available evidence across all twenty-six evaluated models, the model used for PR #52 is the strongest candidate, followed by the models used for PR #18 and PR #34 tied for second.
 
 
