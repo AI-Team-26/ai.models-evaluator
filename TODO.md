@@ -178,6 +178,18 @@ Design outcome recording format once evaluator has execution data.
 
 # Completed
 
+## feat/12_QWEN38_UD-IQ4_XS_5_Unsloth_settings_expansion — Expand llama-server settings schema ✅
+Implemented the `feat/12_settings_expansion` spec against current `main`: expanded entities, backward-compatible load normalization, per-model alias auto-generation, and full SettingsView coverage.
+- [x] Add `Host`, `CacheTypeK`, `CacheTypeV` to `ApplicationSettings`
+- [x] Create `SamplingDefaults` record (Temperature, TopK, TopP, MinP, RepeatPenalty, RepeatLastN)
+- [x] Create readonly `ServerDefaults` record (Parallel, Prio, FlashAttn, KvUnified, LoadMode, Fit, CacheReuse, DraftPMin, LogVerbosity, Samplers, ContextShift, ReasoningPreserve, Reasoning, ReasoningBudget, ReasoningBudgetMessage, BatchSize, UBatchSize, SpecType)
+- [x] Add per-model `Alias` (auto-gen from GGUF filename when empty) in Add/Edit flows
+- [x] Update `SettingsManager.Load()` with `Normalize()` for backward compatibility (defaults for old settings files)
+- [x] Update `EditGeneralSettings()`: Host, cache types, sampling defaults inputs
+- [x] Update `ShowCurrentSettings()`: new fields + read-only ServerDefaults section + per-model alias
+- [x] Build passes (`dotnet build`) and test run matches baseline (4 passed / 9 pre-existing target-code failures on main too)
+**Done by the model Qwen3.8-27B_UD-IQ4-KS_Unsloth_[40k] Q8 (mtp:2/5)** | **Agent Work Time:** 00:06
+
 ## refactor/07_settings_manager — Centralized Configuration Management ✅ MERGED
 Created SettingsManager singleton; eliminated config duplication across classes.
 
