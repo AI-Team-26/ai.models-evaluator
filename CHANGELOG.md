@@ -22,3 +22,6 @@ All notable changes to this project will be documented in this file.
 - Added `docs/experimental_prs.md` documenting the experimental `feat/12` settings-expansion
   history: the branch was used to test multiple LLM models, producing several parallel PRs
   (#16, #17, #18, #20, #22, #23) that are now superseded by #22 and should be ignored.
+- Evaluated PRs #87 and #88 for `feat/12_settings_expansion` in `Evaluation.md`:
+  - PR #87 (Qwen3.8-27B_UD-IQ4-KS_Unsloth_[32k] Q8/Q8): 92/100 ★★★★
+  - PR #88 (Qwen3.8-27B i1 IQ4_XS jrell [56k]): 88/100 ★★★★
