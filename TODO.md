@@ -188,7 +188,7 @@ Implemented the `feat/12_settings_expansion` spec against current `main`: expand
 - [x] Update `EditGeneralSettings()`: Host, cache types, sampling defaults inputs
 - [x] Update `ShowCurrentSettings()`: new fields + read-only ServerDefaults section + per-model alias
 - [x] Build passes (`dotnet build`) and test run matches baseline (4 passed / 9 pre-existing target-code failures on main too)
-**Done by the model bailian/qwen3.8-27b** | **Agent Work Time:** TBD
+**Done by the model bailian/qwen3.8-27b** | **Agent Work Time:** 00:03
 
 ## refactor/07_settings_manager — Centralized Configuration Management ✅ MERGED
 Created SettingsManager singleton; eliminated config duplication across classes.
