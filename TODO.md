@@ -178,6 +178,9 @@ Design outcome recording format once evaluator has execution data.
 
 # Completed
 
+## Evaluate PRs #87 and #88 for feat/12_settings_expansion ✅
+Evaluated PR #87 (Qwen3.8-27B_UD-IQ4-KS_Unsloth_[32k] Q8/Q8) and PR #88 (Qwen3.8-27B i1 IQ4_XS jrell [56k]) against the feat/12_settings_expansion specification. PR #87 scored 92/100 (★★★★) — best type correctness and legacy alias normalization. PR #88 scored 88/100 (★★★★) — complete but held back by type errors (Reasoning as string, DraftPMIN, UbatchSize) and culture-sensitive parsing. Both PRs build cleanly with 0 warnings and produce the same 4-pass/9-fail baseline test result. No unresolved review threads on either PR. Evaluation.md and TODO.md updated accordingly.
+
 ## refactor/07_settings_manager — Centralized Configuration Management ✅ MERGED
 Created SettingsManager singleton; eliminated config duplication across classes.
 
