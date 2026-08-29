@@ -178,6 +178,18 @@ Design outcome recording format once evaluator has execution data.
 
 # Completed
 
+## feat/12_QWEN38_UD-Q3_K_XL_2_settings_expansion — Expand llama-server settings schema ✅
+Expanded `ApplicationSettings`/`ModelSettings` to cover all llama-server CLI flags with editable/readonly distinction.
+- [x] Add `Host`, `CacheTypeK`, `CacheTypeV` to `ApplicationSettings`
+- [x] Create `SamplingDefaults` record (Temperature, TopK, TopP, MinP, RepeatPenalty, RepeatLastN)
+- [x] Create readonly `ServerDefaults` record (Parallel, Prio, FlashAttn, KVUnified, LoadMode, Fit, CacheReuse, DraftPMin, LogVerbosity, Samplers, ContextShift, ReasoningPreserve, Reasoning, ReasoningBudget, ReasoningBudgetMessage, BatchSize, UbatchSize, SpecType)
+- [x] Add per-model `Alias` (auto-gen from GGUF filename when empty) in Add/Edit flows
+- [x] Update `SettingsManager.Load()` for backward compatibility (null-coalesce old settings files)
+- [x] Update `EditGeneralSettings()`: Host, cache types, sampling defaults inputs
+- [x] Update `ShowCurrentSettings()`: new fields + read-only ServerDefaults section + per-model alias
+- [x] Build passes (`dotnet build`) and backward-compat smoke test OK
+**Done by the model Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[80k]** | **Agent Work Time:** 00:05
+
 ## refactor/07_settings_manager — Centralized Configuration Management ✅ MERGED
 Created SettingsManager singleton; eliminated config duplication across classes.
 
