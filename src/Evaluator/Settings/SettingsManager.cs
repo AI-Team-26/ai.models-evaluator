@@ -66,6 +66,8 @@ public static class SettingsManager
             settings = JsonSerializer.Deserialize<ApplicationSettings>(json, jsonOptions)
                 ?? throw new Exception($"Settings file at {filePath} is empty or corrupt.");
 
+            ApplyBackwardCompatDefaults(settings!);
+
             return settings;
         }
         catch (FileNotFoundException)
@@ -81,6 +83,20 @@ public static class SettingsManager
         {
             throw new Exception($"Failed to load Settings. {exc.Message}", exc);
         }
+    }
+
+    /// <summary>
+    /// Old settings files may lack the newer sections/fields — fill them with defaults.
+    /// </summary>
+    private static void ApplyBackwardCompatDefaults(ApplicationSettings s)
+    {
+        if (string.IsNullOrEmpty(s.Host)) s.Host = "127.0.0.1";
+        if (string.IsNullOrEmpty(s.CacheTypeK)) s.CacheTypeK = "q8_0";
+        if (string.IsNullOrEmpty(s.CacheTypeV)) s.CacheTypeV = "q8_0";
+        s.SamplingDefaults ??= new SamplingDefaults();
+        s.ServerDefaults ??= new ServerDefaults();
+        foreach (var m in s.Models)
+            m.Alias ??= "";
     }
 
 }

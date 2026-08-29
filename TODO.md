@@ -1,5 +1,19 @@
 # In Progress
 
+## feat/12_QWEN38_UD-IQ4_XS_8_Unsloth_settings_expansion — Settings expansion
+
+**Branch:** `feat/12_QWEN38_UD-IQ4_XS_8_Unsloth_settings_expansion`
+**Goal:** Expand application and model settings to cover llama-server CLI flags, with editable/read-only distinction.
+**Done by model:** `Qwen3.8-27B_UD-IQ4-KS_Unsloth_[32k] Q8/Q8 (mtp:2/7)`
+
+**Steps:**
+- [x] Add `Host`, `CacheTypeK`/`CacheTypeV` to `ApplicationSettings`; create `SamplingDefaults` and read-only `ServerDefaults` records; add `Alias` to `ModelSettings`
+- [x] Backward-compat defaults in `SettingsManager.Load()` for old settings files
+- [x] `SettingsView`: edit host/cache types/sampling defaults in general settings editor
+- [x] `SettingsView`: alias input in add/edit model flows with GGUF filename fallback
+- [x] `ShowCurrentSettings()`: display host, cache types, sampling defaults, read-only server defaults, per-model alias
+- [x] Build (`dotnet build AI.Evaluator.slnx -o agent_build`) and run tests
+
 ---
 
 # Backlog
