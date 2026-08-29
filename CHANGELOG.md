@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- Expanded llama-server settings schema (`feat/12`): app-level `Host`, KV cache types, editable `SamplingDefaults`, readonly `ServerDefaults` record, per-model `Alias` with auto-generation from GGUF filename; backward-compatible loading of old settings files
 - Initial C# console app with intentional bugs for AI model evaluation
 - Three difficulty-level bugs:
   - **Bug #1 (Easy)**: Off-by-one error in `SumRange` method
