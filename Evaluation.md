@@ -45,8 +45,11 @@ The following list contains all known `feat/12_settings_expansion` implementatio
 | [#67](https://github.com/AI-Team-26/ai.models-evaluator/pull/67) | `Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[80k]` |
 | [#68](https://github.com/AI-Team-26/ai.models-evaluator/pull/68) | `KAT-Coder-V2.5-Dev_Q3_K_M_imatrix_MTP_(offmonreal)_64k` |
 | [#71](https://github.com/AI-Team-26/ai.models-evaluator/pull/71) | `KAT-Coder-V2.5-Dev-APEX-dynamic-v2_(myric)_192k` |
+| [#87](https://github.com/AI-Team-26/ai.models-evaluator/pull/87) | `Qwen3.8-27B_UD-IQ4-KS_Unsloth_[32k] Q8/Q8 (mtp:2/7)` |
+| [#88](https://github.com/AI-Team-26/ai.models-evaluator/pull/88) | `Qwen3.8-27B-i1-IQ4_XS-GGUF-Smaller_(jrell)_Q8-Q8_[56k] (mtp:2/7)` |
+| [#90](https://github.com/AI-Team-26/ai.models-evaluator/pull/90) | `Qwen3.8-27B-ZB4.00-MIN-v5-IQ4_XS_tooltd.gguf` |
 
-PR #28 documents the experimental history but does not implement `feat/12`, so it is intentionally excluded. PR #25 is similarly documentation-only. PR #19 implements Avalonia UI scaffolding and is also excluded.
+PR #28 documents the experimental history but does not implement `feat/12`, so it is intentionally excluded. PR #25 is similarly documentation-only. PR #19 implements Avalonia UI scaffolding and is also excluded. PR #89 is a documentation/evaluation PR and is similarly excluded.
 
 The executor model names above are taken from each PR description. For PR #20, the model is identified by the PR title/description as `Nemotron-3.5-Lightning` rather than by an explicit `Implemented by` line.
 
@@ -180,7 +183,7 @@ Check:
 
 ## 4. Evaluation results
 
-Thirty-one models in this evaluation were inspected in isolated worktrees and scored against the same `feat/12_settings_expansion` specification; the remaining four implementations are listed at the bottom of this section as unevaluated placeholders. Each newly evaluated test run produced the documented baseline result of 4 passing and 9 intentionally failing tests. PR #18 additionally introduced three settings tests, all of which passed. No unresolved review threads were found for the implementations checked in this re-evaluation.
+Thirty-three models in this evaluation were inspected in isolated worktrees and scored against the same `feat/12_settings_expansion` specification; the remaining four implementations are listed at the bottom of this section as unevaluated placeholders. Each newly evaluated test run produced the documented baseline result of 4 passing and 9 intentionally failing tests. PR #18 additionally introduced three settings tests, all of which passed. No unresolved review threads were found for the implementations checked in this re-evaluation.
 
 | PR | Model | Time | Spec | Build/Reg | Compat | UI/Beh | Code | Scope | **Total** | **Stars** |
 |---:|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -216,6 +219,9 @@ Thirty-one models in this evaluation were inspected in isolated worktrees and sc
 | [#32](https://github.com/AI-Team-26/ai.models-evaluator/pull/32) | `Qwen3.8-27B_UD-Q3-K-XL_Unsloth_[80k] (Reasoning: medium)` | 00:00 | 27/30 | 20/20 | 17/20 | 14/15 | 8/10 | 1/5 | **87/100** | ★★★ |
 | [#36](https://github.com/AI-Team-26/ai.models-evaluator/pull/36) | `Qwen3.8-27B-UD-IQ4_XS_unsloth.gguf` | 00:00 | 28/30 | 20/20 | 16/20 | 14/15 | 8/10 | 1/5 | **87/100** | ★★★ |
 | [#37](https://github.com/AI-Team-26/ai.models-evaluator/pull/37) | `Qwen3.8-27B-UD-IQ4_XS_unsloth.gguf` | 00:00 | 28/30 | 20/20 | 13/20 | 13/15 | 8/10 | 1/5 | **83/100** |  |
+| [#87](https://github.com/AI-Team-26/ai.models-evaluator/pull/87) | `Qwen3.8-27B_UD-IQ4-KS_Unsloth_[32k] Q8/Q8 (mtp:2/7)` | 00:04 | 30/30 | 20/20 | 17/20 | 12/15 | 9/10 | 4/5 | **92/100** | ★★★★ |
+| [#88](https://github.com/AI-Team-26/ai.models-evaluator/pull/88) | `Qwen3.8-27B-i1-IQ4_XS-GGUF-Smaller_(jrell)_Q8-Q8_[56k] (mtp:2/7)` | 06:31 | 27/30 | 20/20 | 14/20 | 14/15 | 8/10 | 5/5 | **88/100** | ★★★★ |
+| [#90](https://github.com/AI-Team-26/ai.models-evaluator/pull/90) | `Qwen3.8-27B-ZB4.00-MIN-v5-IQ4_XS_tooltd.gguf` | 07:01 | 27/30 | 20/20 | 14/20 | 14/15 | 8/10 | 5/5 | **88/100** | ★★★★ |
 
 ### Not yet evaluated
 
@@ -352,6 +358,24 @@ The model used for PR #68 produced a complete implementation covering all specif
 
 **Conclusion:** functionally the most complete of the KAT runs, but the string-typed flags and whole-file rewrite keep it out of the top tier.
 
+### Model used for PR #87 — 92/100 (`Qwen3.8-27B_UD-IQ4-KS_Unsloth_[32k] Q8/Q8`)
+
+The model used for PR #87 produced a complete, buildable implementation with the best type correctness among the new candidates. All `ServerDefaults` fields use the correct types (`bool` for boolean flags, `int` for numeric fields) and correct property names per the specification (`DraftPMIn`, `UBatchSize`). The `Reasoning` field is correctly typed as `bool` (default `true`). The `ApplyBackwardCompatDefaults` method null-coalesces `SamplingDefaults`, `ServerDefaults`, `Host`, `CacheTypeK/V`, and also handles legacy model aliases (`m.Alias ??= ""`), which is the only evaluated run to do so. The settings UI covers host, cache types, and sampling defaults editing with culture-safe numeric parsing (`CultureInfo.InvariantCulture`, `NumberStyles.Float`). Alias auto-generation works correctly on add, and the edit flow falls back to the GGUF filename when the alias is empty. `ShowCurrentSettings()` displays all new fields including the read-only ServerDefaults section. Build passes with 0 warnings and the baseline 4-pass/9-fail test result. The TODO.md lifecycle is correct (Completed block added). Minor deductions: the alias edit flow keeps the current alias when the user submits empty input rather than regenerating from the GGUF filename (a spec mismatch), `ReasoningBudgetMessage` is not displayed in `ShowCurrentSettings()`, and boolean server flags are displayed as `True`/`False` instead of `on`/`off`.
+
+**Conclusion:** the strongest candidate among the new PRs, with the best type correctness and the only legacy alias normalization.
+
+### Model used for PR #88 — 88/100 (`Qwen3.8-27B-i1-IQ4_XS-GGUF-Smaller_(jrell)_Q8-Q8_[56k]`)
+
+The model used for PR #88 produced a complete, buildable implementation with some type and naming issues. The `Reasoning` field is incorrectly typed as `string` (default `"on"`) instead of `bool`, and two property names are misspelled: `DraftPMIN` (should be `DraftPMin`) and `UbatchSize` (should be `UBatchSize`). The `ApplyBackwardCompatDefaults` method null-coalesces `SamplingDefaults`, `ServerDefaults`, `Host`, and `CacheTypeK/V` but does not handle legacy model aliases or a missing `Models` list. The settings UI covers host, cache types, and sampling defaults editing, but numeric parsing is culture-sensitive (no `CultureInfo.InvariantCulture`), which could cause issues in non-US locales. Alias auto-generation works correctly on add, and the edit flow correctly regenerates from the GGUF filename when the user submits empty input (matching the spec). `ShowCurrentSettings()` displays all new fields including the read-only ServerDefaults section via a dedicated `ShowServerDefaultsReadonly` helper method, and includes the `ReasoningBudgetMessage` display. Boolean server flags are displayed as lowercase `true`/`false` using `.ToString().ToLowerInvariant()`. Build passes with 0 warnings and the baseline 4-pass/9-fail test result. The TODO.md lifecycle keeps the task in `In Progress` with all items checked. Deductions: type and naming errors in `Entities.cs`, culture-sensitive numeric parsing, and missing legacy alias normalization.
+
+**Conclusion:** a solid implementation held back by type correctness issues (`Reasoning` as string, `DraftPMIN`, `UbatchSize`) and culture-sensitive parsing.
+
+### Model used for PR #90 — 88/100 (`Qwen3.8-27B-ZB4.00-MIN-v5-IQ4_XS_tooltd.gguf`)
+
+The model used for PR #90 produced a complete, buildable implementation with the best TODO lifecycle in this batch. All spec fields are present in `Entities.cs` (with the same `Reasoning`-as-string, `DraftPMIN`, and `UbatchSize` type/naming issues as PR #88) and the settings UI covers host, cache types, sampling defaults editing, and alias flows. The `ApplyBackwardCompatDefaults` method null-coalesces `SamplingDefaults`, `ServerDefaults`, `Host`, and `CacheTypeK/V`, and additionally defends against a `null` `Alias` on existing model entries (`m.Alias = ""`). Alias auto-generation works correctly on add, and the edit flow correctly regenerates from the GGUF filename when the user submits empty input (matching the spec). `ShowCurrentSettings()` displays the sampling defaults, the read-only server-defaults section, and per-model alias (showing `(auto: <gguf-name>)` for legacy aliases with empty `Alias`). Build passes with 0 warnings and the baseline 4-pass/9-fail test result. The TODO.md lifecycle is correct: the task is added to the `Completed` section with a short description, no `In Progress` block is left behind. Deductions: same `Reasoning`/`DraftPMIN`/`UbatchSize` type and naming issues as PR #88, culture-sensitive numeric parsing (no `CultureInfo.InvariantCulture`), no `Models ??= []` in `ApplyBackwardCompatDefaults` (handled defensively only in `AddModel`), and no legacy alias auto-generation from the GGUF filename. `ReasoningBudgetMessage` is not displayed in `ShowCurrentSettings()`.
+
+**Conclusion:** a clean, complete implementation that ties PR #88 on the scorecard. The better TODO lifecycle is offset by the same type/naming issues and the missing `ReasoningBudgetMessage` display.
+
 ### Model used for PR #48 — 84/100 (`Qwen3.8-27B-Abliterated-IQ4-MIX-MTP_finex666_[64k]`)
 
 The model used for PR #48 implemented the main feature and builds cleanly, with the same baseline test result. Its TODO update is valid bookkeeping and is not deducted. It includes the required settings UI and alias flows, and it adds the useful `agent_build/` ignore rule. However, its compatibility normalization does not initialize a missing `Models` list or legacy model aliases. Its boolean-like `ServerDefaults` values (`KvUnified`, `ContextShift`, and `ReasoningPreserve`) are represented as strings, making invalid values possible and weakening type safety. The edit flow does not auto-generate an alias when an existing alias is cleared, and its implementation has less explanatory structure than PRs #34, #45, and #46.
@@ -397,6 +421,8 @@ The targets were evaluated from their submitted commits in isolated worktrees, w
 | #71 | `e111993267d03c43ad21334dad20d089ca13118e` | `500c3dc14016d4f00e2810a9a8e34cb7f0f9ecc0` | ✓ / ✓ / ✓ / ✓ |
 | #67 | `85e6dd055d580167c9eaa66643902efb55a600cd` | `0c2748f5f003f8902e755bf72b0e228f717cb244` | ✓ / ✓ / ✓ / partial |
 | #68 | `85e6dd055d580167c9eaa66643902efb55a600cd` | `5e765a061d744c651dfee03f630b265d5d85c166` | ✓ / ✓ / ✓ / partial |
+| #88 | `9e24df06356a0c455bf5de64d5aa49d3fcbbbe67` | `d7ebd5b3ef0a39158f405080993d293d2e3cda8e` | ✓ / ✓ / ✓ / partial |
+| #90 | `9e24df06356a0c455bf5de64d5aa49d3fcbbbe67` | `22a189da5d48f5c25983e928a4376b923e77fb18` | ✓ / ✓ / ✓ / partial |
 
 The implementation diffs were limited to the settings entities/manager and, except for #27, `SettingsView.cs`. The `TODO.md` changes were audited against the required branch lifecycle and are not penalized merely for existing. PR #57 additionally changed `Evaluation.md`, which is unrelated to its implementation task and remains a scope-quality deduction. No unresolved review threads were found.
 
@@ -404,7 +430,7 @@ The implementation diffs were limited to the settings entities/manager and, exce
 
 | PRs | Restore/build command | Test command | Result |
 |---|---|---|---|
-| #27, #29, #30, #33, #39, #42, #47, #57, #59, #60, #65, #67, #68, #71 | `dotnet restore AI.Evaluator.slnx` then `dotnet build src/Evaluator/Evaluator.csproj -o agent_build --no-restore` | `dotnet test tests/TargetCodeTests/TargetCodeTests.csproj --no-restore` | Every build: 0 warnings, 0 errors. Every test run: 4 passed, 9 baseline failures. |
+| #27, #29, #30, #33, #39, #42, #47, #57, #59, #60, #65, #67, #68, #71, #88, #90 | `dotnet restore AI.Evaluator.slnx` then `dotnet build src/Evaluator/Evaluator.csproj -o agent_build --no-restore` | `dotnet test tests/TargetCodeTests/TargetCodeTests.csproj --no-restore` | Every build: 0 warnings, 0 errors. Every test run: 4 passed, 9 baseline failures. |
 
 The baseline failures are in pre-existing `TargetCodeTests` coverage (`SumRange`, `SafeProduct`, and `SplitCsv`); no settings-specific tests were supplied by these PRs. UI scenarios were assessed statically from `SettingsView.cs`: #27 fails the required edit/display scenario because it contains no UI implementation; #29, #30, #57, #59, and #60 expose host/cache/sampling/model-alias flows and display read-only server defaults. Compatibility fixtures used: a legacy JSON object with omitted new sections, a legacy model with omitted alias, and explicit `null` sections/lists. All five UI implementations normalize the new sections; #29, #57, and #59 also normalize model aliases or lists, while #30 and #60 leave some null collection/alias edges to callers.
 
@@ -426,18 +452,21 @@ Comparative scores above preserve the existing Process #1 scoring system. The de
 | #42 | Correctly typed flags and naming; missing legacy normalization, and destructive unrelated `TODO.md` changes (deleted feat/13 blocks and the whole Backlog section) plus quote-escaping corruption of the flag table. |
 | #47 | String-typed `KvUnified`/`ContextShift`/`ReasoningPreserve`, silent numeric-input failures, raw legacy alias display, and destructive `TODO.md` change deleting the entire Backlog section. |
 | #71 | Best `Normalize()` of the evaluated set (sections, `Models` list, and legacy aliases all normalized on load); whole-file `Entities.cs` rewrite, repetitive sampling prompt blocks, untrimmed alias input, and no `TODO.md` lifecycle update. |
+| #88 | Complete UI with host/cache/sampling editing and read-only server defaults display via a dedicated `ShowServerDefaultsReadonly` helper; type and naming errors (`Reasoning` as string, `DraftPMIN`, `UbatchSize`), culture-sensitive numeric parsing, and no `Models ??= []` or legacy alias normalization in `ApplyBackwardCompatDefaults`. |
+| #90 | Complete UI with host/cache/sampling editing, alias regeneration on empty edit input, and per-model `(auto: <gguf-name>)` display for legacy aliases; same `Reasoning`/`DraftPMIN`/`UbatchSize` type and naming issues as PR #88, culture-sensitive numeric parsing, no `Models ??= []` normalization, no legacy alias auto-generation, and `ReasoningBudgetMessage` is not displayed in `ShowCurrentSettings()`. The TODO lifecycle is correctly placed in `Completed`. |
 
 ## Ranking and conclusion
 
 1. **Model used for PR #52 — 95/100** (★★★★★): best overall. Complete data and UI changes, correct types, comprehensive backward compatibility, clean build, no implementation scope creep; its TODO lifecycle remains incomplete.
 2. **Model used for PR #18 — 93/100** and **Model used for PR #34 — 94/100** (★★★★, tie): strong complete implementations. PR #18 also includes passing dedicated settings tests; PR #34 should fix the `Models` normalization edge case before merge.
 3. **Model used for PR #17 — 93/100**, **Model used for PR #45 — 93/100**, and **Model used for PR #46 — 93/100** (★★★★, tie): excellent complete implementations, narrowly behind the top pair. PR #45 and PR #46 share the same settings implementation; both should address alias and naming details.
-4. **Model used for PR #22 — 92/100** and **Model used for PR #23 — 92/100** (★★★★, tie): complete and well-reviewed, but not proven to be the best.
-5. **Model used for PR #48 — 84/100**: buildable but materially weaker in type safety and backward compatibility.
-6. **Model used for PR #20 — 73/100**: partial design and UI issues, plus unresolved review comments.
-7. **Model used for PR #16 — 56/100**: incomplete because the UI portion is missing.
-8. **Model used for PR #44 — 51/100**: currently uncompilable and therefore not mergeable.
+4. **Model used for PR #22 — 92/100**, **Model used for PR #23 — 92/100**, **Model used for PR #87 — 92/100**, **Model used for PR #67 — 92/100**, **Model used for PR #68 — 92/100**, **Model used for PR #63 — 92/100**, **Model used for PR #65 — 92/100**, **Model used for PR #30 — 92/100**, **Model used for PR #35 — 92/100** (★★★★, tie): complete implementations across the evaluated batch. PR #87 is the strongest of the most recent additions (best type correctness and the only legacy alias normalization), but should still fix the alias-edit regeneration behavior and display `ReasoningBudgetMessage`.
+5. **Model used for PR #88 — 88/100** and **Model used for PR #90 — 88/100** (★★★★, tie): complete, buildable implementations with the same `Reasoning`-as-string, `DraftPMIN`, and `UbatchSize` type and naming issues, and culture-sensitive numeric parsing. PR #88 includes a `ReasoningBudgetMessage` display and a dedicated `ShowServerDefaultsReadonly` helper; PR #90 has a correct TODO lifecycle (task moved to `Completed`). Both should fix the type and naming issues before merge.
+6. **Model used for PR #48 — 84/100**: buildable but materially weaker in type safety and backward compatibility.
+7. **Model used for PR #20 — 73/100**: partial design and UI issues, plus unresolved review comments.
+8. **Model used for PR #16 — 56/100**: incomplete because the UI portion is missing.
+9. **Model used for PR #44 — 51/100**: currently uncompilable and therefore not mergeable.
 
-Based on the available evidence across all twenty-six evaluated models, the model used for PR #52 is the strongest candidate, followed by the models used for PR #18 and PR #34 tied for second.
+Based on the available evidence across all thirty-three evaluated models, the model used for PR #52 is the strongest candidate, followed by the models used for PR #18 and PR #34 tied for second. PR #87 is the strongest of the most recent batch.
 
 
