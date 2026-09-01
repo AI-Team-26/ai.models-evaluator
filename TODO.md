@@ -178,9 +178,6 @@ Design outcome recording format once evaluator has execution data.
 
 # Completed
 
-## doc/12_evaluate_prs_88_89_90 — Evaluated PRs #88, #89, #90 for feat/12_settings_expansion ✅
-Inspected PRs #88 and #90 in isolated worktrees, ran the standard build/test verification, and updated `Evaluation.md` with scores, model sections, deterministic evidence, and ranking updates. PR #89 confirmed as a documentation/evaluation PR and excluded from implementation scoring. Final scores: PR #87 = 92/100 ★★★★, PR #88 = 88/100 ★★★★, PR #90 = 88/100 ★★★★.
-
 ## refactor/07_settings_manager — Centralized Configuration Management ✅ MERGED
 Created SettingsManager singleton; eliminated config duplication across classes.
 
