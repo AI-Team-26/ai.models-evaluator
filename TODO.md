@@ -178,6 +178,10 @@ Design outcome recording format once evaluator has execution data.
 
 # Completed
 
+## feat/12_QWEN38_IQ4_XS_12_tooltd_settings_expansion — llama-server flag settings expansion ✅
+> **Done by model:** `Qwen3.8-27B-ZB4.00-MIN-v5-IQ4_XS_tooltd.gguf`
+Expanded `ApplicationSettings`/`ModelSettings` to cover all llama-server CLI flags: editable fields (`Host`, `CacheTypeK/V`, `SamplingDefaults`, per-model `Alias` with auto-gen from GGUF filename), readonly `ServerDefaults` section shown in Settings view, backward-compat defaults in `SettingsManager.Load()`, and SettingsView UI updates.
+
 ## refactor/07_settings_manager — Centralized Configuration Management ✅ MERGED
 Created SettingsManager singleton; eliminated config duplication across classes.
 
