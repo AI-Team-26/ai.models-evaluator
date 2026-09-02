@@ -178,6 +178,9 @@ Design outcome recording format once evaluator has execution data.
 
 # Completed
 
+## feat/12_Qwen38-27B-Uncensored-IQ3_M_orcarouter_settings_expansion ✅
+Expanded `ApplicationSettings`/`ModelSettings` to cover llama-server CLI flags: app-level editable `Host`, `CacheTypeK/V` and `SamplingDefaults`; read-only `ServerDefaults` section shown in the Settings view; per-model `Alias` with GGUF-filename auto-generation; backward-compatible loading of old settings files. Done by model `Qwen38-27B-Uncensored-IQ3_M_orcarouter`.
+
 ## refactor/07_settings_manager — Centralized Configuration Management ✅ MERGED
 Created SettingsManager singleton; eliminated config duplication across classes.
 
