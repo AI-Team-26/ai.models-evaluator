@@ -38,6 +38,22 @@ public static class SettingsManager
         return settings ?? throw new Exception("Settings is null"); // in theory settings in never null here
     }
 
+    /// <summary>
+    /// Fills in defaults for fields missing from older settings files.
+    /// </summary>
+    private static void ApplyDefaults(ApplicationSettings s)
+    {
+        s.SamplingDefaults ??= new SamplingDefaults();
+        s.ServerDefaults ??= new ServerDefaults();
+        if (string.IsNullOrEmpty(s.Host)) s.Host = "127.0.0.1";
+        if (string.IsNullOrEmpty(s.CacheTypeK)) s.CacheTypeK = "q8_0";
+        if (string.IsNullOrEmpty(s.CacheTypeV)) s.CacheTypeV = "q8_0";
+        foreach (var m in s.Models)
+        {
+            if (m.Alias == null) m.Alias = "";
+        }
+    }
+
     public static void Save(ApplicationSettings newSettings)
     {
         try
@@ -65,6 +81,8 @@ public static class SettingsManager
             var json = File.ReadAllText(filePath);
             settings = JsonSerializer.Deserialize<ApplicationSettings>(json, jsonOptions)
                 ?? throw new Exception($"Settings file at {filePath} is empty or corrupt.");
+
+            ApplyDefaults(settings);
 
             return settings;
         }
