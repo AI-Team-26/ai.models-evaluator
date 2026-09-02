@@ -178,6 +178,16 @@ Design outcome recording format once evaluator has execution data.
 
 # Completed
 
+## feat/12_Qwen38-27B-Q3_K_S_1._settings_expansion — Expand settings for llama-server flags ✅
+Implemented by the model **Qwen3.8-27B-Q3_K_S_(Unsloth)_[64k]_Q8Q8**.
+Expanded `ApplicationSettings` with editable llama-server flags (`Host`, `CacheTypeK/V`),
+a `SamplingDefaults` record (temperature, top-k, top-p, min-p, repeat-penalty, repeat-last-n)
+and a read-only `ServerDefaults` record (parallel, prio, flash-attn, kv-unified, load-mode,
+fit, cache-reuse, draft-p-min, log-verbosity, samplers, context-shift, reasoning*,
+batch-size, ubatch-size, spec-type). `ModelSettings` gained `Alias` (auto-generated from
+the GGUF filename when empty). Old settings files load with applied defaults (backward
+compatible); the settings TUI displays and edits all new fields.
+
 ## refactor/07_settings_manager — Centralized Configuration Management ✅ MERGED
 Created SettingsManager singleton; eliminated config duplication across classes.
 
