@@ -1,7 +1,3 @@
-# In Progress
-
----
-
 # Backlog
 
 ## feat/13_avalonia_ui_scaffolding
