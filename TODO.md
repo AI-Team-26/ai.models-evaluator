@@ -184,6 +184,9 @@ Created SettingsManager singleton; eliminated config duplication across classes.
 ## feat/10_interactive_setup — Interactive Settings Editor ✅ MERGED
 Built full TUI configuration wizard using Spectre.Console. Users can add/edit/remove models without touching JSON files directly.
 
+## feat/12_minimax-m3_1_settings_expansion — Settings Expansion (Minimax-M3:free)
+Implemented by `minimax/minimax-m3:free`. Expanded `ApplicationSettings`/`ModelSettings` to cover all llama-server CLI flags (Host, CacheTypeK/V, SamplingDefaults, ServerDefaults, per-model Alias), with editable/readonly split. SettingsManager.Load() null-coalesces new nested records for backward compat. SettingsView edits/exposes all new fields and the readonly ServerDefaults block. Added 12 unit tests in `tests/EvaluatorSettingsTests/`. Build & tests green.
+
 ~~**Step C: Configuration Schema Design**~~ ~~(Obsolete)~~
 Skipped — went straight to implementation with interactive UI instead of upfront schema design.
 
