@@ -178,6 +178,9 @@ Design outcome recording format once evaluator has execution data.
 
 # Completed
 
+## feat/12_Qwen38-27B-Aliterated-IQ4-MIX-MTP_finex666_ngram_settings_expansion ✅
+Expanded `ApplicationSettings`/`ModelSettings` to cover llama-server CLI flags: app-level editable `Host`, `CacheTypeK/V` and `SamplingDefaults`; read-only `ServerDefaults` section shown in the Settings view (including ngram speculation settings `spec-ngram-size-n/-m/min-hits`); per-model `Alias` with GGUF-filename auto-generation; backward-compatible loading of old settings files. Done by model `Qwen3.8-27B-Abliterated-IQ4-MIX-MTP_finex666_[64k]`.
+
 ## refactor/07_settings_manager — Centralized Configuration Management ✅ MERGED
 Created SettingsManager singleton; eliminated config duplication across classes.
 

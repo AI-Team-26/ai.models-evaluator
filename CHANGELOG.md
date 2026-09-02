@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- Settings expansion (`feat/12`): app-level editable `Host`, `CacheTypeK/V`, `SamplingDefaults`; read-only `ServerDefaults` section in the Settings view including ngram speculation settings; per-model `Alias` with GGUF-filename auto-generation; backward-compatible loading of old settings files (done by model `Qwen3.8-27B-Abliterated-IQ4-MIX-MTP_finex666_[64k]`)
 - Initial C# console app with intentional bugs for AI model evaluation
 - Three difficulty-level bugs:
   - **Bug #1 (Easy)**: Off-by-one error in `SumRange` method
