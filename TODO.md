@@ -178,6 +178,9 @@ Design outcome recording format once evaluator has execution data.
 
 # Completed
 
+## feat/12_Qwen38-27B-UD-IQ4_XS_unsloth_2_settings_expansion — Settings expansion ✅
+Expanded application and model settings to cover llama-server CLI flags (host, cache types, sampling defaults, readonly server defaults, model alias) with backward-compatible loading. Done by model `Qwen3.8-27B-UD-IQ4_XS_unsloth.gguf`.
+
 ## refactor/07_settings_manager — Centralized Configuration Management ✅ MERGED
 Created SettingsManager singleton; eliminated config duplication across classes.
 
