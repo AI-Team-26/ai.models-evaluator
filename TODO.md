@@ -1,5 +1,82 @@
 # In Progress
 
+## feat/12_minimax-m3_1_settings_expansion — Settings Expansion (Minimax-M3:free)
+
+> **Implemented by:** `minimax/minimax-m3:free` (per user request)
+
+**Branch:** `feat/12_minimax-m3_1_settings_expansion`
+**Goal:** Expand `ApplicationSettings` and `ModelSettings` to cover all llama-server CLI flags, with editable/readonly distinction, and update the SettingsView UI accordingly. Pre-requisite for `feat/03_server_management`.
+
+**Context / Mental Picture:**
+- Reference llama-server command uses ~30 CLI flags; currently only 6 are in settings (port, model, ctx-size, n-gpu-layers, n-cpu-moe, jinja).
+- Flags are split into editable (UI) and readonly (shown in Settings view, hardcoded defaults).
+- `ServerDefaults` is a nested record inside `ApplicationSettings` storing the readonly server flags; null-coalesced on load for backward compatibility.
+- Sampling params (`--temperature`, `--top-k`, `--top-p`, `--min-p`, `--repeat-penalty`, `--repeat-last-n`) live in a `SamplingDefaults` record, editable.
+- `--cache-type-k` and `--cache-type-v` are app-level editable, default `q8_0`.
+- `--alias` is per-model, editable; auto-generated from GGUF filename if left empty.
+- Reasoning flags are app-level readonly for now (all models are reasoning models).
+- Skip: `--threads`, `--mlock`, `--no-mmap`.
+
+**Flag categorization (target):**
+
+| Flag | Group | Editable | Default |
+|---|---|---|---|
+| `--host` | App | ✅ | `127.0.0.1` |
+| `--port` | App (existing) | ✅ | `0` |
+| `--temperature` | App → `SamplingDefaults` | ✅ | `0.1` |
+| `--top-k` | App → `SamplingDefaults` | ✅ | `20` |
+| `--top-p` | App → `SamplingDefaults` | ✅ | `0.80` |
+| `--min-p` | App → `SamplingDefaults` | ✅ | `0.05` |
+| `--repeat-penalty` | App → `SamplingDefaults` | ✅ | `1.15` |
+| `--repeat-last-n` | App → `SamplingDefaults` | ✅ | `1024` |
+| `--cache-type-k` | App | ✅ | `q8_0` |
+| `--cache-type-v` | App | ✅ | `q8_0` |
+| `--parallel` | App → `ServerDefaults` | ❌ | `1` |
+| `--prio` | App → `ServerDefaults` | ❌ | `3` |
+| `--flash-attn` | App → `ServerDefaults` | ❌ | `on` |
+| `--kv-unified` | App → `ServerDefaults` | ❌ | `true` |
+| `--load-mode` | App → `ServerDefaults` | ❌ | `mmap` |
+| `--fit` | App → `ServerDefaults` | ❌ | `off` |
+| `--cache-reuse` | App → `ServerDefaults` | ❌ | `256` |
+| `--draft-p-min` | App → `ServerDefaults` | ❌ | `0.7` |
+| `--log-verbosity` | App → `ServerDefaults` | ❌ | `3` |
+| `--samplers` | App → `ServerDefaults` | ❌ | `penalties;dry;top_k;top_p;min_p;temperature` |
+| `--context-shift` | App → `ServerDefaults` | ❌ | `true` |
+| `--reasoning-preserve` | App → `ServerDefaults` | ❌ | `true` |
+| `--reasoning` | App → `ServerDefaults` | ❌ | `on` |
+| `--reasoning-budget` | App → `ServerDefaults` | ❌ | `4096` |
+| `--reasoning-budget-message` | App → `ServerDefaults` | ❌ | `"... Considering the limited time by the user, I have to give the solution based on the thinking directly now."` |
+| `--batch-size` | App → `ServerDefaults` | ❌ | `1024` |
+| `--ubatch-size` | App → `ServerDefaults` | ❌ | `512` |
+| `--spec-type` | App → `ServerDefaults` | ❌ | `none` |
+| `--alias` | Model | ✅ | (auto-gen from GGUF filename if empty) |
+| `--jinja` | Model (existing) | ✅ | `false` |
+| `--model` | Model (existing) | ✅ | — |
+| `--ctx-size` | Model (existing) | ✅ | — |
+| `--n-gpu-layers` | Model (existing) | ✅ | — |
+| `--n-cpu-moe` | Model (existing) | ✅ | — |
+
+**Steps:**
+- [ ] **Step 1: Expand `Entities.cs`**
+  - [ ] Add `Host` to `ApplicationSettings` (default `127.0.0.1`)
+  - [ ] Add `CacheTypeK` / `CacheTypeV` to `ApplicationSettings` (default `q8_0`)
+  - [ ] Add `SamplingDefaults` record (Temperature, TopK, TopP, MinP, RepeatPenalty, RepeatLastN)
+  - [ ] Add `SamplingDefaults` to `ApplicationSettings`
+  - [ ] Add `ServerDefaults` record (all readonly fields)
+  - [ ] Add `ServerDefaults` to `ApplicationSettings`
+  - [ ] Add `Alias` to `ModelSettings` (default `""`)
+- [ ] **Step 2: Update `SettingsManager.Load()`** — null-coalesce nested records for backward compat
+- [ ] **Step 3: Update `SettingsView` — general settings editor** — Host, CacheTypeK/V, SamplingDefaults
+- [ ] **Step 4: Update `SettingsView` — model add/edit** — Alias with auto-gen from GGUF filename
+- [ ] **Step 5: Update `ShowCurrentSettings()`** — display all new fields + readonly `ServerDefaults` block
+- [ ] **Step 6: Add unit tests** in `tests/EvaluatorSettingsTests/` — defaults, null-coalesce load, Alias auto-gen
+- [ ] **Step 7: Build & test** — `dotnet build` and `dotnet test` pass
+
+**Notes:**
+- This branch was created by the `minimax/minimax-m3:free` model as per the explicit user request.
+- The `ServerDefaults` and `SamplingDefaults` records are nested objects in the JSON settings.
+- `--reasoning-budget-message` is a long string with quotes — ensure proper JSON escaping.
+
 ---
 
 # Backlog
