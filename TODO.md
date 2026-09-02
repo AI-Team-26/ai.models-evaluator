@@ -178,6 +178,16 @@ Design outcome recording format once evaluator has execution data.
 
 # Completed
 
+## feat/12_Qwen38-27B-UD-IQ4_XS_unsloth_4_settings_expansion — Settings expansion ✅
+Expanded application and model settings to cover llama-server CLI flags, with editable/readonly distinction. Done by model `Qwen3.8-27B-UD-IQ4_XS_unsloth.gguf Q8`.
+
+- [x] Add `Host`, `CacheTypeK`, `CacheTypeV`, `SamplingDefaults` and readonly `ServerDefaults` records to `ApplicationSettings`; add `Alias` to `ModelSettings`
+- [x] Backward-compatible defaults in `SettingsManager.Load()` (`ApplyBackwardCompatibleDefaults`) for old settings files
+- [x] Update `EditGeneralSettings()` with host, cache types and sampling defaults inputs (`EditSamplingDefaults()`)
+- [x] Update `AddModel()` / `EditModel()` with alias input (empty = auto-gen from GGUF filename)
+- [x] Update `ShowCurrentSettings()` to display new fields incl. readonly server defaults section and per-model aliases
+- [x] Build with `dotnet build -o agent_build` and run tests (9 TargetCodeTests failures are pre-existing on main)
+
 ## refactor/07_settings_manager — Centralized Configuration Management ✅ MERGED
 Created SettingsManager singleton; eliminated config duplication across classes.
 
