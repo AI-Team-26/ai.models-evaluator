@@ -178,10 +178,10 @@ Design outcome recording format once evaluator has execution data.
 
 # Completed
 
-## refactor/07_settings_manager — Centralized Configuration Management ✅ MERGED
+## refactor/07_settings_manager — Centralized Configuration Management 
 Created SettingsManager singleton; eliminated config duplication across classes.
 
-## feat/10_interactive_setup — Interactive Settings Editor ✅ MERGED
+## feat/10_interactive_setup — Interactive Settings Editor 
 Built full TUI configuration wizard using Spectre.Console. Users can add/edit/remove models without touching JSON files directly.
 
 ~~**Step C: Configuration Schema Design**~~ ~~(Obsolete)~~
