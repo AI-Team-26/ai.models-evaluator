@@ -66,6 +66,19 @@ public static class SettingsManager
             settings = JsonSerializer.Deserialize<ApplicationSettings>(json, jsonOptions)
                 ?? throw new Exception($"Settings file at {filePath} is empty or corrupt.");
 
+            // Backward compatibility: old settings files may lack the newer fields
+            if (string.IsNullOrEmpty(settings.Host)) settings.Host = "127.0.0.1";
+            if (string.IsNullOrEmpty(settings.CacheTypeK)) settings.CacheTypeK = "q8_0";
+            if (string.IsNullOrEmpty(settings.CacheTypeV)) settings.CacheTypeV = "q8_0";
+            settings.SamplingDefaults ??= new SamplingDefaults();
+            settings.ServerDefaults ??= new ServerDefaults();
+            foreach (var m in settings.Models)
+            {
+                m.Id ??= "";
+                m.GgufFileName ??= "";
+                m.Alias ??= "";
+            }
+
             return settings;
         }
         catch (FileNotFoundException)
