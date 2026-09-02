@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Changed
+- Expanded settings schema for all llama-server CLI flags: editable app-level fields (host, cache-type-k/v, sampling defaults), readonly `ServerDefaults`, per-model `Alias` with auto-generation from GGUF filename; old settings files load with applied defaults
+
 ### Added
 - Initial C# console app with intentional bugs for AI model evaluation
 - Three difficulty-level bugs:
