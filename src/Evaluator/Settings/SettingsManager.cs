@@ -56,6 +56,18 @@ public static class SettingsManager
     }
 
 
+    /// <summary>
+    /// Old settings files may lack newer fields; restore defaults so they still load.
+    /// </summary>
+    private static void ApplyBackwardCompatibleDefaults(ApplicationSettings s)
+    {
+        s.SamplingDefaults ??= new SamplingDefaults();
+        s.ServerDefaults ??= new ServerDefaults();
+        if (string.IsNullOrEmpty(s.Host)) s.Host = "127.0.0.1";
+        if (string.IsNullOrEmpty(s.CacheTypeK)) s.CacheTypeK = "q8_0";
+        if (string.IsNullOrEmpty(s.CacheTypeV)) s.CacheTypeV = "q8_0";
+    }
+
     private static ApplicationSettings Load()
     {
         var filePath = SettingsFilePath;
@@ -65,6 +77,8 @@ public static class SettingsManager
             var json = File.ReadAllText(filePath);
             settings = JsonSerializer.Deserialize<ApplicationSettings>(json, jsonOptions)
                 ?? throw new Exception($"Settings file at {filePath} is empty or corrupt.");
+
+            ApplyBackwardCompatibleDefaults(settings);
 
             return settings;
         }

@@ -1,7 +1,5 @@
 # In Progress
 
----
-
 # Backlog
 
 ## feat/13_avalonia_ui_scaffolding
@@ -177,6 +175,16 @@ Design outcome recording format once evaluator has execution data.
 ---
 
 # Completed
+
+## feat/12_Qwen38-27B-Aliterated-IQ4-MIX-MTP_finex666_2_settings_expansion — Settings expansion
+Expanded application and model settings to cover llama-server CLI flags, with editable/readonly distinction. Done by model `Qwen3.8-27B-Abliterated-IQ4-MIX-MTP_finex666_[64k]`.
+
+- [x] Add `Host`, `CacheTypeK`, `CacheTypeV`, `SamplingDefaults` and readonly `ServerDefaults` records to `ApplicationSettings`; add `Alias` to `ModelSettings`
+- [x] Apply backward-compatible defaults in `SettingsManager.Load()` for old settings files
+- [x] Update `EditGeneralSettings()` with host, cache types and sampling defaults inputs
+- [x] Update `AddModel()` / `EditModel()` with alias input (empty = auto-gen from GGUF filename)
+- [x] Update `ShowCurrentSettings()` to display new fields incl. readonly server defaults section
+- [x] Build with `dotnet build -o agent_build` and run tests
 
 ## refactor/07_settings_manager — Centralized Configuration Management ✅ MERGED
 Created SettingsManager singleton; eliminated config duplication across classes.
