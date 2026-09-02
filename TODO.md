@@ -178,13 +178,10 @@ Design outcome recording format once evaluator has execution data.
 
 # Completed
 
-## doc/12_evaluate_prs_103_104_105 — Evaluate feat/12 PRs #103, #104, #105
-Evaluated PRs #103, #104, and #105 against the same 6-criterion rubric used for PRs #96-#100. Branch-based evaluation, build/test verification, full source inspection, and Evaluation.md update. PR #103 and #104 are byte-identical (two runs of the same model) and both score 83/100 ★★★. PR #105 is distinct and scores 84/100 ★★★★ — the strongest of the three, with the cleanest boolean typing in the recent batch.
-
-## refactor/07_settings_manager — Centralized Configuration Management ✅ MERGED
+## refactor/07_settings_manager — Centralized Configuration Management 
 Created SettingsManager singleton; eliminated config duplication across classes.
 
-## feat/10_interactive_setup — Interactive Settings Editor ✅ MERGED
+## feat/10_interactive_setup — Interactive Settings Editor 
 Built full TUI configuration wizard using Spectre.Console. Users can add/edit/remove models without touching JSON files directly.
 
 ~~**Step C: Configuration Schema Design**~~ ~~(Obsolete)~~
