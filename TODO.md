@@ -1,33 +1,3 @@
-# In Progress
-
-## doc/12_evaluate_prs_103_104_105 — Evaluate feat/12 PRs #103, #104, #105
-Evaluate the three newest feat/12_settings_expansion PRs against the same 6-criterion rubric used for PRs #96-#100.
-
-**Branch:** `doc/12_evaluate_prs_103_104_105`
-**Goal:** Score PRs #103, #104, and #105 on the established rubric (Spec 30 / Build-Reg 20 / Compat 20 / UI-Beh 15 / Code 10 / Scope 5 = 100) and update `Evaluation.md` and `TODO.md` accordingly.
-
-**Context / Mental Picture:**
-- PRs #103 and #104 are byte-identical (two runs of `Qwen3.8-27B-UD-IQ4_XS_unsloth` produced identical source).
-- PR #105 is from `Qwen3.8-27B-Abliterated-IQ4-MIX-MTP_finex666_[64k]` (run #3) and is distinct.
-- All 3 branch from `ab0ec55` (origin/main before PR #99), so they all regress Evaluation.md by rolling back the #99/#100 content (re-add the "Not yet evaluated" section, remove #38-#49 rows, reset count to "Thirty-six").
-- All 3 have correct TODO.md lifecycle (only Completed entry, no In Progress duplication).
-- None modify CHANGELOG.md.
-
-**Steps:**
-- [ ] Create worktrees for #103, #104, #105 from `origin/main` (post-#100)
-- [ ] Build each (`dotnet build src/Evaluator/Evaluator.csproj -o agent_build`) and run tests
-- [ ] Inspect Entities.cs, SettingsManager.cs, SettingsView.cs, TODO.md, CHANGELOG.md, Evaluation.md
-- [ ] Score on 6-criterion rubric
-- [ ] Update Evaluation.md (implementation list, results table, descriptions, evidence table, ranking, conclusion)
-- [ ] Update TODO.md (move this entry to Completed)
-- [ ] Create PR and request review from `alex-piccione`
-
-**Notes:**
-- Branch will be `doc/12_evaluate_prs_103_104_105` from `origin/main` (post-#100)
-- Will pause after scoring to show the comparison table before writing the final description text
-
----
-
 # Backlog
 
 ## feat/13_avalonia_ui_scaffolding
