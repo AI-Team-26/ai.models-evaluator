@@ -30,6 +30,11 @@ Create a basic Avalonia UI project scaffolding with a simple home page.
 - Start with Windows-only target for now (no need for multiplatform config yet)
 - Keep styling minimal — system defaults are fine
 
+## feat/14_structured_code_evaluation
+We need a proper way to evaluate code capability of models that is reproducible and not aleatory.
+
+**Branch:**  feat/14_structured_code_evaluation
+
 ---
 
 ## Phase 2: Build Evaluator Orchestration Tool
