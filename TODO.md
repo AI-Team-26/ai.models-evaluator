@@ -1,7 +1,3 @@
-# In Progress
-
----
-
 # Backlog
 
 ## feat/13_avalonia_ui_scaffolding
@@ -30,9 +26,14 @@ Create a basic Avalonia UI project scaffolding with a simple home page.
 - Start with Windows-only target for now (no need for multiplatform config yet)
 - Keep styling minimal — system defaults are fine
 
+## feat/14_structured_code_evaluation
+We need a proper way to evaluate code capability of models that is reproducible and not aleatory.
+
+**Branch:**  feat/14_structured_code_evaluation
+
 ---
 
-## Phase 2: Build Evaluator Orchestration Tool
+## Feature: Build Evaluator Orchestration Tool
 
 ### Expand Settings for llama-server flags (`feat/12_settings_expansion`) 
 
@@ -173,19 +174,3 @@ Design outcome recording format once evaluator has execution data.
 - [ ] Expand test coverage with edge case scenarios
 - [ ] Consider adding security vulnerability examples
 - [ ] Scale difficulty levels (add Expert tier)
-
----
-
-# Completed
-
-## refactor/07_settings_manager — Centralized Configuration Management ✅ MERGED
-Created SettingsManager singleton; eliminated config duplication across classes.
-
-## feat/10_interactive_setup — Interactive Settings Editor ✅ MERGED
-Built full TUI configuration wizard using Spectre.Console. Users can add/edit/remove models without touching JSON files directly.
-
-~~**Step C: Configuration Schema Design**~~ ~~(Obsolete)~~
-Skipped — went straight to implementation with interactive UI instead of upfront schema design.
-
-~~**Step E: Static Settings Manager**~~ ~~(Completed differently than planned)~~
-Implemented as SettingsManager singleton with interactive TUI wizard. No separate models.json created; everything lives in single Settings.json file managed through the app's menu system.
