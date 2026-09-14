@@ -1,9 +1,3 @@
-# In Progress
-
-## feat/12_Qwen3.8-27B-IQ3_XS_ulisai_2_settings_expansion
-Expand `ApplicationSettings` and `ModelSettings` to cover all llama-server CLI flags (editable vs readonly), update SettingsView.
-Done by model **Qwen3.8-27B-IQ3_XS_ulisai_68k**.
-
 # Backlog
 
 ## feat/13_avalonia_ui_scaffolding
