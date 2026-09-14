@@ -174,3 +174,13 @@ Design outcome recording format once evaluator has execution data.
 - [ ] Expand test coverage with edge case scenarios
 - [ ] Consider adding security vulnerability examples
 - [ ] Scale difficulty levels (add Expert tier)
+
+---
+
+# Completed
+
+- [x] **[feat/12_Qwen3.8-27B-IQ3_XS_ulisai_1_settings_expansion]** Expand settings schema for all llama-server CLI flags
+    - **Done by the model "Qwen3.8-27B-IQ3_XS_ulisai_68k"**
+    - Added `Host`, editable `CacheTypeK`/`CacheTypeV`, editable `SamplingDefaults`, read-only `ServerDefaults`, and per-model `Alias` (auto-generated from GGUF filename when empty).
+    - Backward-compatible loading of old `Settings.json` files via `ApplyDefaults()` in `SettingsManager.Load()`.
+    - Settings UI updated: host/cache/sampling editing, alias input in add/edit flows, read-only server-defaults display.
